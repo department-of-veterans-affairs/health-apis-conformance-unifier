@@ -49,7 +49,7 @@ public abstract class BaseUnifierService {
       case METADATA:
         unifyMetadata(urlList);
         break;
-      case WELLKNOWN:
+      case SMART_CONFIGURATION:
         unifyWellKnown(urlList);
         break;
       default:

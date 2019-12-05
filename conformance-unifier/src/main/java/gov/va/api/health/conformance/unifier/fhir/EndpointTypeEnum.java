@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 public enum EndpointTypeEnum {
   UNKNOWN("unknown"),
   METADATA("metadata"),
-  WELLKNOWN("wellknown");
+  SMART_CONFIGURATION("smart-configuration");
   private final String type;
 
   /**

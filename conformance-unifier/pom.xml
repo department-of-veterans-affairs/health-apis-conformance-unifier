@@ -12,7 +12,7 @@
   <properties>
     <!-- Over-coverage at this juncture would not be prudent due to rapidly gained diminished returns. -->
     <jacoco.coverage>0.10</jacoco.coverage>
-    <r4.version>2.0.22</r4.version>
+    <resource.version>2.0.22</resource.version>
     <informational.version>1.0.6-SNAPSHOT</informational.version>
   </properties>
   <dependencies>
@@ -21,16 +21,30 @@
       <artifactId>amazon-s3-interface</artifactId>
       <version>${project.version}</version>
     </dependency>
-    <!--
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter</artifactId>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>dstu2</artifactId>
+      <version>${resource.version}</version>
     </dependency>
-    -->
+    <dependency>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>stu3</artifactId>
+      <version>${resource.version}</version>
+    </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
       <artifactId>r4</artifactId>
-      <version>${r4.version}</version>
+      <version>${resource.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>gov.va.api.health.informational</groupId>
+      <artifactId>base-dstu2</artifactId>
+      <version>${informational.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>gov.va.api.health.informational</groupId>
+      <artifactId>base-stu3</artifactId>
+      <version>${informational.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.api.health.informational</groupId>
@@ -41,19 +55,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-rest</artifactId>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-data-rest</artifactId>
-       Disable the embedded tomcat instance because it would be superfluous.
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-starter-tomcat</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>

@@ -4,15 +4,12 @@ import lombok.Builder;
 import lombok.Value;
 
 /**
- * Type safe model for sending request to Benefits Claims.
+ * Type safe model for sending request to APIs.
  *
  * <pre>
  *   Query.forType(ClaimsShow.class)
- *     .id("123")
+ *     .url("http://somewhere/in/the/www")
  *     .build();
- *
- *     Will append to path the optional id if specified:
- *     {{path}}/123
  * </pre>
  */
 @Value
@@ -28,13 +25,8 @@ public class Query<T> {
     return Query.<R>builder().type(forType);
   }
 
-  /** We won't do a lookup in the id service if its an exception. */
+  /** Get the path. */
   String toQueryString() {
-    StringBuilder queryString = new StringBuilder(url);
-    // queryString.append("?id=").append(id);
-    //    if (id != null) {
-    //      queryString.append("/").append(id);
-    //    }
-    return queryString.toString();
+    return url;
   }
 }
