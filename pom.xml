@@ -10,6 +10,8 @@
   <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
+    <module>conformance-docker-awss3</module>
+    <module>amazon-s3-interface</module>
     <module>conformance-unifier</module>
   </modules>
 </project>
