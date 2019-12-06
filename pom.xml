@@ -9,9 +9,22 @@
   <artifactId>conformance-unifier-parent</artifactId>
   <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <properties>
+    <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
+  </properties>
   <modules>
     <module>conformance-docker-awss3</module>
     <module>amazon-s3-interface</module>
     <module>conformance-unifier</module>
   </modules>
+  <!-- Include the docker maven plugin so that docker commands can be passed to all modules without causing build error. -->
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker-maven-plugin.version}</version>
+      </plugin>
+    </plugins>
+  </build>
 </project>
