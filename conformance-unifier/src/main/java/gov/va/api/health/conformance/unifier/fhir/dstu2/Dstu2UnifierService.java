@@ -6,17 +6,12 @@ import gov.va.api.health.conformance.unifier.client.Query;
 import gov.va.api.health.conformance.unifier.fhir.BaseUnifierService;
 import gov.va.api.health.dstu2.api.information.WellKnown;
 import gov.va.api.health.dstu2.api.resources.Conformance;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Service to facilitate unification of DSTU2 Metadata and WellKnown. */
 @Service
-public class Dstu2UnifierService extends BaseUnifierService {
-
-  private final Dstu2ConformanceTransformer conformanceTransformer;
-  private final Dstu2WellKnownTransformer wellKnownTransformer;
+public class Dstu2UnifierService extends BaseUnifierService<Conformance, WellKnown> {
 
   /**
    * Construct a unifier service for DSTU2 type resources.
@@ -32,30 +27,16 @@ public class Dstu2UnifierService extends BaseUnifierService {
       AmazonS3ClientWriterService s3ClientWriterService,
       Dstu2ConformanceTransformer conformanceTransformer,
       Dstu2WellKnownTransformer wellKnownTransformer) {
-    super(client, s3ClientWriterService);
-    this.conformanceTransformer = conformanceTransformer;
-    this.wellKnownTransformer = wellKnownTransformer;
+    super(client, conformanceTransformer, wellKnownTransformer, s3ClientWriterService);
   }
 
   @Override
-  protected Object translateMetadata(final List<String> urlList) {
-
-    List<Conformance> conformanceList = new ArrayList<>();
-    for (String url : urlList) {
-      conformanceList.add(client.search(Query.forType(Conformance.class).url(url).build()));
-    }
-
-    return conformanceTransformer.apply(conformanceList);
+  protected Query<Conformance> queryMetadata(final String url) {
+    return Query.forType(Conformance.class).url(url).build();
   }
 
   @Override
-  protected Object translateWellKnown(final List<String> urlList) {
-
-    List<WellKnown> wellKnownList = new ArrayList<>();
-    for (String url : urlList) {
-      wellKnownList.add(client.search(Query.forType(WellKnown.class).url(url).build()));
-    }
-
-    return wellKnownTransformer.apply(wellKnownList);
+  protected Query<WellKnown> queryWellKnown(final String url) {
+    return Query.forType(WellKnown.class).url(url).build();
   }
 }

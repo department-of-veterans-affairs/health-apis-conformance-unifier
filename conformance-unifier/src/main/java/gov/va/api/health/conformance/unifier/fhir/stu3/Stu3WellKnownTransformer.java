@@ -1,12 +1,10 @@
 package gov.va.api.health.conformance.unifier.fhir.stu3;
 
+import gov.va.api.health.conformance.unifier.fhir.BaseWellKnownTransformer;
 import gov.va.api.health.informational.stu3.capability.CapabilityStatementProperties;
 import gov.va.api.health.informational.stu3.wellknown.WellKnownUtilities;
 import gov.va.api.health.stu3.api.information.WellKnown;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,35 +12,42 @@ import org.springframework.stereotype.Service;
 /** Transformer to merge multiple STU3 WellKnown into a single representative WellKnown. */
 @Service
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
-public class Stu3WellKnownTransformer implements Function<List<WellKnown>, WellKnown> {
+public class Stu3WellKnownTransformer extends BaseWellKnownTransformer<WellKnown> {
 
   private final CapabilityStatementProperties capabilityStatementProperties;
 
   @Override
-  public WellKnown apply(List<WellKnown> wellKnownList) {
-    return combine(wellKnownList);
+  protected void addCapabilities(WellKnown wellKnown, List<String> capabilityList) {
+    capabilityList.addAll(wellKnown.capabilities());
   }
 
-  private WellKnown combine(List<WellKnown> wellKnownList) {
-    WellKnown wellKnown =
-        WellKnownUtilities.initializeWellKnownBuilder(capabilityStatementProperties, null);
+  @Override
+  protected void addResponse(WellKnown wellKnown, List<String> responseList) {
+    responseList.addAll(wellKnown.responseTypeSupported());
+  }
 
-    List<String> combinedCapabilitiesList = new ArrayList<>();
-    List<String> combinedResponseList = new ArrayList<>();
-    List<String> combinedScopesList = new ArrayList<>();
+  @Override
+  protected void addScopes(WellKnown wellKnown, List<String> scopeList) {
+    scopeList.addAll(wellKnown.scopesSupported());
+  }
 
-    for (WellKnown w : wellKnownList) {
-      combinedCapabilitiesList.addAll(w.capabilities());
-      combinedResponseList.addAll(w.responseTypeSupported());
-      combinedScopesList.addAll(w.scopesSupported());
-    }
+  @Override
+  protected WellKnown initialInstance() {
+    return WellKnownUtilities.initializeWellKnownBuilder(capabilityStatementProperties, null);
+  }
 
-    wellKnown.capabilities(
-        combinedCapabilitiesList.stream().distinct().collect(Collectors.toList()));
-    wellKnown.responseTypeSupported(
-        combinedResponseList.stream().distinct().collect(Collectors.toList()));
-    wellKnown.scopesSupported(combinedScopesList.stream().distinct().collect(Collectors.toList()));
+  @Override
+  protected void setCapabilities(WellKnown wellKnown, List<String> capabilityList) {
+    wellKnown.capabilities(capabilityList);
+  }
 
-    return wellKnown;
+  @Override
+  protected void setResponse(WellKnown wellKnown, List<String> responseList) {
+    wellKnown.responseTypeSupported(responseList);
+  }
+
+  @Override
+  protected void setScopes(WellKnown wellKnown, List<String> scopeList) {
+    wellKnown.scopesSupported(scopeList);
   }
 }

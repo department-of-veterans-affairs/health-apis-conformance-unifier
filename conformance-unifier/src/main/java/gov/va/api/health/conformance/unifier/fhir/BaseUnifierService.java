@@ -2,40 +2,41 @@ package gov.va.api.health.conformance.unifier.fhir;
 
 import gov.va.api.health.conformance.unifier.awss3.AmazonS3ClientWriterService;
 import gov.va.api.health.conformance.unifier.client.ConformanceClient;
+import gov.va.api.health.conformance.unifier.client.Query;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Abstract class services must implement to facilitate unification of Metadata and WellKnown for
- * implementor respective resource type.
- */
-@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor
 @Slf4j
-public abstract class BaseUnifierService {
+public abstract class BaseUnifierService<T, U> {
 
-  /** Benefits claims client. */
-  protected final ConformanceClient client;
+  private final ConformanceClient client;
+
+  private final Function<List<T>, T> metadataTransformer;
+
+  private final Function<List<U>, U> wellKnownTransformer;
 
   private final AmazonS3ClientWriterService s3ClientWriterService;
 
   /**
-   * Translate metadata.
+   * Query metadata.
    *
-   * @param urlList Urls.
-   * @return Capability object.
+   * @param url Url to query.
+   * @return Query object.
    */
-  protected abstract Object translateMetadata(final List<String> urlList);
+  protected abstract Query<T> queryMetadata(final String url);
 
   /**
-   * Translate wellknown.
+   * Query wellknown.
    *
-   * @param urlList Urls.
-   * @return R4 WellKnown object.
+   * @param url Url to query.
+   * @return Query object.
    */
-  protected abstract Object translateWellKnown(final List<String> urlList);
+  protected abstract Query<U> queryWellKnown(final String url);
 
   /**
    * Unify the urlList of endpoint type.
@@ -58,16 +59,28 @@ public abstract class BaseUnifierService {
   }
 
   /**
-   * Unify.
+   * Unify metadata.
    *
    * @param urlList Urls.
-   * @return Capability.
    */
   private void unifyMetadata(final List<String> urlList) {
-    s3ClientWriterService.writeToBucket(translateMetadata(urlList));
+    List<T> metadataList = new ArrayList<>();
+    for (String url : urlList) {
+      metadataList.add(client.search(queryMetadata(url)));
+    }
+    s3ClientWriterService.writeToBucket(metadataTransformer.apply(metadataList));
   }
 
+  /**
+   * Unify wellknown.
+   *
+   * @param urlList Urls.
+   */
   private void unifyWellKnown(final List<String> urlList) {
-    s3ClientWriterService.writeToBucket(translateWellKnown(urlList));
+    List<U> wellKnownList = new ArrayList<>();
+    for (String url : urlList) {
+      wellKnownList.add(client.search(queryWellKnown(url)));
+    }
+    s3ClientWriterService.writeToBucket(wellKnownTransformer.apply(wellKnownList));
   }
 }

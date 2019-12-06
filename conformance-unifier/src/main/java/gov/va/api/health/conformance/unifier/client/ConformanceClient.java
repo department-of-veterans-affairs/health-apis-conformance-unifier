@@ -18,12 +18,9 @@ public class ConformanceClient {
 
   private final RestTemplate restTemplate;
 
-  private HttpEntity<Void> requestEntity(final String token) {
+  private HttpEntity<Void> requestEntity() {
     HttpHeaders headers = new HttpHeaders();
     headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-    if (token != null) {
-      headers.add("Authorization", "Bearer " + token);
-    }
     return new HttpEntity<>(headers);
   }
 
@@ -35,24 +32,12 @@ public class ConformanceClient {
    * @return Response.
    */
   public <T> T search(Query<T> query) {
-    return search(query, null);
-  }
-
-  /**
-   * Search.
-   *
-   * @param query Query.
-   * @param token Access token.
-   * @param <T> Class.
-   * @return Response.
-   */
-  public <T> T search(Query<T> query, String token) {
     // TODO: we may wish to use an error handler to capture certain exceptions from the rest call.
     ResponseEntity<T> responseEntity =
         restTemplate.exchange(
             urlOf(query),
             HttpMethod.GET,
-            requestEntity(token),
+            requestEntity(),
             ParameterizedTypeReference.forType(query.getType()));
     return responseEntity.getBody();
   }

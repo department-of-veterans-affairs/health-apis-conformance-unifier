@@ -1,0 +1,32 @@
+{
+    "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
+    "tokenEndpoint" : "https://api.va.gov/services/fhir/v0/dstu2/token",
+    "scopesSupported" : [
+        "offline_access",
+        "patient/AllergyIntolerance.read",
+        "patient/Appointment.read",
+        "patient/Condition.read",
+        "patient/DiagnosticReport.read",
+        "patient/Encounter.read",
+        "patient/Immunization.read",
+        "patient/Location.read",
+        "patient/Medication.read",
+        "patient/MedicationOrder.read",
+        "patient/MedicationStatement.read",
+        "patient/Observation.read",
+        "patient/Organization.read",
+        "patient/Patient.read",
+        "patient/Practitioner.read",
+        "patient/Procedure.read"
+    ],
+    "responseTypeSupported" : [
+        "code",
+        "refresh_token"
+    ],
+    "capabilities" : [
+        "context-standalone-patient",
+        "launch-ehr",
+        "permission-offline",
+        "permission-patient"
+    ]
+}

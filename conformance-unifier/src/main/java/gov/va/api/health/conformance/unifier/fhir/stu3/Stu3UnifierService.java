@@ -6,17 +6,12 @@ import gov.va.api.health.conformance.unifier.client.Query;
 import gov.va.api.health.conformance.unifier.fhir.BaseUnifierService;
 import gov.va.api.health.stu3.api.information.WellKnown;
 import gov.va.api.health.stu3.api.resources.CapabilityStatement;
-import java.util.ArrayList;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Service to facilitate unification of STU3 Metadata and WellKnown. */
 @Service
-public class Stu3UnifierService extends BaseUnifierService {
-
-  private final Stu3CapabilityTransformer capabilityTransformer;
-  private final Stu3WellKnownTransformer wellKnownTransformer;
+public class Stu3UnifierService extends BaseUnifierService<CapabilityStatement, WellKnown> {
 
   /**
    * Construct a unifier service for STU3 type resources.
@@ -32,30 +27,16 @@ public class Stu3UnifierService extends BaseUnifierService {
       AmazonS3ClientWriterService s3ClientWriterService,
       Stu3CapabilityTransformer capabilityTransformer,
       Stu3WellKnownTransformer wellKnownTransformer) {
-    super(client, s3ClientWriterService);
-    this.capabilityTransformer = capabilityTransformer;
-    this.wellKnownTransformer = wellKnownTransformer;
+    super(client, capabilityTransformer, wellKnownTransformer, s3ClientWriterService);
   }
 
   @Override
-  protected Object translateMetadata(final List<String> urlList) {
-
-    List<CapabilityStatement> capabilityList = new ArrayList<>();
-    for (String url : urlList) {
-      capabilityList.add(client.search(Query.forType(CapabilityStatement.class).url(url).build()));
-    }
-
-    return capabilityTransformer.apply(capabilityList);
+  protected Query<CapabilityStatement> queryMetadata(final String url) {
+    return Query.forType(CapabilityStatement.class).url(url).build();
   }
 
   @Override
-  protected Object translateWellKnown(final List<String> urlList) {
-
-    List<WellKnown> wellKnownList = new ArrayList<>();
-    for (String url : urlList) {
-      wellKnownList.add(client.search(Query.forType(WellKnown.class).url(url).build()));
-    }
-
-    return wellKnownTransformer.apply(wellKnownList);
+  protected Query<WellKnown> queryWellKnown(final String url) {
+    return Query.forType(WellKnown.class).url(url).build();
   }
 }

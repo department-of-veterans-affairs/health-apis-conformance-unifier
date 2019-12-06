@@ -1,7 +1,5 @@
 package gov.va.api.health.conformance.unifier;
 
-import gov.va.api.health.conformance.unifier.exception.AmazonS3InterfaceException;
-import gov.va.api.health.conformance.unifier.exception.DuplicateCapabilityResourceException;
 import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
 import gov.va.api.health.conformance.unifier.fhir.dstu2.Dstu2UnifierService;
 import gov.va.api.health.conformance.unifier.fhir.r4.R4UnifierService;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.Banner;
-import org.springframework.boot.ExitCodeExceptionMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -57,23 +54,6 @@ public class Application implements ApplicationRunner {
   @ConfigurationProperties(prefix = "dstu2.conformance")
   public ConformanceStatementProperties dstu2ConformanceStatementPropertiesConfig() {
     return new ConformanceStatementProperties();
-  }
-
-  @Bean
-  ExitCodeExceptionMapper exitCodeExceptionMapper() {
-    return exception -> {
-      log.error("Exception occurred: " + exception.getMessage());
-      if (exception.getCause() instanceof IllegalArgumentException) {
-        return 2;
-      }
-      if (exception.getCause() instanceof DuplicateCapabilityResourceException) {
-        return 3;
-      }
-      if (exception.getCause() instanceof AmazonS3InterfaceException) {
-        return 4;
-      }
-      return 1;
-    };
   }
 
   /**

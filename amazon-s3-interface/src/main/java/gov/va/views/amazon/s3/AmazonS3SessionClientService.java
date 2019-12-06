@@ -13,6 +13,7 @@ import com.amazonaws.services.securitytoken.model.Credentials;
 import com.amazonaws.services.securitytoken.model.GetSessionTokenRequest;
 import com.amazonaws.services.securitytoken.model.GetSessionTokenResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -33,6 +34,7 @@ import org.springframework.util.Assert;
   havingValue = "true"
 )
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Slf4j
 public class AmazonS3SessionClientService
     implements AmazonS3ClientServiceInterface, InitializingBean {
 
@@ -67,7 +69,7 @@ public class AmazonS3SessionClientService
               .withRegion(config.getClientRegion())
               .build();
     } catch (Exception e) {
-      System.out.println("AmazonS3SessionClientService failed configuration: " + e.getMessage());
+      log.error("AmazonS3SessionClientService failed configuration: {}", e.getMessage());
     }
     Assert.notNull(
         awsCredentialsProvider,

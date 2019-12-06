@@ -6,6 +6,7 @@ import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -22,6 +23,7 @@ import org.springframework.util.Assert;
 @Service
 @ConditionalOnProperty(value = "amazon.s3.sessionClient", havingValue = "false")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
+@Slf4j
 public class AmazonS3SimpleClientService
     implements AmazonS3ClientServiceInterface, InitializingBean {
 
@@ -51,7 +53,7 @@ public class AmazonS3SimpleClientService
       }
       amazonS3 = builder.build();
     } catch (Exception e) {
-      System.out.println("AmazonS3SimpleClientService failed configuration: " + e.getMessage());
+      log.error("AmazonS3SimpleClientService failed configuration: {}", e.getMessage());
     }
     Assert.notNull(amazonS3, "AmazonS3SimpleClientService failed instantiation.");
 
