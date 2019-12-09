@@ -18,7 +18,7 @@ A developer can use the test docker in a local development environment by runnin
     mvn -Plocaltest docker:start
     ```
 
-3. Once the S3 docker has started, the `conformance-unifier` can run locally:
+2. Once the S3 docker has started, the `conformance-unifier` can run locally:
     ```
     cd conformance-unifier
     
@@ -30,6 +30,21 @@ A developer can use the test docker in a local development environment by runnin
     
     mvn spring-boot:run -Dspring-boot.run.arguments="r4,smart-configuration,https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
     ```
+
+3. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
+   ```
+   # List bucket name:
+   aws s3api list-buckets --query "Buckets[].Name" --endpoint-url http://localhost:9090
+
+   # List objects in bucket:
+   aws s3api list-objects --bucket testbucket --endpoint-url http://localhost:9090 --query 'Contents[].{Key: Key, Size: Size}'
+
+   # Get most recent object replacing underscores:
+   aws s3api --endpoint-url http://localhost:9090 list-objects-v2 --bucket "testbucket" --query 'reverse(sort_by(Contents, &LastModified))[:1].Key' --output=text | awk '{gsub(/%5F/,"_")}1'
+
+   # Copy the specified object to stdout:
+   aws s3 --endpoint-url http://localhost:9090 cp s3://testbucket/2019_12_09_11_05_22 -
+   ``` 
 
 4. To Stop the docker:
     ```
