@@ -17,6 +17,7 @@ import gov.va.api.health.conformance.unifier.mock.AmazonS3BucketUtilities;
 import gov.va.api.health.conformance.unifier.mock.AmazonS3ClientServiceMock;
 import gov.va.api.health.dstu2.api.information.WellKnown;
 import gov.va.api.health.dstu2.api.resources.Conformance;
+import gov.va.api.health.informational.dstu2.conformance.ConformanceStatementProperties;
 import java.net.URI;
 import java.nio.file.Paths;
 import lombok.SneakyThrows;
@@ -87,6 +88,8 @@ public class ApplicationDstu2UnifierIntegrationTest {
   /** Mock Amazon S3 Client. */
   private AmazonS3 s3Client = S3_MOCK_RULE.createS3Client();
 
+  @Autowired private ConformanceStatementProperties properties;
+
   /** Off nominal case where duplicate metadata endpoint resources are recognized as duplicates. */
   @Test(expected = DuplicateCapabilityResourceException.class)
   @SneakyThrows
@@ -100,11 +103,7 @@ public class ApplicationDstu2UnifierIntegrationTest {
           DSTU2_EXAMPLE_METADATA_ENDPOINT_2,
           DSTU2_EXAMPLE_METADATA_ENDPOINT_1
         };
-    // Load DSTU2 Metadata examples and expected unified result from test resources.
-    final Conformance dstu2ExampleMetadataUnifiedExpected =
-        mapper.readValue(
-            Paths.get("src", "test", "resources", "dstu2_example_metadata_unified.json").toFile(),
-            Conformance.class);
+    // Load DSTU2 Metadata examples from test resources.
     final Conformance dstu2Example1Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "dstu2_example_metadata_1.json").toFile(),
@@ -182,6 +181,9 @@ public class ApplicationDstu2UnifierIntegrationTest {
             AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getBucket()),
             Conformance.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
+    // NOTE: the publication date is set to current time when bean created so override the expected
+    // publication date with the current time value.
+    dstu2ExampleMetadataUnifiedExpected.date(properties.getPublicationDate());
     assertEquals(dstu2ExampleMetadataUnifiedExpected, s3UnifiedMetadata);
   }
 

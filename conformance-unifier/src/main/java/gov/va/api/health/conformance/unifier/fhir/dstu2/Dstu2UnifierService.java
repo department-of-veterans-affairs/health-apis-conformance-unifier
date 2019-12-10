@@ -31,6 +31,11 @@ public class Dstu2UnifierService extends BaseUnifierService<Conformance, WellKno
   }
 
   @Override
+  protected String baseMetadataName() {
+    return "conformance";
+  }
+
+  @Override
   protected Query<Conformance> queryMetadata(final String url) {
     return Query.forType(Conformance.class).url(url).build();
   }

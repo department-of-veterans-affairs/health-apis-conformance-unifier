@@ -13,7 +13,104 @@
     <resource.version>2.0.22</resource.version>
     <informational.version>1.0.6-SNAPSHOT</informational.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
+    <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
+    <docker.organization>vasdvp</docker.organization>
+    <docker.baseImage>vasdvp/health-apis-spring-boot-application-base</docker.baseImage>
+    <docker.baseVersion>jdk-12</docker.baseVersion>
+    <docker.tag>latest</docker.tag>
+    <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
   </properties>
+  <profiles>
+    <!-- When running a local development build manipulate application properties to use the test application.properties which is configured to use an s3 mock. -->
+    <profile>
+      <id>localtest</id>
+      <properties>
+        <!-- When running the local development dockers do not attempt to run the application docker. -->
+        <docker.skip.run>true</docker.skip.run>
+      </properties>
+      <build>
+        <!-- When running a local build do not include the main application properties but instead use the test application properties. -->
+        <resources>
+          <resource>
+            <directory>src/main/resources</directory>
+            <excludes>
+              <exclude>*.properties</exclude>
+            </excludes>
+          </resource>
+        </resources>
+        <!-- When running a local build copy the test application properties for main to use. -->
+        <plugins>
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.1.0</version>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>process-resources</phase>
+                <goals>
+                  <goal>copy-resources</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${basedir}/target/classes</outputDirectory>
+                  <filters>
+                    <filter>src/main/filters/main.properties</filter>
+                  </filters>
+                  <resources>
+                    <resource>
+                      <directory>src/test/resources</directory>
+                      <include>**/application.properties</include>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <!-- Building docker images locally can be invoked through the maven goal:
+      mvn io.fabric8:docker-maven-plugin:build
+      Do a mvn clean install in addition if you'd like to do regular build activities as well. -->
+      <id>docker</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker-maven-plugin.version}</version>
+            <configuration>
+              <images>
+                <image>
+                  <name>${docker.organization}/${docker.imageName}</name>
+                  <build>
+                    <assembly>
+                      <descriptor>assembly.xml</descriptor>
+                    </assembly>
+                    <dockerFile>${basedir}/src/main/docker/Dockerfile</dockerFile>
+                    <tags>
+                      <tag>${project.version}</tag>
+                      <tag>${docker.tag}</tag>
+                    </tags>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>build</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
@@ -92,10 +189,30 @@
     </dependency>
   </dependencies>
   <build>
+    <filters>
+      <filter>src/test/filters/test.properties</filter>
+    </filters>
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <fork>true</fork>
+          <skip>false</skip>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

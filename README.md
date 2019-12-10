@@ -11,27 +11,40 @@ The dockers provided to facilitate testing include:
 
 * conformance-docker-awss3 - Docker to emulate the Amazon S3 storage facility.
 
-A developer can use the test docker in a local development environment by running using the `localtest` maven profile.
+During local development a developer should use the `localtest` maven profile which will build the application to use a test application properties to reference locally mocked S3 using docker.
 
-1. Start the dockers:
+For example:
+
+1. Build application:
+   ```
+   mvn -Plocaltest clean install
+   ```
+
+2. Start the S3 docker:
     ```
     mvn -Plocaltest docker:start
     ```
 
-2. Once the S3 docker has started, the `conformance-unifier` can run locally:
+3. Once the S3 docker has started, the `conformance-unifier` can run locally using spring-boot:run or by building and running a local docker
     ```
-    cd conformance-unifier
+    # 1. Maven Spring Boot Run Examples:
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,metadata,https://api.va.gov/services/fhir/v0/dstu2/metadata"
     
-    mvn spring-boot:run -Dspring-boot.run.arguments="dstu2,metadata,https://api.va.gov/services/fhir/v0/dstu2/metadata"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,smart-configuration,https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration"
     
-    mvn spring-boot:run -Dspring-boot.run.arguments="dstu2,smart-configuration,https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,metadata,https://api.va.gov/services/fhir/v0/r4/metadata"
     
-    mvn spring-boot:run -Dspring-boot.run.arguments="r4,metadata,https://api.va.gov/services/fhir/v0/r4/metadata"
-    
-    mvn spring-boot:run -Dspring-boot.run.arguments="r4,smart-configuration,https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,smart-configuration,https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
+
+    # 2. Local Docker Build and Run Examples:
+    mvn -Plocaltest,docker -pl conformance-unifier io.fabric8:docker-maven-plugin:build
+
+    docker run --network="host" vasdvp/health-apis-conformance-unifier dstu2 metadata https://api.va.gov/services/fhir/v0/dstu2/metadata
+
+    docker run --network="host" vasdvp/health-apis-conformance-unifier dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
     ```
 
-3. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
+4. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
    ```
    # List bucket name:
    aws s3api list-buckets --query "Buckets[].Name" --endpoint-url http://localhost:9090
@@ -39,15 +52,14 @@ A developer can use the test docker in a local development environment by runnin
    # List objects in bucket:
    aws s3api list-objects --bucket testbucket --endpoint-url http://localhost:9090 --query 'Contents[].{Key: Key, Size: Size}'
 
-   # Get most recent object replacing underscores:
-   aws s3api --endpoint-url http://localhost:9090 list-objects-v2 --bucket "testbucket" --query 'reverse(sort_by(Contents, &LastModified))[:1].Key' --output=text | awk '{gsub(/%5F/,"_")}1'
+   # Get most recent object replacing dashes:
+   aws s3api --endpoint-url http://localhost:9090 list-objects-v2 --bucket "testbucket" --query 'reverse(sort_by(Contents, &LastModified))[:1].Key' --output=text | awk '{gsub(/%2D/,"-")}1'
 
-   # Copy the specified object to stdout:
-   aws s3 --endpoint-url http://localhost:9090 cp s3://testbucket/2019_12_09_11_05_22 -
+   # Copy the specified object to stdout (example showing r4-capability):
+   aws s3 --endpoint-url http://localhost:9090 cp s3://testbucket/r4-capability -
    ``` 
 
-4. To Stop the docker:
+5. To Stop the docker:
     ```
-    cd ..
     mvn -Plocaltest docker:stop
     ```

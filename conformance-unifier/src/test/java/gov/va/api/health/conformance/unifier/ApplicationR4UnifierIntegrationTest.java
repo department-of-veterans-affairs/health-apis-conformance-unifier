@@ -15,6 +15,7 @@ import gov.va.api.health.conformance.unifier.fhir.EndpointTypeEnum;
 import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
 import gov.va.api.health.conformance.unifier.mock.AmazonS3BucketUtilities;
 import gov.va.api.health.conformance.unifier.mock.AmazonS3ClientServiceMock;
+import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
 import gov.va.api.health.r4.api.resources.Capability;
 import java.net.URI;
@@ -85,6 +86,8 @@ public class ApplicationR4UnifierIntegrationTest {
   /** Mock Amazon S3 Client. */
   private AmazonS3 s3Client = S3_MOCK_RULE.createS3Client();
 
+  @Autowired private CapabilityStatementProperties properties;
+
   @Before
   public void init() {
     mockServer = MockRestServiceServer.createServer(restTemplate);
@@ -104,11 +107,7 @@ public class ApplicationR4UnifierIntegrationTest {
           R4_EXAMPLE_METADATA_ENDPOINT_2,
           R4_EXAMPLE_METADATA_ENDPOINT_1
         };
-    // Load R4 Metadata examples and expected unified result from test resources.
-    final Capability r4ExampleMetadataUnifiedExpected =
-        mapper.readValue(
-            Paths.get("src", "test", "resources", "r4_example_metadata_unified.json").toFile(),
-            Capability.class);
+    // Load R4 Metadata examples from test resources.
     final Capability r4Example1Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_1.json").toFile(),
@@ -186,6 +185,9 @@ public class ApplicationR4UnifierIntegrationTest {
             AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getBucket()),
             Capability.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
+    // NOTE: the publication date is set to current time when bean created so override the expected
+    // publication date with the current time value.
+    r4ExampleMetadataUnifiedExpected.date(properties.getPublicationDate());
     assertEquals(r4ExampleMetadataUnifiedExpected, s3UnifiedMetadata);
   }
 

@@ -23,6 +23,36 @@ public abstract class BaseUnifierService<T, U> {
   private final AmazonS3ClientWriterService s3ClientWriterService;
 
   /**
+   * Base name for metadata object name.
+   *
+   * @return Base name.
+   */
+  protected String baseMetadataName() {
+    return "capability";
+  }
+
+  /**
+   * Base name for wellknown object name.
+   *
+   * @return Base name.
+   */
+  protected String baseWellKnownName() {
+    return "wellknown";
+  }
+
+  /**
+   * Create a result s3 object name using the resource type and a base name associated with the
+   * resource type.
+   *
+   * @param resourceTypeEnum Resource type.
+   * @param baseName Base name.
+   * @return Object name.
+   */
+  private String objectName(final ResourceTypeEnum resourceTypeEnum, final String baseName) {
+    return resourceTypeEnum.type() + "-" + baseName;
+  }
+
+  /**
    * Query metadata.
    *
    * @param url Url to query.
@@ -45,13 +75,16 @@ public abstract class BaseUnifierService<T, U> {
    * @param urlList List of URL to unify.
    */
   @SneakyThrows
-  public void unify(final String endpointType, final List<String> urlList) {
+  public void unify(
+      final ResourceTypeEnum resourceTypeEnum,
+      final String endpointType,
+      final List<String> urlList) {
     switch (EndpointTypeEnum.fromType(endpointType)) {
       case METADATA:
-        unifyMetadata(urlList);
+        unifyMetadata(objectName(resourceTypeEnum, baseMetadataName()), urlList);
         break;
       case SMART_CONFIGURATION:
-        unifyWellKnown(urlList);
+        unifyWellKnown(objectName(resourceTypeEnum, baseWellKnownName()), urlList);
         break;
       default:
         throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
@@ -63,12 +96,12 @@ public abstract class BaseUnifierService<T, U> {
    *
    * @param urlList Urls.
    */
-  private void unifyMetadata(final List<String> urlList) {
+  private void unifyMetadata(final String objectName, final List<String> urlList) {
     List<T> metadataList = new ArrayList<>();
     for (String url : urlList) {
       metadataList.add(client.search(queryMetadata(url)));
     }
-    s3ClientWriterService.writeToBucket(metadataTransformer.apply(metadataList));
+    s3ClientWriterService.writeToBucket(objectName, metadataTransformer.apply(metadataList));
   }
 
   /**
@@ -76,11 +109,11 @@ public abstract class BaseUnifierService<T, U> {
    *
    * @param urlList Urls.
    */
-  private void unifyWellKnown(final List<String> urlList) {
+  private void unifyWellKnown(final String objectName, final List<String> urlList) {
     List<U> wellKnownList = new ArrayList<>();
     for (String url : urlList) {
       wellKnownList.add(client.search(queryWellKnown(url)));
     }
-    s3ClientWriterService.writeToBucket(wellKnownTransformer.apply(wellKnownList));
+    s3ClientWriterService.writeToBucket(objectName, wellKnownTransformer.apply(wellKnownList));
   }
 }
