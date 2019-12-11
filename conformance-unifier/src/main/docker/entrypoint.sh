@@ -2,4 +2,4 @@
 
 set -o pipefail
 
-java -jar /test-suite/conformance-unifier*.jar $@
+java -jar /opt/va/conformance-unifier*.jar $@
