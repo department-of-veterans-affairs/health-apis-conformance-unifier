@@ -1,4 +1,4 @@
-package gov.va.api.health.conformance.unifier.mock;
+package gov.va.views.amazon.s3.junit;
 
 import com.amazonaws.services.s3.AmazonS3;
 import gov.va.views.amazon.s3.AmazonS3ClientServiceInterface;

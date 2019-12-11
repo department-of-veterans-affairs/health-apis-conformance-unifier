@@ -12,6 +12,7 @@
   <properties>
     <jaxb-api.version>2.3.0</jaxb-api.version>
     <aws-java-sdk.version>1.11.592</aws-java-sdk.version>
+    <commons-io.version>2.6</commons-io.version>
   </properties>
   <dependencies>
     <dependency>
@@ -41,7 +42,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -49,4 +56,62 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <!-- For the library jar, do not include the junit support classes. -->
+        <executions>
+          <execution>
+            <id>default-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                </manifest>
+              </archive>
+              <excludes>
+                <exclude>**/junit/**</exclude>
+              </excludes>
+            </configuration>
+          </execution>
+          <!-- Create a junit support jar to facilitate unit testing within other applications. -->
+          <execution>
+            <id>junit-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <classifier>junit</classifier>
+              <archive>
+                <index>true</index>
+                <manifest>
+                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                </manifest>
+              </archive>
+              <includes>
+                <include>**/junit/**</include>
+              </includes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- Ignore junit source. -->
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/junit/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

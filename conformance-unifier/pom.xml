@@ -187,6 +187,13 @@
       <version>${s3mock-junit4.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>gov.va.api.health</groupId>
+      <artifactId>amazon-s3-interface</artifactId>
+      <version>${project.version}</version>
+      <classifier>junit</classifier>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <filters>
