@@ -1,0 +1,22 @@
+{
+    "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
+    "tokenEndpoint" : "https://api.va.gov/oauth2/token",
+    "scopesSupported" : [
+        "patient/Claim.read",
+        "patient/Coverage.read",
+        "patient/ExplanationOfBenefit.read",
+        "patient/ClaimExample2.read",
+        "patient/CoverageExample2.read",
+        "patient/ExplanationOfBenefitExample2.read"
+    ],
+    "responseTypeSupported" : [
+        "code",
+        "refresh_token",
+        "codeExample2",
+        "refresh_tokenExample2"
+    ],
+    "capabilities" : [
+        "permission-dev",
+        "permission-devExample2"
+    ]
+}

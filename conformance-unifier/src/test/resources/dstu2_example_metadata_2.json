@@ -1,0 +1,342 @@
+{
+    "id" : "health-api-argonaut-conformance",
+    "resourceType" : "Conformance",
+    "version" : "2.0.168",
+    "name" : "API Management Platform | Health - Argonaut",
+    "publisher" : "Department of Veterans Affairs",
+    "contact" : [
+        {
+            "name" : "Drew Myklegard",
+            "telecom" : [
+                {
+                    "system" : "email",
+                    "value" : "david.myklegard@va.gov"
+                }
+            ]
+        }
+    ],
+    "date" : "2019-12-05T16:00:47Z",
+    "description" : "Read and search support Argonaut Data Query.",
+    "kind" : "capability",
+    "software" : {
+        "name" : "data-query"
+    },
+    "fhirVersion" : "1.0.2",
+    "acceptUnknown" : "no",
+    "format" : [
+        "application/json+fhir",
+        "application/json",
+        "application/fhir+json"
+    ],
+    "rest" : [
+        {
+            "mode" : "server",
+            "security" : {
+                "extension" : [
+                    {
+                        "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+                        "extension" : [
+                            {
+                                "url" : "token",
+                                "valueUri" : "https://api.va.gov/services/fhir/v0/dstu2/token"
+                            },
+                            {
+                                "url" : "authorize",
+                                "valueUri" : "https://api.va.gov/oauth2/authorization"
+                            }
+                        ]
+                    }
+                ],
+                "cors" : true,
+                "service" : [
+                    {
+                        "coding" : [
+                            {
+                                "system" : "http://hl7.org/fhir/restful-security-service",
+                                "code" : "SMART-on-FHIR",
+                                "display" : "SMART-on-FHIR"
+                            }
+                        ]
+                    }
+                ],
+                "description" : "http://docs.smarthealthit.org/"
+            },
+            "resource" : [
+                {
+                    "type" : "AllergyIntoleranceExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-allergyintolerance.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "AppointmentExample2",
+                    "profile" : {
+                        "reference" : "https://www.hl7.org/fhir/DSTU2/appointment.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "ConditionExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-condition.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "DiagnosticReportExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-diagnosticreport.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "EncounterExample2",
+                    "profile" : {
+                        "reference" : "https://www.hl7.org/fhir/DSTU2/encounter.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "ImmunizationExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-immunization.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "LocationExample2",
+                    "profile" : {
+                        "reference" : "https://www.hl7.org/fhir/DSTU2/location.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "MedicationExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-medication.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "MedicationOrderExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-medicationorder.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "MedicationStatementExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-medicationstatement.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                },
+                {
+                    "type" : "ObservationExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-observationresults.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        },
+                        {
+                            "name" : "category",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "OrganizationExample2",
+                    "profile" : {
+                        "reference" : "https://www.hl7.org/fhir/DSTU2/organization.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "PatientExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-patient.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "_id",
+                            "type" : "string"
+                        }
+                    ]
+                },
+                {
+                    "type" : "PractitionerExample2",
+                    "profile" : {
+                        "reference" : "https://www.hl7.org/fhir/DSTU2/practitioner.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ]
+                },
+                {
+                    "type" : "ProcedureExample2",
+                    "profile" : {
+                        "reference" : "http://www.fhir.org/guides/argonaut/r2/StructureDefinition-argo-procedure.html"
+                    },
+                    "interaction" : [
+                        {
+                            "code" : "search-type",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        },
+                        {
+                            "code" : "read",
+                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/DSTU2/http.html"
+                        }
+                    ],
+                    "searchParam" : [
+                        {
+                            "name" : "patient",
+                            "type" : "reference"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

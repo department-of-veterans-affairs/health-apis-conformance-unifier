@@ -4,12 +4,36 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>3.1.12</version>
+    <version>4.0.3</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
   <version>1.0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <properties>
+    <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
+  </properties>
   <modules>
+    <module>conformance-docker-awss3</module>
+    <module>amazon-s3-interface</module>
+    <module>amazon-s3-interface-mock</module>
     <module>conformance-unifier</module>
   </modules>
+  <build>
+    <plugins>
+      <!-- Include the docker maven plugin so that docker commands can be passed to all modules without causing build error. -->
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker-maven-plugin.version}</version>
+      </plugin>
+      <!-- Include the spring boot maven plugin so that spring-boot:run commands can be passed to sub-modules without causing build error. -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>

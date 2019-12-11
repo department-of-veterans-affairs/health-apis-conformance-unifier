@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.va.api.health</groupId>
+    <artifactId>conformance-unifier-parent</artifactId>
+    <version>1.0.2-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <artifactId>conformance-docker-awss3</artifactId>
+  <packaging>pom</packaging>
+  <properties>
+    <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
+    <docker.organization>conformanceS3Mock</docker.organization>
+    <docker.tag>latest</docker.tag>
+    <!-- Since this project is intended only for local development testing there is no need to install. -->
+    <maven.install.skip>true</maven.install.skip>
+  </properties>
+  <profiles>
+    <profile>
+      <id>localtest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker-maven-plugin.version}</version>
+            <configuration>
+              <autoPull>true</autoPull>
+              <images>
+                <image>
+                  <name>adobe/s3mock</name>
+                  <alias>${docker.organization}</alias>
+                  <run>
+                    <containerNamePattern>%a</containerNamePattern>
+                    <ports>
+                      <port>127.0.0.1:9090:9090</port>
+                      <port>127.0.0.1:9091:9091</port>
+                    </ports>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>docker-build</id>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
