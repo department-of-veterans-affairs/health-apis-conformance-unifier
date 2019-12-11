@@ -10,6 +10,7 @@
   <artifactId>amazon-s3-interface-mock</artifactId>
   <packaging>jar</packaging>
   <properties>
+    <aws-java-sdk.version>1.11.592</aws-java-sdk.version>
     <commons-io.version>2.6</commons-io.version>
   </properties>
   <dependencies>
@@ -17,6 +18,16 @@
       <groupId>gov.va.api.health</groupId>
       <artifactId>amazon-s3-interface</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-sts</artifactId>
+      <version>${aws-java-sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-s3</artifactId>
+      <version>${aws-java-sdk.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>

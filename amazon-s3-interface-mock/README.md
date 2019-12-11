@@ -7,7 +7,7 @@ Mock Amazon S3 Client implementation and utilities to facilitate unit/integratio
 
 ### Amazon S3 Client Mock Usage
 
-The Mock Amazon S3 Client implementation can be unsed in a unit test that uses an S3MockRule to obtain an AmazonS3 instance.
+The Mock Amazon S3 Client implementation can be used in a unit test that uses an S3MockRule to obtain an AmazonS3 instance.
 
 For example, in a unit test declare as follows:
 
