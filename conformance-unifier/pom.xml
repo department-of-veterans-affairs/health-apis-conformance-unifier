@@ -193,9 +193,8 @@
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>amazon-s3-interface</artifactId>
+      <artifactId>amazon-s3-interface-mock</artifactId>
       <version>${project.version}</version>
-      <classifier>junit</classifier>
       <scope>test</scope>
     </dependency>
   </dependencies>

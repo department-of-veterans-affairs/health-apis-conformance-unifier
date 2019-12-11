@@ -17,10 +17,10 @@ import org.apache.commons.io.IOUtils;
 public final class AmazonS3BucketUtilities {
 
   /**
-   * Obtain a string of a unified result from the mock Amazon S3. Note that only one result is
-   * expected per test as the object is deleted after reading.
+   * Obtain a string of a result from the mock Amazon S3. Note that only one result is expected per
+   * test as the object is deleted after reading.
    *
-   * @return String containing the unified result.
+   * @return String containing the result.
    */
   @SneakyThrows
   public static String getResultFromS3(final AmazonS3 s3Client, final String bucketName) {
@@ -29,9 +29,9 @@ public final class AmazonS3BucketUtilities {
     assertEquals(1, objects.size());
     final String objectKey = objects.get(0).getKey();
     S3Object obj = s3Client.getObject(bucketName, objectKey);
-    final String unifiedString = IOUtils.toString(obj.getObjectContent(), StandardCharsets.UTF_8);
+    final String resultString = IOUtils.toString(obj.getObjectContent(), StandardCharsets.UTF_8);
     obj.close();
     s3Client.deleteObject(bucketName, objectKey);
-    return unifiedString;
+    return resultString;
   }
 }

@@ -15,6 +15,7 @@
   <modules>
     <module>conformance-docker-awss3</module>
     <module>amazon-s3-interface</module>
+    <module>amazon-s3-interface-mock</module>
     <module>conformance-unifier</module>
   </modules>
   <build>
