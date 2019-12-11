@@ -32,15 +32,19 @@ public class AmazonS3ClientWriterService {
     // Write the object to AWS
     AmazonS3 s3Client = s3ClientService.s3Client();
 
-    if (!s3Client.doesBucketExistV2(bucketConfig.getBucket())) {
-      log.info(bucketConfig.getBucket() + " does not exist.  Creating it.");
-      s3Client.createBucket(bucketConfig.getBucket());
+    if (!s3Client.doesBucketExistV2(bucketConfig.getName())) {
+      if (bucketConfig.isCreate()) {
+        log.info("{} does not exist.  Creating it.", bucketConfig.getName());
+        s3Client.createBucket(bucketConfig.getName());
+      } else {
+        throw new RuntimeException(bucketConfig.getName() + " does not exist.");
+      }
     }
 
     final String unifiedResult =
         JacksonConfig.createMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
-    log.info("Storing unified result {} to AWS S3 {}.", key, bucketConfig.getBucket());
+    log.info("Storing unified result {} to AWS S3 {}.", key, bucketConfig.getName());
     // Upload a text string as a new object.
-    s3Client.putObject(bucketConfig.getBucket(), key, unifiedResult);
+    s3Client.putObject(bucketConfig.getName(), key, unifiedResult);
   }
 }

@@ -178,7 +178,7 @@ public class ApplicationDstu2UnifierIntegrationTest {
     // Obtain a unified DSTU2 Metadata object via the mocked Amazon S3.
     final Conformance s3UnifiedMetadata =
         mapper.readValue(
-            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getBucket()),
+            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getName()),
             Conformance.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
     // NOTE: the publication date is set to current time when bean created so override the expected
@@ -245,7 +245,7 @@ public class ApplicationDstu2UnifierIntegrationTest {
     // Obtain a unified DSTU2 WellKnown Smart Configuration object via the mocked Amazon S3.
     final WellKnown s3UnifiedSmart =
         mapper.readValue(
-            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getBucket()),
+            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getName()),
             WellKnown.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
     assertEquals(dstu2ExampleSmartUnifiedExpected, s3UnifiedSmart);
@@ -303,7 +303,7 @@ public class ApplicationDstu2UnifierIntegrationTest {
     // Obtain a unified DSTU2 WellKnown Smart Configuration object via the mocked Amazon S3.
     final WellKnown s3UnifiedSmart =
         mapper.readValue(
-            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getBucket()),
+            AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getName()),
             WellKnown.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
     assertEquals(dstu2ExampleSmartUnifiedExpected, s3UnifiedSmart);

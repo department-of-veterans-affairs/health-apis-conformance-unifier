@@ -7,16 +7,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
 @Configuration
-@ConfigurationProperties("result")
+@ConfigurationProperties("bucket")
 @Data
 public class AmazonS3BucketConfig implements InitializingBean {
 
   /** Required. */
-  private String bucket;
+  private String name;
+
+  /** Optional. */
+  private boolean create = false;
 
   @Override
   public void afterPropertiesSet() throws Exception {
     // Required properties check.
-    Assert.notNull(bucket, "AmazonS3BucketConfig bucket must not be null.");
+    Assert.notNull(name, "AmazonS3BucketConfig name must not be null.");
   }
 }

@@ -47,7 +47,7 @@ For example:
     docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
 
     # To specify a specific profile and property to the docker command.
-    docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa --result.bucket=qaresultbucket r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
+    docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa --bucket.name=qaresultbucket r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
     ```
 
 4. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
