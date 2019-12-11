@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
   <properties>
     <resource.version>2.0.22</resource.version>
-    <informational.version>1.0.7-SNAPSHOT</informational.version>
+    <informational.version>1.0.7</informational.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
     <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
     <docker.organization>vasdvp</docker.organization>
