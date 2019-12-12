@@ -69,3 +69,11 @@ For example:
     ```
     mvn -Plocaltest docker:stop
     ```
+
+## Usage
+
+The docker entrypoint allows optional trust of endpoints with self signed certificates.  To run, set the environment variable `K8S_LOAD_BALANCER` as follows to trust the host:
+
+```
+docker run -e K8S_LOAD_BALANCER=example.org ...
+```
