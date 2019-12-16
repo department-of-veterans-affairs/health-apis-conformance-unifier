@@ -2,7 +2,7 @@ package gov.va.api.health.conformance.unifier.awss3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.views.amazon.s3.AmazonS3ClientServiceInterface;
+import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceInterface;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;

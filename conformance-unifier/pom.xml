@@ -12,6 +12,7 @@
   <properties>
     <resource.version>2.0.24</resource.version>
     <informational.version>1.0.7</informational.version>
+    <aws-interfaces.version>1.0.0-SNAPSHOT</aws-interfaces.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
     <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
     <docker.organization>vasdvp</docker.organization>
@@ -118,8 +119,8 @@
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>amazon-s3-interface</artifactId>
-      <version>${project.version}</version>
+      <artifactId>health-apis-aws-interfaces-s3</artifactId>
+      <version>${aws-interfaces.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
@@ -193,8 +194,8 @@
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>amazon-s3-interface-mock</artifactId>
-      <version>${project.version}</version>
+      <artifactId>health-apis-aws-interfaces-s3-mock</artifactId>
+      <version>${aws-interfaces.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

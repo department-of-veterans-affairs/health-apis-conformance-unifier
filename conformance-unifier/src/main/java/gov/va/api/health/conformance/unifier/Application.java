@@ -1,10 +1,10 @@
 package gov.va.api.health.conformance.unifier;
 
+import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
 import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
 import gov.va.api.health.conformance.unifier.fhir.dstu2.Dstu2UnifierService;
 import gov.va.api.health.conformance.unifier.fhir.r4.R4UnifierService;
 import gov.va.api.health.conformance.unifier.fhir.stu3.Stu3UnifierService;
-import gov.va.views.amazon.s3.AmazonS3ClientServiceConfig;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
