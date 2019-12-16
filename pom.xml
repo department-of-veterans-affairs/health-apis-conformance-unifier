@@ -17,6 +17,7 @@
     <module>amazon-s3-interface</module>
     <module>amazon-s3-interface-mock</module>
     <module>conformance-unifier</module>
+    <module>unifier-tests</module>
   </modules>
   <build>
     <plugins>
