@@ -34,6 +34,20 @@ public class ApplicationInvalidArgumentsTest {
     unifierApplication.run(new DefaultApplicationArguments(args));
   }
 
+  /** Test invalid metadata arg. */
+  @Test(expected = IllegalArgumentException.class)
+  @SneakyThrows
+  public void invalidMetadataArgumentsTest() {
+    final String[] args =
+        new String[] {
+          "--" + Application.METADATA_ARG + "=blah=halb,hello",
+          ResourceTypeEnum.UNKNOWN.type(),
+          EndpointTypeEnum.METADATA.type(),
+          "http://www.fhir.com/metadata"
+        };
+    unifierApplication.run(new DefaultApplicationArguments(args));
+  }
+
   /** Test arguments to test wrong number of arguments. */
   @Test(expected = IllegalArgumentException.class)
   @SneakyThrows
