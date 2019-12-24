@@ -4,10 +4,10 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>4.0.3</version>
+    <version>4.0.4</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.0.5</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
