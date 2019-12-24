@@ -5,6 +5,7 @@ import gov.va.api.health.conformance.unifier.client.ConformanceClient;
 import gov.va.api.health.conformance.unifier.client.Query;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -23,33 +24,15 @@ public abstract class BaseUnifierService<T, U> {
   private final AmazonS3ClientWriterService s3ClientWriterService;
 
   /**
-   * Base name for metadata object name.
-   *
-   * @return Base name.
-   */
-  protected String baseMetadataName() {
-    return "capability";
-  }
-
-  /**
-   * Base name for wellknown object name.
-   *
-   * @return Base name.
-   */
-  protected String baseWellKnownName() {
-    return "wellknown";
-  }
-
-  /**
-   * Create a result s3 object name using the resource type and a base name associated with the
-   * resource type.
+   * Create a result s3 object name using the resource type and endpoint type.
    *
    * @param resourceTypeEnum Resource type.
-   * @param baseName Base name.
+   * @param endpointTypeEnum Endpoint type.
    * @return Object name.
    */
-  private String objectName(final ResourceTypeEnum resourceTypeEnum, final String baseName) {
-    return resourceTypeEnum.type() + "-" + baseName;
+  private String objectName(
+      final ResourceTypeEnum resourceTypeEnum, final EndpointTypeEnum endpointTypeEnum) {
+    return resourceTypeEnum.type() + "-" + endpointTypeEnum.type();
   }
 
   /**
@@ -71,20 +54,25 @@ public abstract class BaseUnifierService<T, U> {
   /**
    * Unify the urlList of endpoint type.
    *
-   * @param endpointType Type of endpoint.
+   * @param resourceTypeEnum Type of resource.
+   * @param endpointType String representing requested type of endpoint.
    * @param urlList List of URL to unify.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
    */
   @SneakyThrows
   public void unify(
       final ResourceTypeEnum resourceTypeEnum,
       final String endpointType,
-      final List<String> urlList) {
-    switch (EndpointTypeEnum.fromType(endpointType)) {
+      final List<String> urlList,
+      Map<String, String> metadataMap) {
+    final EndpointTypeEnum endpointTypeEnum = EndpointTypeEnum.fromType(endpointType);
+    final String objectName = objectName(resourceTypeEnum, endpointTypeEnum);
+    switch (endpointTypeEnum) {
       case METADATA:
-        unifyMetadata(objectName(resourceTypeEnum, baseMetadataName()), urlList);
+        unifyMetadata(objectName, urlList, metadataMap);
         break;
       case SMART_CONFIGURATION:
-        unifyWellKnown(objectName(resourceTypeEnum, baseWellKnownName()), urlList);
+        unifyWellKnown(objectName, urlList, metadataMap);
         break;
       default:
         throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
@@ -94,26 +82,34 @@ public abstract class BaseUnifierService<T, U> {
   /**
    * Unify metadata.
    *
+   * @param objectName Name of S3 object.
    * @param urlList Urls.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
    */
-  private void unifyMetadata(final String objectName, final List<String> urlList) {
+  private void unifyMetadata(
+      final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<T> metadataList = new ArrayList<>();
     for (String url : urlList) {
       metadataList.add(client.search(queryMetadata(url)));
     }
-    s3ClientWriterService.writeToBucket(objectName, metadataTransformer.apply(metadataList));
+    s3ClientWriterService.writeToBucket(
+        objectName, metadataMap, metadataTransformer.apply(metadataList));
   }
 
   /**
    * Unify wellknown.
    *
+   * @param objectName Name of S3 object.
    * @param urlList Urls.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
    */
-  private void unifyWellKnown(final String objectName, final List<String> urlList) {
+  private void unifyWellKnown(
+      final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<U> wellKnownList = new ArrayList<>();
     for (String url : urlList) {
       wellKnownList.add(client.search(queryWellKnown(url)));
     }
-    s3ClientWriterService.writeToBucket(objectName, wellKnownTransformer.apply(wellKnownList));
+    s3ClientWriterService.writeToBucket(
+        objectName, metadataMap, wellKnownTransformer.apply(wellKnownList));
   }
 }

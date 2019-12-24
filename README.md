@@ -48,6 +48,9 @@ For example:
 
     # To specify a specific profile and property to the docker command.
     docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa --bucket.name=qaresultbucket r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
+
+    # The `--metadata` switch can be added one or more times to the parameter list containing a list of comma delimited `key=value` to associate with the generated S3 object.
+    docker run --network="host" vasdvp/health-apis-conformance-unifier --metadata=uc-app-version=1.0.0,claims-app-version=2.0.0 dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
     ```
 
 4. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
@@ -63,6 +66,9 @@ For example:
 
    # Copy the specified object to stdout (example showing r4-capability):
    aws s3 --endpoint-url http://localhost:9090 cp s3://testbucket/r4-capability -
+
+   # See the metadata for the specified object to stdout (example showing dstu-smart-configuration):
+   aws s3api get-object --bucket testbucket --endpoint-url http://localhost:9090 --key dstu2-smart-configuration /dev/null
    ``` 
 
 5. To Stop the docker:

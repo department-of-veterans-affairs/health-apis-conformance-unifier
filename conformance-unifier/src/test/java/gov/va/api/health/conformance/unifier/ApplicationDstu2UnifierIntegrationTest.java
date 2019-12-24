@@ -143,7 +143,8 @@ public class ApplicationDstu2UnifierIntegrationTest {
           ResourceTypeEnum.DSTU2.type(),
           EndpointTypeEnum.METADATA.type(),
           DSTU2_EXAMPLE_METADATA_ENDPOINT_1,
-          DSTU2_EXAMPLE_METADATA_ENDPOINT_2
+          DSTU2_EXAMPLE_METADATA_ENDPOINT_2,
+          "--" + Application.METADATA_ARG + "=uc-app-version=1.0.0,claims-app-version=2.0.0"
         };
     // Load DSTU2 Metadata examples and expected unified result from test resources.
     final Conformance dstu2ExampleMetadataUnifiedExpected =
