@@ -1,8 +1,13 @@
 package gov.va.api.health.conformance.unifier.awss3;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceInterface;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -16,6 +21,10 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AmazonS3ClientWriterService {
 
+  private static final String S3_OBJECT_CONTENT_TYPE = "plain/text";
+
+  private static final String S3_OBJECT_CUSTOM_METADATA_PREFIX = "x-amz-meta-";
+
   private final AmazonS3BucketConfig bucketConfig;
 
   @Setter private AmazonS3ClientServiceInterface s3ClientService;
@@ -24,10 +33,12 @@ public class AmazonS3ClientWriterService {
    * Write object to the Amazon S3 Bucket. Any exceptions with the interface will ripple up.
    *
    * @param key Name of object in bucket.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
    * @param object Object to write.
    */
   @SneakyThrows
-  public void writeToBucket(final String key, final Object object) {
+  public void writeToBucket(
+      final String key, final Map<String, String> metadataMap, final Object object) {
 
     // Write the object to AWS
     AmazonS3 s3Client = s3ClientService.s3Client();
@@ -44,7 +55,18 @@ public class AmazonS3ClientWriterService {
     final String unifiedResult =
         JacksonConfig.createMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
     log.info("Storing unified result {} to AWS S3 {}.", key, bucketConfig.getName());
-    // Upload a text string as a new object.
-    s3Client.putObject(bucketConfig.getName(), key, unifiedResult);
+
+    // Upload a text string as a new object as input stream with metadata.
+    ObjectMetadata metadata = new ObjectMetadata();
+    final byte[] contentAsBytes = unifiedResult.getBytes(StandardCharsets.UTF_8);
+    metadata.setContentLength(contentAsBytes.length);
+    metadata.setContentType(S3_OBJECT_CONTENT_TYPE);
+    for (Map.Entry<String, String> entry : metadataMap.entrySet()) {
+      metadata.addUserMetadata(S3_OBJECT_CUSTOM_METADATA_PREFIX + entry.getKey(), entry.getValue());
+    }
+    try (ByteArrayInputStream contentsAsStream = new ByteArrayInputStream(contentAsBytes)) {
+      s3Client.putObject(
+          new PutObjectRequest(bucketConfig.getName(), key, contentsAsStream, metadata));
+    }
   }
 }

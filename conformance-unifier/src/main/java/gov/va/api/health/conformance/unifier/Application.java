@@ -1,11 +1,9 @@
 package gov.va.api.health.conformance.unifier;
 
 import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
-import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
-import gov.va.api.health.conformance.unifier.fhir.dstu2.Dstu2UnifierService;
-import gov.va.api.health.conformance.unifier.fhir.r4.R4UnifierService;
-import gov.va.api.health.conformance.unifier.fhir.stu3.Stu3UnifierService;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -20,14 +18,11 @@ import org.springframework.context.annotation.Import;
 @Slf4j
 public class Application implements ApplicationRunner {
 
-  /** DSTU2 unifier service. */
-  @Autowired Dstu2UnifierService dstu2UnifierService;
+  /** Optional argument to associate metadata with the generated S3 object. */
+  public static final String METADATA_ARG = "metadata";
 
-  /** STU3 unifier service. */
-  @Autowired Stu3UnifierService stu3UnifierService;
-
-  /** R4 unifier service. */
-  @Autowired R4UnifierService r4UnifierService;
+  /** Unifier service. */
+  @Autowired private UnifierService unifierService;
 
   /**
    * Main.
@@ -42,28 +37,37 @@ public class Application implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
+    // Check count of required non option args.
     List<String> argList = args.getNonOptionArgs();
     if (argList.size() < ArgEnum.values().length) {
       throw new IllegalArgumentException(
           "Invalid number of arguments.  Expected minimum count " + ArgEnum.values().length + ".");
     }
-    // Call appropriate unifier based on the resource type argument.
-    final String resourceType = argList.get(ArgEnum.RESOURCE.ordinal());
-    final String endpointType = argList.get(ArgEnum.ENDPOINT.ordinal());
-    final List<String> urlList = argList.subList(ArgEnum.URL.ordinal(), argList.size());
-    switch (ResourceTypeEnum.fromType(resourceType)) {
-      case R4:
-        r4UnifierService.unify(ResourceTypeEnum.R4, endpointType, urlList);
-        break;
-      case DSTU2:
-        dstu2UnifierService.unify(ResourceTypeEnum.DSTU2, endpointType, urlList);
-        break;
-      case STU3:
-        stu3UnifierService.unify(ResourceTypeEnum.STU3, endpointType, urlList);
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported resource type: " + resourceType);
+
+    // Process option metadata arg.
+    // Arg may contain one or more key=value separated by comma.
+    final List<String> metadataValueList = args.getOptionValues(METADATA_ARG);
+    Map<String, String> metadataMap = new HashMap<>();
+    if (metadataValueList != null) {
+      try {
+        for (String metadataKeyValueString : metadataValueList) {
+          final String[] metadataKeyValueArray = metadataKeyValueString.split("\\s*,\\s*");
+          for (String keyValueString : metadataKeyValueArray) {
+            final String[] keyValuePair = keyValueString.split("=", 2);
+            metadataMap.put(keyValuePair[0], keyValuePair[1]);
+          }
+        }
+      } catch (Exception e) {
+        throw new IllegalArgumentException("Invalid metadata argument: " + e.getMessage());
+      }
     }
+
+    /** Call unifier service. */
+    unifierService.unify(
+        argList.get(ArgEnum.RESOURCE.ordinal()),
+        argList.get(ArgEnum.ENDPOINT.ordinal()),
+        argList.subList(ArgEnum.URL.ordinal(), argList.size()),
+        metadataMap);
   }
 
   /** Expected argument order. */
