@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
-import gov.va.views.amazon.s3.AmazonS3ClientServiceInterface;
+import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceInterface;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;

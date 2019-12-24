@@ -1,6 +1,6 @@
 package gov.va.api.health.conformance.unifier;
 
-import gov.va.views.amazon.s3.AmazonS3ClientServiceConfig;
+import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
