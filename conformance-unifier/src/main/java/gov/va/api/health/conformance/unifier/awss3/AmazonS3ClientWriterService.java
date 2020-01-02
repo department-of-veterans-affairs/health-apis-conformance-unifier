@@ -23,8 +23,6 @@ public class AmazonS3ClientWriterService {
 
   private static final String S3_OBJECT_CONTENT_TYPE = "plain/text";
 
-  private static final String S3_OBJECT_CUSTOM_METADATA_PREFIX = "x-amz-meta-";
-
   private final AmazonS3BucketConfig bucketConfig;
 
   @Setter private AmazonS3ClientServiceInterface s3ClientService;
@@ -62,7 +60,7 @@ public class AmazonS3ClientWriterService {
     metadata.setContentLength(contentAsBytes.length);
     metadata.setContentType(S3_OBJECT_CONTENT_TYPE);
     for (Map.Entry<String, String> entry : metadataMap.entrySet()) {
-      metadata.addUserMetadata(S3_OBJECT_CUSTOM_METADATA_PREFIX + entry.getKey(), entry.getValue());
+      metadata.addUserMetadata(entry.getKey(), entry.getValue());
     }
     try (ByteArrayInputStream contentsAsStream = new ByteArrayInputStream(contentAsBytes)) {
       s3Client.putObject(
