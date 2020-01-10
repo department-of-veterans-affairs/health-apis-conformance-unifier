@@ -2,7 +2,7 @@
 
 ENDPOINT_DOMAIN_NAME="$K8S_LOAD_BALANCER"
 ENVIRONMENT="$K8S_ENVIRONMENT"
-PATHS=(/r4/metadata, /r4/.smart-configuration/well-known, /dstu2/metadata, /dstu2/.smart-configuration/well-known)
+PATHS=(fhir/v0/r4/metadata, fhir/v0/r4/.smart-configuration/well-known, fhir/v0/dstu2/metadata, fhir/v0/argonaut/data-query/metadata, fhir/v0/dstu2/.smart-configuration/well-known, fhir/v0/argonaut/data-query/.smart-configuration/well-known)
 SUCCESS=0
 FAILURE=0
 
