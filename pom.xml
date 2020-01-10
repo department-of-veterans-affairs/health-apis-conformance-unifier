@@ -15,6 +15,7 @@
   <modules>
     <module>conformance-docker-awss3</module>
     <module>conformance-unifier</module>
+    <module>unifier-tests</module>
   </modules>
   <build>
     <plugins>
