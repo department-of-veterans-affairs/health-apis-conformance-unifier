@@ -8,6 +8,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import com.adobe.testing.s3mock.junit4.S3MockRule;
 import com.amazonaws.services.s3.AmazonS3;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import gov.va.api.health.aws.interfaces.s3.junit.AmazonS3BucketUtilities;
+import gov.va.api.health.aws.interfaces.s3.junit.AmazonS3ClientServiceMock;
 import gov.va.api.health.conformance.unifier.awss3.AmazonS3BucketConfig;
 import gov.va.api.health.conformance.unifier.awss3.AmazonS3ClientWriterService;
 import gov.va.api.health.conformance.unifier.exception.DuplicateCapabilityResourceException;
@@ -16,8 +18,6 @@ import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
 import gov.va.api.health.dstu2.api.information.WellKnown;
 import gov.va.api.health.dstu2.api.resources.Conformance;
 import gov.va.api.health.informational.dstu2.conformance.ConformanceStatementProperties;
-import gov.va.views.amazon.s3.junit.AmazonS3BucketUtilities;
-import gov.va.views.amazon.s3.junit.AmazonS3ClientServiceMock;
 import java.net.URI;
 import java.nio.file.Paths;
 import lombok.SneakyThrows;
@@ -143,7 +143,8 @@ public class ApplicationDstu2UnifierIntegrationTest {
           ResourceTypeEnum.DSTU2.type(),
           EndpointTypeEnum.METADATA.type(),
           DSTU2_EXAMPLE_METADATA_ENDPOINT_1,
-          DSTU2_EXAMPLE_METADATA_ENDPOINT_2
+          DSTU2_EXAMPLE_METADATA_ENDPOINT_2,
+          "--" + Application.METADATA_ARG + "=uc-app-version=1.0.0,claims-app-version=2.0.0"
         };
     // Load DSTU2 Metadata examples and expected unified result from test resources.
     final Conformance dstu2ExampleMetadataUnifiedExpected =
