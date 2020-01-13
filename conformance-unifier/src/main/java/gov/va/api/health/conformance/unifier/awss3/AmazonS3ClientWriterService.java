@@ -50,8 +50,7 @@ public class AmazonS3ClientWriterService {
       }
     }
 
-    final String unifiedResult =
-        JacksonConfig.createMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+    final String unifiedResult = JacksonConfig.createMapper().writeValueAsString(object);
     log.info("Storing unified result {} to AWS S3 {}.", key, bucketConfig.getName());
 
     // Upload a text string as a new object as input stream with metadata.
