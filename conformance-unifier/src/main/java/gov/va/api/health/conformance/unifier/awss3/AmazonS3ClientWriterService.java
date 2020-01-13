@@ -21,8 +21,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AmazonS3ClientWriterService {
 
-  private static final String S3_OBJECT_CONTENT_TYPE = "plain/text";
-
   private final AmazonS3BucketConfig bucketConfig;
 
   @Setter private AmazonS3ClientServiceInterface s3ClientService;
@@ -36,7 +34,10 @@ public class AmazonS3ClientWriterService {
    */
   @SneakyThrows
   public void writeToBucket(
-      final String key, final Map<String, String> metadataMap, final Object object) {
+      final String key,
+      final Map<String, String> metadataMap,
+      final Object object,
+      final String contentType) {
 
     // Write the object to AWS
     AmazonS3 s3Client = s3ClientService.s3Client();
@@ -57,7 +58,7 @@ public class AmazonS3ClientWriterService {
     ObjectMetadata metadata = new ObjectMetadata();
     final byte[] contentAsBytes = unifiedResult.getBytes(StandardCharsets.UTF_8);
     metadata.setContentLength(contentAsBytes.length);
-    metadata.setContentType(S3_OBJECT_CONTENT_TYPE);
+    metadata.setContentType(contentType);
     for (Map.Entry<String, String> entry : metadataMap.entrySet()) {
       metadata.addUserMetadata(entry.getKey(), entry.getValue());
     }
