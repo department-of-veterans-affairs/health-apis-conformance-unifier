@@ -93,7 +93,7 @@ public abstract class BaseUnifierService<T, U> {
       metadataList.add(client.search(queryMetadata(url)));
     }
     s3ClientWriterService.writeToBucket(
-        objectName, metadataMap, metadataTransformer.apply(metadataList));
+        objectName, metadataMap, metadataTransformer.apply(metadataList), "application/fhir+json");
   }
 
   /**
@@ -110,6 +110,6 @@ public abstract class BaseUnifierService<T, U> {
       wellKnownList.add(client.search(queryWellKnown(url)));
     }
     s3ClientWriterService.writeToBucket(
-        objectName, metadataMap, wellKnownTransformer.apply(wellKnownList));
+        objectName, metadataMap, wellKnownTransformer.apply(wellKnownList), "application/json");
   }
 }
