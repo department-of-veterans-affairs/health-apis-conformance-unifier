@@ -1,10 +1,13 @@
 # health-apis-conformance-unifier
 Conformance application to present a unified view of dstu2, stu3, and r4 metadata and well-known smart-configuration, despite different resources being serviced by different applications.
 
+###### Diagram
+![unifier-diagram](unifier-diagram.png)
+
 ## Local Developer Testing
 
-This application interfaces with any metadata or wellknown endpoints specified on command line.  
-The application also stores unified reports to Amazon S3.   
+This application interfaces with any metadata or wellknown endpoints specified on command line.
+The application also stores unified reports to Amazon S3.
 To facilitate development testing, Docker can be used to emulate the Amazon S3 interface.
 
 The dockers provided to facilitate testing include:
@@ -29,11 +32,11 @@ For example:
     ```
     # 1. Maven Spring Boot Run Examples:
     mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,metadata,https://api.va.gov/services/fhir/v0/dstu2/metadata"
-    
+
     mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,smart-configuration,https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration"
-    
+
     mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,metadata,https://api.va.gov/services/fhir/v0/r4/metadata"
-    
+
     mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,smart-configuration,https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
 
     # 2. Local Docker Build and Run Examples:
@@ -69,7 +72,7 @@ For example:
 
    # See the metadata for the specified object to stdout (example showing dstu-smart-configuration):
    aws s3api get-object --bucket testbucket --endpoint-url http://localhost:9090 --key dstu2-smart-configuration /dev/null
-   ``` 
+   ```
 
 5. To Stop the docker:
     ```
