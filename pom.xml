@@ -12,11 +12,23 @@
   <properties>
     <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
   </properties>
-  <modules>
-    <module>conformance-docker-awss3</module>
-    <module>conformance-unifier</module>
-    <module>unifier-tests</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>localtest</id>
+      <modules>
+        <module>conformance-docker-awss3</module>
+        <module>conformance-unifier</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>default</id>
+      <modules>
+        <module>conformance-docker-awss3</module>
+        <module>conformance-unifier</module>
+        <module>unifier-tests</module>
+      </modules>
+    </profile>
+  </profiles>
   <build>
     <plugins>
       <!-- Include the docker maven plugin so that docker commands can be passed to all modules without causing build error. -->
