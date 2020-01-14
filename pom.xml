@@ -22,6 +22,9 @@
     </profile>
     <profile>
       <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <modules>
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
