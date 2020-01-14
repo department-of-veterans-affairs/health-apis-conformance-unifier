@@ -33,9 +33,9 @@ public class AmazonS3ClientWriterServiceTest {
 
   private final AmazonS3BucketConfig config = new AmazonS3BucketConfig();
 
-  @Captor ArgumentCaptor<PutObjectRequest> argument;
+  private final ObjectMapper mapper = new ObjectMapper();
 
-  private ObjectMapper mapper = new ObjectMapper();
+  @Captor private ArgumentCaptor<PutObjectRequest> argument;
 
   @Mock private AmazonS3ClientServiceInterface s3ClientService;
 
