@@ -7,7 +7,7 @@
     <version>4.0.5</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
-  <version>1.0.14-SNAPSHOT</version>
+  <version>1.0.15-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
@@ -22,6 +22,9 @@
     </profile>
     <profile>
       <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
       <modules>
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
