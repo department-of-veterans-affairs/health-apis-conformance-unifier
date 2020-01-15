@@ -7,16 +7,31 @@
     <version>4.0.5</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
-  <version>1.0.13-SNAPSHOT</version>
+  <version>1.0.16-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
   </properties>
-  <modules>
-    <module>conformance-docker-awss3</module>
-    <module>conformance-unifier</module>
-    <module>unifier-tests</module>
-  </modules>
+  <profiles>
+    <profile>
+      <id>localtest</id>
+      <modules>
+        <module>conformance-docker-awss3</module>
+        <module>conformance-unifier</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>conformance-docker-awss3</module>
+        <module>conformance-unifier</module>
+        <module>unifier-tests</module>
+      </modules>
+    </profile>
+  </profiles>
   <build>
     <plugins>
       <!-- Include the docker maven plugin so that docker commands can be passed to all modules without causing build error. -->
