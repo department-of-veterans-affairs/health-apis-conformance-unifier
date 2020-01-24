@@ -62,10 +62,10 @@ doCurl () {
     echo "$request_url - Fail"
   fi
 
-  echo "...http_code: $status_code"
-  echo "...content_type: $content_type"
-  echo "...contains newlines: $contains_newlines"
-  echo "...contains tabs: $contains_tabs"
+  echo "...http_code: $status_code (expecting 200)"
+  echo "...content_type: $content_type (expecting $expected_content_type)"
+  echo "...contains newlines: $contains_newlines (expecting 0)"
+  echo "...contains tabs: $contains_tabs (expecting 0)"
 
   rm $body
   rm $headers
