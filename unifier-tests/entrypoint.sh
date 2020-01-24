@@ -2,7 +2,14 @@
 
 ENDPOINT_DOMAIN_NAME="$K8S_LOAD_BALANCER"
 ENVIRONMENT="$K8S_ENVIRONMENT"
-PATHS=(/fhir/v0/r4/metadata /fhir/v0/r4/.well-known/smart-configuration /fhir/v0/dstu2/metadata /fhir/v0/dstu2/.well-known/smart-configuration /fhir/v0/argonaut/data-query/metadata /fhir/v0/argonaut/data-query/.well-known/smart-configuration)
+TARGETS=(
+  "/fhir/v0/r4/metadata                                           application/fhir+json" \
+  "/fhir/v0/r4/.well-known/smart-configuration                    application/json" \
+  "/fhir/v0/dstu2/metadata                                        application/fhir+json" \
+  "/fhir/v0/dstu2/.well-known/smart-configuration                 application/json" \
+  "/fhir/v0/argonaut/data-query/metadata                          application/fhir+json" \
+  "/fhir/v0/argonaut/data-query/.well-known/smart-configuration   application/json")
+
 SUCCESS=0
 FAILURE=0
 
@@ -23,18 +30,45 @@ EOF
 exit 1
 }
 
+#
+# curl and verify:
+# a) expected status code (200)
+# b) expected content-type
+# c) body contains no newlines
+# d) body contains no tabs
+#
 doCurl () {
-  REQUEST_URL="$ENDPOINT_DOMAIN_NAME$path"
-  status_code=$(curl -k --write-out %{http_code} --silent --output /dev/null "$REQUEST_URL")
+  local request_url=$1
+  local expected_content_type=$2
 
-  if [[ "$status_code" == $1 ]]
-  then
+  local body=$(mktemp)
+  local headers=$(mktemp)
+
+  curl --silent -D $headers --output $body "$request_url"
+
+  local status_code=$(awk '/^HTTP/ {print $2}' $headers)
+  local content_type=$(awk '/^Content-Type:/ {print $2}' $headers | tr -dc '[[:print:]]')
+  local contains_newlines=$(cat $body | wc -l)
+  local contains_tabs=$(grep -P '\t' $body | wc -l)
+
+  if [[ "$status_code" == "200" ]] &&
+     [[ "$content_type" == "$expected_content_type"* ]] &&
+     [[ $contains_newlines == 0 ]] &&
+     [[ $contains_tabs == 0 ]]; then
     SUCCESS=$((SUCCESS + 1))
-    echo "$REQUEST_URL: $status_code - Success"
+    echo "$request_url - Success"
   else
     FAILURE=$((FAILURE + 1))
-    echo "$REQUEST_URL: $status_code - Fail"
+    echo "$request_url - Fail"
   fi
+
+  echo "...http_code: $status_code"
+  echo "...content_type: $content_type"
+  echo "...contains newlines: $contains_newlines"
+  echo "...contains tabs: $contains_tabs"
+
+  rm $body
+  rm $headers
 }
 
 doSmokeTest () {
@@ -42,9 +76,9 @@ doSmokeTest () {
     ENDPOINT_DOMAIN_NAME="https://$ENDPOINT_DOMAIN_NAME"
   fi
 
-  for path in "${PATHS[@]}"
-  do
-    doCurl 200
+  for target in "${TARGETS[@]}"; do
+    local args=($target)
+    doCurl $ENDPOINT_DOMAIN_NAME${args[0]} ${args[1]}
   done
 
   TOTAL=$((SUCCESS + FAILURE))
