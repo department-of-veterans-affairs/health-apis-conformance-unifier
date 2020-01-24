@@ -44,7 +44,7 @@ doCurl () {
   local body=$(mktemp)
   local headers=$(mktemp)
 
-  curl --silent -D $headers --output $body -H "Accept: $expected_content_type" "$request_url"
+  curl --insecure --silent -D $headers --output $body -H "Accept: $expected_content_type" "$request_url"
 
   local status_code=$(awk '/^HTTP/ {print $2}' $headers)
   local content_type=$(awk '/^Content-Type:/ {print $2}' $headers | tr -dc '[[:print:]]')
