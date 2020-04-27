@@ -3,12 +3,12 @@
 ENDPOINT_DOMAIN_NAME="$K8S_LOAD_BALANCER"
 ENVIRONMENT="$K8S_ENVIRONMENT"
 TARGETS=(
-  "/fhir/v0/r4/metadata                                           application/fhir+json" \
-  "/fhir/v0/r4/.well-known/smart-configuration                    application/json" \
-  "/fhir/v0/dstu2/metadata                                        application/fhir+json" \
-  "/fhir/v0/dstu2/.well-known/smart-configuration                 application/json" \
-  "/fhir/v0/argonaut/data-query/metadata                          application/fhir+json" \
-  "/fhir/v0/argonaut/data-query/.well-known/smart-configuration   application/json")
+  "/unifier-test/fhir/v0/r4/metadata                                           application/fhir+json" \
+  "/unifier-test/fhir/v0/r4/.well-known/smart-configuration                    application/json" \
+  "/unifier-test/fhir/v0/dstu2/metadata                                        application/fhir+json" \
+  "/unifier-test/fhir/v0/dstu2/.well-known/smart-configuration                 application/json" \
+  "/unifier-test/fhir/v0/argonaut/data-query/metadata                          application/fhir+json" \
+  "/unifier-test/fhir/v0/argonaut/data-query/.well-known/smart-configuration   application/json")
 
 SUCCESS=0
 FAILURE=0
