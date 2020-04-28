@@ -6,11 +6,11 @@
     "publisher" : "Department of Veterans Affairs",
     "contact" : [
         {
-            "name" : "Drew Myklegard",
+            "name" : "API Support",
             "telecom" : [
                 {
                     "system" : "email",
-                    "value" : "david.myklegard@va.gov"
+                    "value" : "api@va.gov"
                 }
             ]
         }
