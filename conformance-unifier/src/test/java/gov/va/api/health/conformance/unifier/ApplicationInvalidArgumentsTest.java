@@ -14,9 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 /** Test various scenarios of running application with invalid arguments. */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = Application.class,
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = Application.class,
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class ApplicationInvalidArgumentsTest {
 
   @Autowired Application unifierApplication;

@@ -5,7 +5,7 @@ import gov.va.api.health.informational.r4.capability.CapabilityResourcesProperti
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.informational.r4.capability.CapabilityUtilities;
 import gov.va.api.health.informational.r4.capability.MetadataCapabilityStatementModeEnum;
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,41 +19,42 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class R4CapabilityTransformer
-    extends BaseMetadataTransformer<Capability, Capability.Rest, Capability.CapabilityResource> {
+    extends BaseMetadataTransformer<
+        CapabilityStatement, CapabilityStatement.Rest, CapabilityStatement.CapabilityResource> {
 
   private final CapabilityStatementProperties capabilityStatementProperties;
 
   @Override
-  protected Capability initialInstance() {
-    return CapabilityUtilities.initializeCapabilityBuilder(
+  protected CapabilityStatement initialInstance() {
+    return CapabilityUtilities.initializeCapabilityStatementBuilder(
         MetadataCapabilityStatementModeEnum.FULL.getResourceType(),
         capabilityStatementProperties,
         new CapabilityResourcesProperties(Collections.emptyList()));
   }
 
   @Override
-  protected List<Capability.CapabilityResource> resource(Capability.Rest rest) {
+  protected List<CapabilityStatement.CapabilityResource> resource(CapabilityStatement.Rest rest) {
     return rest.resource();
   }
 
   @Override
-  protected String resourceType(Capability.CapabilityResource resource) {
+  protected String resourceType(CapabilityStatement.CapabilityResource resource) {
     return resource.type();
   }
 
   @Override
-  protected List<Capability.Rest> rest(Capability capability) {
+  protected List<CapabilityStatement.Rest> rest(CapabilityStatement capability) {
     return capability.rest();
   }
 
   @Override
   protected void setResources(
-      Capability.Rest rest, List<Capability.CapabilityResource> resourceList) {
+      CapabilityStatement.Rest rest, List<CapabilityStatement.CapabilityResource> resourceList) {
     rest.resource(resourceList);
   }
 
   @Override
-  protected boolean typeEquals(Capability.CapabilityResource resource, final String type) {
+  protected boolean typeEquals(CapabilityStatement.CapabilityResource resource, final String type) {
     return resource.type().equalsIgnoreCase(type);
   }
 }

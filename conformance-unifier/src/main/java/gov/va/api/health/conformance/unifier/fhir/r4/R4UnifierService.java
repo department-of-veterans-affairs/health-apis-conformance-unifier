@@ -5,13 +5,13 @@ import gov.va.api.health.conformance.unifier.client.ConformanceClient;
 import gov.va.api.health.conformance.unifier.client.Query;
 import gov.va.api.health.conformance.unifier.fhir.BaseUnifierService;
 import gov.va.api.health.r4.api.information.WellKnown;
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Service to facilitate unification of R4 Metadata and WellKnown. */
 @Service
-public class R4UnifierService extends BaseUnifierService<Capability, WellKnown> {
+public class R4UnifierService extends BaseUnifierService<CapabilityStatement, WellKnown> {
 
   /**
    * Construct a unifier service for R4 type resources.
@@ -31,8 +31,8 @@ public class R4UnifierService extends BaseUnifierService<Capability, WellKnown> 
   }
 
   @Override
-  protected Query<Capability> queryMetadata(final String url) {
-    return Query.forType(Capability.class).url(url).build();
+  protected Query<CapabilityStatement> queryMetadata(final String url) {
+    return Query.forType(CapabilityStatement.class).url(url).build();
   }
 
   @Override

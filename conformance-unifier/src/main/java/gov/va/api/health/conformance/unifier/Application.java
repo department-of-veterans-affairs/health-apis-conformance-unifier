@@ -62,7 +62,7 @@ public class Application implements ApplicationRunner {
       }
     }
 
-    /** Call unifier service. */
+    // Call unifier service.
     unifierService.unify(
         argList.get(ArgEnum.RESOURCE.ordinal()),
         argList.get(ArgEnum.ENDPOINT.ordinal()),
