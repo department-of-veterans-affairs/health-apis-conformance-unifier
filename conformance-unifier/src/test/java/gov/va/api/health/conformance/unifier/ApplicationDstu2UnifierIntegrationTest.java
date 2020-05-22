@@ -45,9 +45,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = Application.class,
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = Application.class,
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class ApplicationDstu2UnifierIntegrationTest {
 
   /** Class rule for Mock Amazon S3. */

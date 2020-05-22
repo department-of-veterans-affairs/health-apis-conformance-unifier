@@ -17,7 +17,7 @@ import gov.va.api.health.conformance.unifier.fhir.EndpointTypeEnum;
 import gov.va.api.health.conformance.unifier.fhir.ResourceTypeEnum;
 import gov.va.api.health.informational.r4.capability.CapabilityStatementProperties;
 import gov.va.api.health.r4.api.information.WellKnown;
-import gov.va.api.health.r4.api.resources.Capability;
+import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.net.URI;
 import java.nio.file.Paths;
 import lombok.SneakyThrows;
@@ -45,9 +45,8 @@ import org.springframework.web.client.RestTemplate;
  */
 @RunWith(SpringRunner.class)
 @ContextConfiguration(
-  classes = Application.class,
-  initializers = ConfigFileApplicationContextInitializer.class
-)
+    classes = Application.class,
+    initializers = ConfigFileApplicationContextInitializer.class)
 public class ApplicationR4UnifierIntegrationTest {
 
   /** Class rule for Mock Amazon S3. */
@@ -108,14 +107,14 @@ public class ApplicationR4UnifierIntegrationTest {
           R4_EXAMPLE_METADATA_ENDPOINT_1
         };
     // Load R4 Metadata examples from test resources.
-    final Capability r4Example1Metadata =
+    final CapabilityStatement r4Example1Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_1.json").toFile(),
-            Capability.class);
-    final Capability r4Example2Metadata =
+            CapabilityStatement.class);
+    final CapabilityStatement r4Example2Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_2.json").toFile(),
-            Capability.class);
+            CapabilityStatement.class);
     // Configure mock server to respond with appropriate example per metadata endpoint.
     mockServer
         .expect(ExpectedCount.manyTimes(), requestTo(new URI(R4_EXAMPLE_METADATA_ENDPOINT_1)))
@@ -150,18 +149,18 @@ public class ApplicationR4UnifierIntegrationTest {
           R4_EXAMPLE_METADATA_ENDPOINT_2
         };
     // Load R4 Metadata examples and expected unified result from test resources.
-    final Capability r4ExampleMetadataUnifiedExpected =
+    final CapabilityStatement r4ExampleMetadataUnifiedExpected =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_unified.json").toFile(),
-            Capability.class);
-    final Capability r4Example1Metadata =
+            CapabilityStatement.class);
+    final CapabilityStatement r4Example1Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_1.json").toFile(),
-            Capability.class);
-    final Capability r4Example2Metadata =
+            CapabilityStatement.class);
+    final CapabilityStatement r4Example2Metadata =
         mapper.readValue(
             Paths.get("src", "test", "resources", "r4_example_metadata_2.json").toFile(),
-            Capability.class);
+            CapabilityStatement.class);
     // Configure mock server to respond with appropriate example per metadata endpoint.
     mockServer
         .expect(ExpectedCount.once(), requestTo(new URI(R4_EXAMPLE_METADATA_ENDPOINT_1)))
@@ -180,10 +179,10 @@ public class ApplicationR4UnifierIntegrationTest {
     // Run the unifier application using the R4 Metadata command line arguments.
     unifierApplication.run(new DefaultApplicationArguments(r4MetadataCommandLineArgs));
     // Obtain a unified R4 Metadata object via the mocked Amazon S3.
-    final Capability s3UnifiedMetadata =
+    final CapabilityStatement s3UnifiedMetadata =
         mapper.readValue(
             AmazonS3BucketUtilities.getResultFromS3(s3Client, amazonS3BucketConfig.getName()),
-            Capability.class);
+            CapabilityStatement.class);
     // Verify the result obtained from the mocked Amazon S3 matches the expected object.
     // NOTE: the publication date is set to current time when bean created so override the expected
     // publication date with the current time value.
