@@ -43,6 +43,14 @@
                             {
                                 "url" : "authorize",
                                 "valueUri" : "https://api.va.gov/oauth2/authorization"
+                            },
+                            {
+                                "url" : "manage",
+                                "valueUri" : "https://api.va.gov/oauth2/manage"
+                            },
+                            {
+                                "url" : "revoke",
+                                "valueUri" : "https://api.va.gov/oauth2/revoke"
                             }
                         ]
                     }
