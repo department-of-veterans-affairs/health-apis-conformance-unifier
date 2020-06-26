@@ -1,6 +1,8 @@
 {
     "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
     "tokenEndpoint" : "https://api.va.gov/services/fhir/v0/dstu2/token",
+    "managementEndpoint" : "https://api.va.gov/services/fhir/v0/dstu2/manage",
+    "revocationEndpoint" : "https://api.va.gov/services/fhir/v0/dstu2/revoke",
     "scopesSupported" : [
         "offline_access",
         "patient/AllergyIntolerance.read",

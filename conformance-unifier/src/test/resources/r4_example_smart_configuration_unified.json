@@ -1,6 +1,8 @@
 {
     "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
     "tokenEndpoint" : "https://api.va.gov/oauth2/token",
+    "managementEndpoint" : "https://api.va.gov/oauth2/manage",
+    "revocationEndpoint" : "https://api.va.gov/oauth2/revoke",
     "scopesSupported" : [
         "patient/Claim.read",
         "patient/Coverage.read",
