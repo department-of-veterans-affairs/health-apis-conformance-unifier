@@ -4,7 +4,6 @@ import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({AmazonS3ClientServiceConfig.class})
-@Slf4j
 public class Application implements ApplicationRunner {
 
   /** Optional argument to associate metadata with the generated S3 object. */
