@@ -7,14 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 
-@RequiredArgsConstructor
-@Slf4j
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@SuppressWarnings("PublicConstructorForAbstractClass")
 public abstract class BaseUnifierService<T, U> {
-
   private final ConformanceClient client;
 
   private final Function<List<T>, T> metadataTransformer;
@@ -89,9 +88,10 @@ public abstract class BaseUnifierService<T, U> {
   private void unifyMetadata(
       final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<T> metadataList = new ArrayList<>();
-    for (String url : urlList) {
-      metadataList.add(client.search(queryMetadata(url)));
-    }
+    urlList.forEach(
+        url -> {
+          metadataList.add(client.search(queryMetadata(url)));
+        });
     s3ClientWriterService.writeToBucket(
         objectName, metadataMap, metadataTransformer.apply(metadataList), "application/fhir+json");
   }
@@ -106,9 +106,10 @@ public abstract class BaseUnifierService<T, U> {
   private void unifyWellKnown(
       final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<U> wellKnownList = new ArrayList<>();
-    for (String url : urlList) {
-      wellKnownList.add(client.search(queryWellKnown(url)));
-    }
+    urlList.forEach(
+        url -> {
+          wellKnownList.add(client.search(queryWellKnown(url)));
+        });
     s3ClientWriterService.writeToBucket(
         objectName, metadataMap, wellKnownTransformer.apply(wellKnownList), "application/json");
   }
