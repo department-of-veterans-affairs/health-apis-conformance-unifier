@@ -67,15 +67,11 @@ public abstract class BaseUnifierService<T, U> {
     final EndpointTypeEnum endpointTypeEnum = EndpointTypeEnum.fromType(endpointType);
     final String objectName = objectName(resourceTypeEnum, endpointTypeEnum);
     switch (endpointTypeEnum) {
-      case METADATA:
-        unifyMetadata(objectName, urlList, metadataMap);
-        break;
-      case SMART_CONFIGURATION:
-        unifyWellKnown(objectName, urlList, metadataMap);
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
+      case METADATA -> unifyMetadata(objectName, urlList, metadataMap);
+      case SMART_CONFIGURATION -> unifyWellKnown(objectName, urlList, metadataMap);
+      default -> throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
     }
+
   }
 
   /**
@@ -88,9 +84,10 @@ public abstract class BaseUnifierService<T, U> {
   private void unifyMetadata(
       final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<T> metadataList = new ArrayList<>();
-    for (String url : urlList) {
-      metadataList.add(client.search(queryMetadata(url)));
-    }
+    urlList.forEach(
+        url -> {
+          metadataList.add(client.search(queryMetadata(url)));
+        });
     s3ClientWriterService.writeToBucket(
         objectName, metadataMap, metadataTransformer.apply(metadataList), "application/fhir+json");
   }
@@ -105,9 +102,10 @@ public abstract class BaseUnifierService<T, U> {
   private void unifyWellKnown(
       final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<U> wellKnownList = new ArrayList<>();
-    for (String url : urlList) {
-      wellKnownList.add(client.search(queryWellKnown(url)));
-    }
+    urlList.forEach(
+        url -> {
+          wellKnownList.add(client.search(queryWellKnown(url)));
+        });
     s3ClientWriterService.writeToBucket(
         objectName, metadataMap, wellKnownTransformer.apply(wellKnownList), "application/json");
   }

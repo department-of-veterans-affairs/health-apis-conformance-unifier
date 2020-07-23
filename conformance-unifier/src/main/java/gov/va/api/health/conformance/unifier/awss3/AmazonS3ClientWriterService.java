@@ -26,11 +26,12 @@ public class AmazonS3ClientWriterService {
   @Setter private AmazonS3ClientServiceInterface s3ClientService;
 
   /**
-   * Write object to the Amazon S3 Bucket. Any exceptions with the interface will ripple up.
+   * Write object to the Amazon S3 Bucket.Any exceptions with the interface will ripple up.
    *
    * @param key Name of object in bucket.
    * @param metadataMap Map of metadata to associate with the generated S3 object.
    * @param object Object to write.
+   * @param contentType The contest type for metadata
    */
   @SneakyThrows
   public void writeToBucket(
@@ -59,9 +60,12 @@ public class AmazonS3ClientWriterService {
     final byte[] contentAsBytes = unifiedResult.getBytes(StandardCharsets.UTF_8);
     metadata.setContentLength(contentAsBytes.length);
     metadata.setContentType(contentType);
-    for (Map.Entry<String, String> entry : metadataMap.entrySet()) {
-      metadata.addUserMetadata(entry.getKey(), entry.getValue());
-    }
+    metadataMap
+        .entrySet()
+        .forEach(
+            entry -> {
+              metadata.addUserMetadata(entry.getKey(), entry.getValue());
+            });
     try (ByteArrayInputStream contentsAsStream = new ByteArrayInputStream(contentAsBytes)) {
       s3Client.putObject(
           new PutObjectRequest(bucketConfig.getName(), key, contentsAsStream, metadata));
