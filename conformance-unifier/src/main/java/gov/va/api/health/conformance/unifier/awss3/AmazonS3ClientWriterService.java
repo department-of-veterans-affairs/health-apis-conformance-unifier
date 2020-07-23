@@ -60,12 +60,7 @@ public class AmazonS3ClientWriterService {
     final byte[] contentAsBytes = unifiedResult.getBytes(StandardCharsets.UTF_8);
     metadata.setContentLength(contentAsBytes.length);
     metadata.setContentType(contentType);
-    metadataMap
-        .entrySet()
-        .forEach(
-            entry -> {
-              metadata.addUserMetadata(entry.getKey(), entry.getValue());
-            });
+    metadataMap.forEach((k, v) -> metadata.addUserMetadata(k, v));
     try (ByteArrayInputStream contentsAsStream = new ByteArrayInputStream(contentAsBytes)) {
       s3Client.putObject(
           new PutObjectRequest(bucketConfig.getName(), key, contentsAsStream, metadata));
