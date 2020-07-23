@@ -31,7 +31,7 @@ public class AmazonS3ClientWriterService {
    * @param key Name of object in bucket.
    * @param metadataMap Map of metadata to associate with the generated S3 object.
    * @param object Object to write.
-   * @param contentType The contest type for metadata
+   * @param contentType The content type for metadata
    */
   @SneakyThrows
   public void writeToBucket(
