@@ -53,12 +53,15 @@ public class Application implements ApplicationRunner {
     Map<String, String> metadataMap = new HashMap<>();
     if (metadataValueList != null) {
       try {
-          metadataValueList.stream().map(metadataKeyValueString -> metadataKeyValueString.split("\\s*,\\s*")).forEachOrdered(metadataKeyValueArray -> {
-              for (String keyValueString : metadataKeyValueArray) {
-                  final String[] keyValuePair = keyValueString.split("=", 2);
-                  metadataMap.put(keyValuePair[0], keyValuePair[1]);
-              }
-          });
+        metadataValueList.stream()
+            .map(metadataKeyValueString -> metadataKeyValueString.split("\\s*,\\s*"))
+            .forEachOrdered(
+                metadataKeyValueArray -> {
+                  for (String keyValueString : metadataKeyValueArray) {
+                    final String[] keyValuePair = keyValueString.split("=", 2);
+                    metadataMap.put(keyValuePair[0], keyValuePair[1]);
+                  }
+                });
       } catch (Exception e) {
         throw new IllegalArgumentException("Invalid metadata argument: " + e.getMessage());
       }
