@@ -4,6 +4,7 @@ import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({AmazonS3ClientServiceConfig.class})
+@CommonsLog
 public class Application implements ApplicationRunner {
 
   /** Optional argument to associate metadata with the generated S3 object. */
@@ -38,6 +40,8 @@ public class Application implements ApplicationRunner {
     // Check count of required non option args.
     List<String> argList = args.getNonOptionArgs();
     if (argList.size() < ArgEnum.values().length) {
+      log.error("argList:" + argList);
+      argList.forEach(arg -> log.error("arg:" + arg));
       throw new IllegalArgumentException(
           "Invalid number of arguments.  Expected minimum count " + ArgEnum.values().length + ".");
     }
