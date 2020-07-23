@@ -10,9 +10,8 @@ import java.util.function.Function;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 
-@RequiredArgsConstructor(onConstructor = @__({@Autowired}), access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseUnifierService<T, U> {
 
   private final ConformanceClient client;

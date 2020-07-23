@@ -4,6 +4,7 @@ import gov.va.api.health.conformance.unifier.exception.DuplicateCapabilityResour
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
  * transformer provides the types T:Capability, R:Rest, and C:Resource.
  */
 @Service
-@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}), access = AccessLevel.PROTECTED)
 public abstract class BaseMetadataTransformer<T, R, C> implements Function<List<T>, T> {
 
   @Override
