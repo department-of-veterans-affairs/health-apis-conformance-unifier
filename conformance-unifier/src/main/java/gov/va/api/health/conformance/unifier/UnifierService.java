@@ -42,10 +42,17 @@ public class UnifierService {
       Map<String, String> metadataMap) {
     // Call appropriate unifier based on the resource type.
     switch (ResourceTypeEnum.fromType(resourceType)) {
-      case R4 -> r4UnifierService.unify(ResourceTypeEnum.R4, endpointType, urlList, metadataMap);
-      case DSTU2 -> dstu2UnifierService.unify(ResourceTypeEnum.DSTU2, endpointType, urlList, metadataMap);
-      case STU3 -> stu3UnifierService.unify(ResourceTypeEnum.STU3, endpointType, urlList, metadataMap);
-      default -> throw new IllegalArgumentException("Unsupported resource type: " + resourceType);
+      case R4:
+        r4UnifierService.unify(ResourceTypeEnum.R4, endpointType, urlList, metadataMap);
+        break;
+      case DSTU2:
+        dstu2UnifierService.unify(ResourceTypeEnum.DSTU2, endpointType, urlList, metadataMap);
+        break;
+      case STU3:
+        stu3UnifierService.unify(ResourceTypeEnum.STU3, endpointType, urlList, metadataMap);
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported resource type: " + resourceType);
     }
   }
 }

@@ -42,15 +42,21 @@ public abstract class BaseWellKnownTransformer<T> implements Function<List<T>, T
     List<String> combinedCapabilitiesList = new ArrayList<>();
     List<String> combinedResponseList = new ArrayList<>();
     List<String> combinedScopesList = new ArrayList<>();
-    wellKnownList.stream().map(w -> {
-        addCapabilities(w, combinedCapabilitiesList);
-          return w;
-      }).map(w -> {
-          addResponse(w, combinedResponseList);
-          return w;
-      }).forEachOrdered(w -> {
-          addScopes(w, combinedScopesList);
-      });
+    wellKnownList.stream()
+        .map(
+            w -> {
+              addCapabilities(w, combinedCapabilitiesList);
+              return w;
+            })
+        .map(
+            w -> {
+              addResponse(w, combinedResponseList);
+              return w;
+            })
+        .forEachOrdered(
+            w -> {
+              addScopes(w, combinedScopesList);
+            });
     // Make sure the lists are unique (contain no duplicates).
     setCapabilities(
         wellKnown, combinedCapabilitiesList.stream().distinct().collect(Collectors.toList()));

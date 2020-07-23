@@ -26,15 +26,17 @@ public abstract class BaseMetadataTransformer<T, R, C> implements Function<List<
           rest(c)
               .forEach(
                   r -> {
-                      resource(r).forEach(resource -> {
-                          // Check if resource already exists. If so this is an error and fail.
-                          final String type = resourceType(resource);
-                          if (combinedList.stream().anyMatch(o -> typeEquals(o, type))) {
-                              throw new DuplicateCapabilityResourceException(
-                                      "Found Metadata with duplicate resource type [" + type + "].");
-                          }
-                          combinedList.add(resource);
-              });
+                    resource(r)
+                        .forEach(
+                            resource -> {
+                              // Check if resource already exists. If so this is an error and fail.
+                              final String type = resourceType(resource);
+                              if (combinedList.stream().anyMatch(o -> typeEquals(o, type))) {
+                                throw new DuplicateCapabilityResourceException(
+                                    "Found Metadata with duplicate resource type [" + type + "].");
+                              }
+                              combinedList.add(resource);
+                            });
                   });
         });
     // Assume only one rest entry (the first and only in the list) to which we add all resources.

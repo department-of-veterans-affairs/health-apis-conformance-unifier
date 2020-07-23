@@ -67,11 +67,15 @@ public abstract class BaseUnifierService<T, U> {
     final EndpointTypeEnum endpointTypeEnum = EndpointTypeEnum.fromType(endpointType);
     final String objectName = objectName(resourceTypeEnum, endpointTypeEnum);
     switch (endpointTypeEnum) {
-      case METADATA -> unifyMetadata(objectName, urlList, metadataMap);
-      case SMART_CONFIGURATION -> unifyWellKnown(objectName, urlList, metadataMap);
-      default -> throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
+      case METADATA:
+        unifyMetadata(objectName, urlList, metadataMap);
+        break;
+      case SMART_CONFIGURATION:
+        unifyWellKnown(objectName, urlList, metadataMap);
+        break;
+      default:
+        throw new IllegalArgumentException("Unsupported endpoint type: " + endpointType);
     }
-
   }
 
   /**
