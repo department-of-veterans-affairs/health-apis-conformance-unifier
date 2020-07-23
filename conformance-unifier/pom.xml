@@ -116,7 +116,7 @@
       </build>
     </profile>
     <profile>
-      <id>noerrorprone</id>
+      <id>warnonly</id>
       <build>
         <plugins>
           <plugin>

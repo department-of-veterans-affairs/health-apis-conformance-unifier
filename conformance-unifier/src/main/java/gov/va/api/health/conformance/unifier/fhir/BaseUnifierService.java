@@ -11,8 +11,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-@SuppressWarnings("PublicConstructorForAbstractClass")
+@RequiredArgsConstructor
+@Slf4j
 public abstract class BaseUnifierService<T, U> {
   private final ConformanceClient client;
 
