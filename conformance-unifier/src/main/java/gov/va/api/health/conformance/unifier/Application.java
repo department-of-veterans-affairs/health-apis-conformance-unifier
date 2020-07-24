@@ -1,7 +1,6 @@
 package gov.va.api.health.conformance.unifier;
 
 import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,10 +36,7 @@ public class Application implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     List<String> argList = args.getNonOptionArgs();
-    // With the java 14 upgrade this is coming in as a single entry with a comma separated string
-    if (argList.size() == 1) {
-      argList = Arrays.asList(argList.get(0).split(","));
-    }
+
     // Check count of required non option args.
     if (argList.size() < ArgEnum.values().length) {
       throw new IllegalArgumentException(
