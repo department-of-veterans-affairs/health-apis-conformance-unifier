@@ -24,7 +24,7 @@ Verify the container has started.
 docker ps
 
 CONTAINER ID        IMAGE                              COMMAND                  CREATED             STATUS              PORTS                                            NAMES
-09411ac1be23        adobe/s3mock                       "/bin/sh -c 'java -X…"   8 minutes ago       Up 8 minutes        127.0.0.1:9090-9091->9090-9091/tcp, 9191/tcp     galS3Mock
+09411ac1be23        adobe/s3mock                       "/bin/sh -c 'java -X???"   8 minutes ago       Up 8 minutes        127.0.0.1:9090-9091->9090-9091/tcp, 9191/tcp     galS3Mock
 ```
 
 ### Stopping the docker container from Maven
