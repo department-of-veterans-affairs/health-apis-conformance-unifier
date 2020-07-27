@@ -31,13 +31,13 @@ For example:
 3. Once the S3 docker has started, the `conformance-unifier` can run locally using spring-boot:run or by building and running a local docker
     ```
     # 1. Maven Spring Boot Run Examples:
-    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,metadata,https://api.va.gov/services/fhir/v0/dstu2/metadata"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2 metadata https://api.va.gov/services/fhir/v0/dstu2/metadata"
 
-    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2,smart-configuration,https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration"
 
-    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,metadata,https://api.va.gov/services/fhir/v0/r4/metadata"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4 metadata https://api.va.gov/services/fhir/v0/r4/metadata"
 
-    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4,smart-configuration,https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
+    mvn -Plocaltest -pl conformance-unifier -am spring-boot:run -Dspring-boot.run.arguments="r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration"
 
     # 2. Local Docker Build and Run Examples:
     mvn -Plocaltest,docker -pl conformance-unifier io.fabric8:docker-maven-plugin:build

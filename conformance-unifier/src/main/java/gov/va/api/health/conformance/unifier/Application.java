@@ -4,7 +4,6 @@ import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceConfig;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,7 +14,6 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @Import({AmazonS3ClientServiceConfig.class})
-@Slf4j
 public class Application implements ApplicationRunner {
 
   /** Optional argument to associate metadata with the generated S3 object. */
@@ -37,8 +35,9 @@ public class Application implements ApplicationRunner {
 
   @Override
   public void run(ApplicationArguments args) throws Exception {
-    // Check count of required non option args.
     List<String> argList = args.getNonOptionArgs();
+
+    // Check count of required non option args.
     if (argList.size() < ArgEnum.values().length) {
       throw new IllegalArgumentException(
           "Invalid number of arguments.  Expected minimum count " + ArgEnum.values().length + ".");
@@ -50,13 +49,15 @@ public class Application implements ApplicationRunner {
     Map<String, String> metadataMap = new HashMap<>();
     if (metadataValueList != null) {
       try {
-        for (String metadataKeyValueString : metadataValueList) {
-          final String[] metadataKeyValueArray = metadataKeyValueString.split("\\s*,\\s*");
-          for (String keyValueString : metadataKeyValueArray) {
-            final String[] keyValuePair = keyValueString.split("=", 2);
-            metadataMap.put(keyValuePair[0], keyValuePair[1]);
-          }
-        }
+        metadataValueList.stream()
+            .map(metadataKeyValueString -> metadataKeyValueString.split("\\s*,\\s*"))
+            .forEachOrdered(
+                metadataKeyValueArray -> {
+                  for (String keyValueString : metadataKeyValueArray) {
+                    final String[] keyValuePair = keyValueString.split("=", 2);
+                    metadataMap.put(keyValuePair[0], keyValuePair[1]);
+                  }
+                });
       } catch (Exception e) {
         throw new IllegalArgumentException("Invalid metadata argument: " + e.getMessage());
       }

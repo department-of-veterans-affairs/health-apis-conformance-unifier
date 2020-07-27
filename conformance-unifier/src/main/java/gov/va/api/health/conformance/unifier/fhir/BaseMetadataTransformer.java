@@ -4,6 +4,7 @@ import gov.va.api.health.conformance.unifier.exception.DuplicateCapabilityResour
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,26 +14,31 @@ import org.springframework.stereotype.Service;
  * transformer provides the types T:Capability, R:Rest, and C:Resource.
  */
 @Service
-@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}), access = AccessLevel.PROTECTED)
 public abstract class BaseMetadataTransformer<T, R, C> implements Function<List<T>, T> {
 
   @Override
   public T apply(List<T> capabilityList) {
     T capability = initialInstance();
     List<C> combinedList = new ArrayList<>();
-    for (T c : capabilityList) {
-      for (R r : rest(c)) {
-        for (C resource : resource(r)) {
-          // Check if resource already exists. If so this is an error and fail.
-          final String type = resourceType(resource);
-          if (combinedList.stream().anyMatch(o -> typeEquals(o, type))) {
-            throw new DuplicateCapabilityResourceException(
-                "Found Metadata with duplicate resource type [" + type + "].");
-          }
-          combinedList.add(resource);
-        }
-      }
-    }
+    capabilityList.forEach(
+        c -> {
+          rest(c)
+              .forEach(
+                  r -> {
+                    resource(r)
+                        .forEach(
+                            resource -> {
+                              // Check if resource already exists. If so this is an error and fail.
+                              final String type = resourceType(resource);
+                              if (combinedList.stream().anyMatch(o -> typeEquals(o, type))) {
+                                throw new DuplicateCapabilityResourceException(
+                                    "Found Metadata with duplicate resource type [" + type + "].");
+                              }
+                              combinedList.add(resource);
+                            });
+                  });
+        });
     // Assume only one rest entry (the first and only in the list) to which we add all resources.
     setResources(rest(capability).get(0), combinedList);
     return capability;
