@@ -10,7 +10,7 @@
   <artifactId>conformance-unifier</artifactId>
   <packaging>jar</packaging>
   <properties>
-    <resource.version>4.0.7</resource.version>
+    <fhir-resources.version>5.0.0</fhir-resources.version>
     <informational.version>2.0.0</informational.version>
     <aws-interfaces.version>2.0.0</aws-interfaces.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
@@ -124,18 +124,18 @@
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>dstu2</artifactId>
-      <version>${resource.version}</version>
+      <artifactId>argonaut-dstu2</artifactId>
+      <version>${fhir-resources.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>stu3</artifactId>
-      <version>${resource.version}</version>
+      <artifactId>argonaut-stu3</artifactId>
+      <version>${fhir-resources.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>r4</artifactId>
-      <version>${resource.version}</version>
+      <artifactId>us-core-r4</artifactId>
+      <version>${fhir-resources.version}</version>
     </dependency>
     <dependency>
       <groupId>gov.va.api.health.informational</groupId>
