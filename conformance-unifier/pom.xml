@@ -4,13 +4,13 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>2.0.3-SNAPSHOT</version>
+    <version>2.0.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>conformance-unifier</artifactId>
   <packaging>jar</packaging>
   <properties>
-    <fhir-resources.version>5.0.0</fhir-resources.version>
+    <fhir-resources.version>5.0.17</fhir-resources.version>
     <informational.version>2.0.1</informational.version>
     <aws-interfaces.version>2.0.0</aws-interfaces.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
