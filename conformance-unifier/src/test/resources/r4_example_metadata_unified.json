@@ -1,6 +1,6 @@
 {
     "id" : "health-api-fhir-r4-capability",
-    "resourceType" : "Capability",
+    "resourceType" : "CapabilityStatement",
     "version" : "@jenkins-build-version@",
     "name" : "API Management Platform | Health | FHIR R4",
     "status" : "draft",

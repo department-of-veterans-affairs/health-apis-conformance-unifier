@@ -11,7 +11,7 @@
   <packaging>jar</packaging>
   <properties>
     <fhir-resources.version>5.0.0</fhir-resources.version>
-    <informational.version>2.0.0</informational.version>
+    <informational.version>2.0.1</informational.version>
     <aws-interfaces.version>2.0.0</aws-interfaces.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
     <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
