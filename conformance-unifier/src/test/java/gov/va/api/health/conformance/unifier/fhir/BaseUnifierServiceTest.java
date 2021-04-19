@@ -11,6 +11,7 @@ import gov.va.api.health.conformance.unifier.fhir.dstu2.Dstu2ConformanceTransfor
 import gov.va.api.health.conformance.unifier.fhir.dstu2.Dstu2WellKnownTransformer;
 import gov.va.api.health.dstu2.api.information.WellKnown;
 import gov.va.api.health.dstu2.api.resources.Conformance;
+import io.swagger.v3.oas.models.OpenAPI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,17 +33,28 @@ public class BaseUnifierServiceTest {
 
   @Mock private Dstu2WellKnownTransformer wellKnownTransformer;
 
-  private BaseUnifierService<Conformance, WellKnown> service;
+  @Mock private OpenApiTransformer openApiTransformer;
+
+  private BaseUnifierService<Conformance, WellKnown, OpenAPI> service;
 
   @Before
   public void init() throws Exception {
     MockitoAnnotations.initMocks(this);
     service =
-        new BaseUnifierService<Conformance, WellKnown>(
-            null, conformanceTransformer, wellKnownTransformer, s3ClientWriterService) {
+        new BaseUnifierService<Conformance, WellKnown, OpenAPI>(
+            null,
+            conformanceTransformer,
+            wellKnownTransformer,
+            openApiTransformer,
+            s3ClientWriterService) {
 
           @Override
           protected Query<WellKnown> queryWellKnown(String url) {
+            return null;
+          }
+
+          @Override
+          protected Query<OpenAPI> queryOpenApi(String url) {
             return null;
           }
 

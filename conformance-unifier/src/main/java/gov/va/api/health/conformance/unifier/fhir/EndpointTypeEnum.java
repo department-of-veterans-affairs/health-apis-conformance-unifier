@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 @Accessors(fluent = true)
 public enum EndpointTypeEnum {
   UNKNOWN("unknown"),
+  OPENAPI("openapi"),
   METADATA("metadata"),
   SMART_CONFIGURATION("smart-configuration");
   private final String type;

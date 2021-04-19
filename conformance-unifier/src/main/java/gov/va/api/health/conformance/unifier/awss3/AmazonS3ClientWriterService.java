@@ -3,6 +3,7 @@ package gov.va.api.health.conformance.unifier.awss3;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.autoconfig.configuration.JacksonConfig;
 import gov.va.api.health.aws.interfaces.s3.AmazonS3ClientServiceInterface;
 import java.io.ByteArrayInputStream;
@@ -33,12 +34,30 @@ public class AmazonS3ClientWriterService {
    * @param object Object to write.
    * @param contentType The content type for metadata
    */
-  @SneakyThrows
   public void writeToBucket(
       final String key,
       final Map<String, String> metadataMap,
       final Object object,
       final String contentType) {
+    writeToBucket(key, metadataMap, object, contentType, JacksonConfig.createMapper());
+  }
+
+  /**
+   * Write object to the Amazon S3 Bucket.Any exceptions with the interface will ripple up.
+   *
+   * @param key Name of object in bucket.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
+   * @param object Object to write.
+   * @param contentType The content type for metadata
+   * @param mapper Jackson mapper used to serialize.
+   */
+  @SneakyThrows
+  public void writeToBucket(
+      final String key,
+      final Map<String, String> metadataMap,
+      final Object object,
+      final String contentType,
+      final ObjectMapper mapper) {
 
     // Write the object to AWS
     AmazonS3 s3Client = s3ClientService.s3Client();
@@ -52,7 +71,7 @@ public class AmazonS3ClientWriterService {
       }
     }
 
-    final String unifiedResult = JacksonConfig.createMapper().writeValueAsString(object);
+    final String unifiedResult = mapper.writeValueAsString(object);
     log.info("Storing unified result {} to AWS S3 {}.", key, bucketConfig.getName());
 
     // Upload a text string as a new object as input stream with metadata.
