@@ -75,13 +75,22 @@ unifyRFour() {
     'https://sandbox-api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration'
 }
 
+unifyOpenapi() {
+  echo "Unifying R4 OpenAPI"
+  java -Dapp.name=unifier -jar ${UNIFIER_JAR} \
+    'r4' \
+    'openapi' \
+    'https://sandbox-api.va.gov/services/fhir/v0/r4/openapi.json'
+}
+
 unifySamples() {
   UNIFIER_JAR=$(find -name 'conformance-unifier-*.jar' | head -n +1)
   [ -z "${UNIFIER_JAR:-}" ] && echo "Rebuild Application and Try Again." && exit 1
   case "${1:-}" in
     dstu2) unifyDstuTwo;;
     r4) unifyRFour;;
-    *) unifyDstuTwo && unifyRFour;;
+    openapi) unifyOpenapi;;
+    *) unifyDstuTwo && unifyRFour && unifyOpenapi;;
   esac
     
   cat <<EOF

@@ -158,9 +158,10 @@ public abstract class BaseOpenApiTransformer implements Function<List<OpenAPI>, 
   protected void combineServers(OpenAPI current, OpenAPI toCombine) {
     if (current.getServers() == null) {
       current.servers(toCombine.getServers());
-    } else {
-      current.servers(servers(current.getServers(), toCombine.getServers()));
+    } else if (toCombine.getServers() == null) {
+      return;
     }
+    current.servers(servers(current.getServers(), toCombine.getServers()));
   }
 
   protected Scopes findImplicitFlowScope(SecurityScheme securityScheme) {

@@ -107,7 +107,7 @@ public abstract class BaseUnifierService<T, U, O> {
   }
 
   private void unifyOpenapi(
-      final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
+      final String objectName, final List<String> urlList, final Map<String, String> openapiMap) {
     List<O> metadataList = new ArrayList<>();
     urlList.forEach(
         url -> {
@@ -115,7 +115,7 @@ public abstract class BaseUnifierService<T, U, O> {
         });
     s3ClientWriterService.writeToBucket(
         objectName,
-        metadataMap,
+        openapiMap,
         openApiTransformer.apply(metadataList),
         "application/json",
         MAPPER_OPENAPI);
