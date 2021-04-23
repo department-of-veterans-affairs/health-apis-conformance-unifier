@@ -1,26 +1,26 @@
 {
-    "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
-    "tokenEndpoint" : "https://api.va.gov/oauth2/token",
-    "managementEndpoint" : "https://api.va.gov/oauth2/manage",
-    "revocationEndpoint" : "https://api.va.gov/oauth2/revoke",
-    "scopesSupported" : [
-        "offline_access",
-        "patient/Practitioner.read",
-        "patient/Procedure.read",
-        "offline_accessExample2",
-        "patient/Practitioner.readExample2",
-        "patient/Procedure.readExample2"
-    ],
-    "responseTypeSupported" : [
-        "code",
-        "refresh_token",
-        "codeExample2",
-        "refresh_tokenExample2"
-    ],
-    "capabilities" : [
-        "permission-offline",
-        "permission-patient",
-        "permission-offlineExample2",
-        "permission-patientExample2"
-    ]
+  "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
+  "tokenEndpoint" : "https://api.va.gov/oauth2/token",
+  "managementEndpoint" : "https://api.va.gov/oauth2/manage",
+  "revocationEndpoint" : "https://api.va.gov/oauth2/revoke",
+  "scopesSupported" : [
+    "offline_access",
+    "patient/Practitioner.read",
+    "patient/Procedure.read",
+    "offline_accessExample2",
+    "patient/Practitioner.readExample2",
+    "patient/Procedure.readExample2"
+  ],
+  "responseTypeSupported" : [
+    "code",
+    "refresh_token",
+    "codeExample2",
+    "refresh_tokenExample2"
+  ],
+  "capabilities" : [
+    "permission-offline",
+    "permission-patient",
+    "permission-offlineExample2",
+    "permission-patientExample2"
+  ]
 }
