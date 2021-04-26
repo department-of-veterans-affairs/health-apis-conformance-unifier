@@ -1,17 +1,17 @@
 {
-    "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
-    "tokenEndpoint" : "https://api.va.gov/services/fhir/v0/stu3/token",
-    "scopesSupported" : [
-        "offline_access",
-        "patient/Practitioner.read",
-        "patient/Procedure.read"
-    ],
-    "responseTypeSupported" : [
-        "code",
-        "refresh_token"
-    ],
-    "capabilities" : [
-        "permission-offline",
-        "permission-patient"
-    ]
+  "authorizationEndpoint" : "https://api.va.gov/oauth2/authorization",
+  "tokenEndpoint" : "https://api.va.gov/services/fhir/v0/stu3/token",
+  "scopesSupported" : [
+    "offline_access",
+    "patient/Practitioner.read",
+    "patient/Procedure.read"
+  ],
+  "responseTypeSupported" : [
+    "code",
+    "refresh_token"
+  ],
+  "capabilities" : [
+    "permission-offline",
+    "permission-patient"
+  ]
 }

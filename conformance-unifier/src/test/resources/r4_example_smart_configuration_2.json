@@ -1,16 +1,16 @@
 {
-    "authorizationEndpoint" : "https://test-server/authorize",
-    "tokenEndpoint" : "https://test-server/token",
-    "scopesSupported" : [
-        "patient/ClaimExample2.read",
-        "patient/CoverageExample2.read",
-        "patient/ExplanationOfBenefitExample2.read"
-    ],
-    "responseTypeSupported" : [
-        "codeExample2",
-        "refresh_tokenExample2"
-    ],
-    "capabilities" : [
-        "permission-devExample2"
-    ]
+  "authorizationEndpoint" : "https://test-server/authorize",
+  "tokenEndpoint" : "https://test-server/token",
+  "scopesSupported" : [
+    "patient/ClaimExample2.read",
+    "patient/CoverageExample2.read",
+    "patient/ExplanationOfBenefitExample2.read"
+  ],
+  "responseTypeSupported" : [
+    "codeExample2",
+    "refresh_tokenExample2"
+  ],
+  "capabilities" : [
+    "permission-devExample2"
+  ]
 }

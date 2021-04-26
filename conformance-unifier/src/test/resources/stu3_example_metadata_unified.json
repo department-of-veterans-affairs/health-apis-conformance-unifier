@@ -1,401 +1,401 @@
 {
-    "id" : "health-api-fhir-stu3-capability",
-    "resourceType" : "CapabilityStatement",
-    "version" : "@jenkins-build-version@",
-    "name" : "API Management Platform | Health | FHIR STU3",
-    "status" : "draft",
-    "date" : "@jenkins-build-date@",
-    "publisher" : "Department of Veterans Affairs",
-    "contact" : [
+  "id" : "health-api-fhir-stu3-capability",
+  "resourceType" : "CapabilityStatement",
+  "version" : "@jenkins-build-version@",
+  "name" : "API Management Platform | Health | FHIR STU3",
+  "status" : "draft",
+  "date" : "@jenkins-build-date@",
+  "publisher" : "Department of Veterans Affairs",
+  "contact" : [
+    {
+      "name" : "API Support",
+      "telecom" : [
         {
-            "name" : "API Support",
-            "telecom" : [
-                {
-                    "system" : "email",
-                    "value" : "api@va.gov"
-                }
-            ]
+          "system" : "email",
+          "value" : "api@va.gov"
         }
-    ],
-    "description" : "FHIR STU3 Health APIs.",
-    "kind" : "capability",
-    "software" : {
-        "name" : "health-api-fhir-stu3"
-    },
-    "fhirVersion" : "4.0.0",
-    "acceptUnknown" : "no",
-    "format" : [
-        "application/json+fhir",
-        "application/json",
-        "application/fhir+json"
-    ],
-    "rest" : [
+      ]
+    }
+  ],
+  "description" : "FHIR STU3 Health APIs.",
+  "kind" : "capability",
+  "software" : {
+    "name" : "health-api-fhir-stu3"
+  },
+  "fhirVersion" : "4.0.0",
+  "acceptUnknown" : "no",
+  "format" : [
+    "application/json+fhir",
+    "application/json",
+    "application/fhir+json"
+  ],
+  "rest" : [
+    {
+      "mode" : "server",
+      "security" : {
+        "extension" : [
+          {
+            "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
+            "extension" : [
+              {
+                "url" : "token",
+                "valueUri" : "https://api.va.gov/oauth2/token"
+              },
+              {
+                "url" : "authorize",
+                "valueUri" : "https://api.va.gov/oauth2/authorization"
+              },
+              {
+                "url" : "manage",
+                "valueUri" : "https://api.va.gov/oauth2/manage"
+              },
+              {
+                "url" : "revoke",
+                "valueUri" : "https://api.va.gov/oauth2/revoke"
+              }
+            ]
+          }
+        ],
+        "cors" : true,
+        "service" : [
+          {
+            "coding" : [
+              {
+                "system" : "https://www.hl7.org/fhir/restful-security-service",
+                "code" : "SMART-on-FHIR",
+                "display" : "SMART-on-FHIR"
+              }
+            ]
+          }
+        ],
+        "description" : "http://docs.smarthealthit.org/"
+      },
+      "resource" : [
         {
-            "mode" : "server",
-            "security" : {
-                "extension" : [
-                    {
-                        "url" : "http://fhir-registry.smarthealthit.org/StructureDefinition/oauth-uris",
-                        "extension" : [
-                            {
-                                "url" : "token",
-                                "valueUri" : "https://api.va.gov/oauth2/token"
-                            },
-                            {
-                                "url" : "authorize",
-                                "valueUri" : "https://api.va.gov/oauth2/authorization"
-                            },
-                            {
-                                "url" : "manage",
-                                "valueUri" : "https://api.va.gov/oauth2/manage"
-                            },
-                            {
-                                "url" : "revoke",
-                                "valueUri" : "https://api.va.gov/oauth2/revoke"
-                            }
-                        ]
-                    }
-                ],
-                "cors" : true,
-                "service" : [
-                    {
-                        "coding" : [
-                            {
-                                "system" : "https://www.hl7.org/fhir/restful-security-service",
-                                "code" : "SMART-on-FHIR",
-                                "display" : "SMART-on-FHIR"
-                            }
-                        ]
-                    }
-                ],
-                "description" : "http://docs.smarthealthit.org/"
+          "type" : "Location",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
             },
-            "resource" : [
-                {
-                    "type" : "Location",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "address-city",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address-state",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address-postalcode",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "Endpoint",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "organization",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "Organization",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "Practitioner",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "family",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "given",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "PractitionerRole",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "family",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "given",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "specialty",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "LocationExample2",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "address-city",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address-state",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address-postalcode",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "EndpointExample2",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "organization",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "OrganizationExample2",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "address",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "name",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "PractitionerExample2",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "family",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "given",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        }
-                    ]
-                },
-                {
-                    "type" : "PractitionerRoleExample2",
-                    "profile" : {
-                        "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
-                    },
-                    "interaction" : [
-                        {
-                            "code" : "search-type",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        },
-                        {
-                            "code" : "read",
-                            "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
-                        }
-                    ],
-                    "searchParam" : [
-                        {
-                            "name" : "identifier",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "family",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "given",
-                            "type" : "string"
-                        },
-                        {
-                            "name" : "specialty",
-                            "type" : "string"
-                        }
-                    ]
-                }
-            ]
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "address-city",
+              "type" : "string"
+            },
+            {
+              "name" : "address-state",
+              "type" : "string"
+            },
+            {
+              "name" : "address-postalcode",
+              "type" : "string"
+            },
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "Endpoint",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "organization",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "Organization",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "address",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "Practitioner",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "family",
+              "type" : "string"
+            },
+            {
+              "name" : "given",
+              "type" : "string"
+            },
+            {
+              "name" : "identifier",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "PractitionerRole",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "family",
+              "type" : "string"
+            },
+            {
+              "name" : "given",
+              "type" : "string"
+            },
+            {
+              "name" : "specialty",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "LocationExample2",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-location.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "address-city",
+              "type" : "string"
+            },
+            {
+              "name" : "address-state",
+              "type" : "string"
+            },
+            {
+              "name" : "address-postalcode",
+              "type" : "string"
+            },
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "EndpointExample2",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-endpoint.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "organization",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "OrganizationExample2",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-organization.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "address",
+              "type" : "string"
+            },
+            {
+              "name" : "name",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "PractitionerExample2",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitioner.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "family",
+              "type" : "string"
+            },
+            {
+              "name" : "given",
+              "type" : "string"
+            },
+            {
+              "name" : "identifier",
+              "type" : "string"
+            }
+          ]
+        },
+        {
+          "type" : "PractitionerRoleExample2",
+          "profile" : {
+            "reference" : "http://www.fhir.org/guides/argonaut/pd/StructureDefinition-argo-practitionerrole.html"
+          },
+          "interaction" : [
+            {
+              "code" : "search-type",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            },
+            {
+              "code" : "read",
+              "documentation" : "Implemented per specification. See http://hl7.org/fhir/STU3/http.html"
+            }
+          ],
+          "searchParam" : [
+            {
+              "name" : "identifier",
+              "type" : "string"
+            },
+            {
+              "name" : "family",
+              "type" : "string"
+            },
+            {
+              "name" : "given",
+              "type" : "string"
+            },
+            {
+              "name" : "specialty",
+              "type" : "string"
+            }
+          ]
         }
-    ]
+      ]
+    }
+  ]
 }
