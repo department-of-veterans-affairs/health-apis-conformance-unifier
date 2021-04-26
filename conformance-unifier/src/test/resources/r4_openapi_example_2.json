@@ -1,164 +1,164 @@
 {
-    "openapi" : "3.0.1",
-    "info" : {
-        "title" : "Second US Core R4",
-        "description" : "In adherence to changes per the [21st Century Cures Act](https://www.federalregister.gov/documents/2020/05/01/2020-07419/21st-century-cures-act-interoperability-information-blocking-and-the-onc-health-it-certification#h-13), the Veteran Health API profile follows the US Core Implementation Guide. Per these regulations, we will be adding new FHIR resources to this tab as they are available.\n\nThis service is compliant with the FHIR US Core Implementation Guide. This service does not provide or replace the consultation, guidance, or care of a health care professional or other qualified provider. This service provides a supplement for informational and educational purposes only. Health care professionals and other qualified providers should continue to consult authoritative records when making decisions.",
-        "version" : "v1"
-    },
-    "externalDocs" : {
-        "description" : "US Core Implementation Guide",
-        "url" : "https://build.fhir.org/ig/HL7/US-Core-R4/index.html"
-    },
-    "servers" : [
-        {
-            "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/",
-            "description" : "Sandbox",
-            "variables" : { }
-        }
-    ],
-    "security" : [
-        {
-            "OauthFlow" : [
-                "patient/AdditionalScope.read",
-                "patient/Blah.read",
-                "offline_access",
-                "launch/patient"
-            ]
-        }
-    ],
-    "paths" : {
-        "/Blah/{id}/$some-operation" : {
-            "post" : {
-                "tags" : [
-                    "Blah"
-                ],
-                "summary" : "Blah Some Operation",
-                "description" : "Blah",
-                "operationId" : "blahSomeOperation",
-                "parameters" : [
-                    {
-                        "name" : "id",
-                        "in" : "path",
-                        "description" : "The logical id of the resource. Once assigned, this value never changes. For Patients this id is an Integration Control Number (ICN) assigned by the Master Patient Index (MPI).",
-                        "required" : true,
-                        "schema" : {
-                            "type" : "string"
-                        }
-                    }
-                ],
-                "responses" : {
-                    "200" : {
-                        "description" : "Record found",
-                        "content" : {
-                            "application/fhir+json" : {
-                                "schema" : {
-                                    "$ref" : "#/components/schemas/Parameters"
-                                }
-                            }
-                        }
-                    },
-                    "400" : {
-                        "description" : "Bad request",
-                        "content" : {
-                            "application/fhir+json" : {
-                                "schema" : {
-                                    "$ref" : "#/components/schemas/OperationOutcome"
-                                }
-                            }
-                        }
-                    },
-                    "404" : {
-                        "description" : "Not found",
-                        "content" : {
-                            "application/fhir+json" : {
-                                "schema" : {
-                                    "$ref" : "#/components/schemas/OperationOutcome"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components" : {
-        "schemas" : {
-            "Parameters" : {
-                "required" : [
-                    "resourceType"
-                ],
-                "type" : "object",
-                "properties" : {
-                    "resourceType" : {
-                        "type" : "string"
-                    },
-                    "id" : {
-                        "pattern" : "[A-Za-z0-9\\-\\.]{1,64}",
-                        "type" : "string"
-                    },
-                    "parameter" : {
-                        "type" : "array",
-                        "items" : {
-                            "type" : "string"
-                        }
-                    }
-                }
-            },
-            "OperationOutcome" : {
-                "required" : [
-                    "issue",
-                    "resourceType"
-                ],
-                "type" : "object",
-                "properties" : {
-                    "resourceType" : {
-                        "type" : "string"
-                    },
-                    "id" : {
-                        "pattern" : "[A-Za-z0-9\\-\\.]{1,64}",
-                        "type" : "string"
-                    },
-                    "implicitRules" : {
-                        "pattern" : "\\S*",
-                        "type" : "string"
-                    },
-                    "language" : {
-                        "pattern" : "[^\\s]+(\\s[^\\s]+)*",
-                        "type" : "string"
-                    }
-                },
-                "description" : "https://www.hl7.org/fhir/R4/operationoutcome.html",
-                "example" : {
-                    "resourceType" : "OperationOutcome",
-                    "issue" : [
-                        {
-                            "severity" : "error",
-                            "code" : "request error",
-                            "details" : {
-                                "text" : "This request can not be processed"
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "securitySchemes" : {
-            "OauthFlow" : {
-                "type" : "oauth2",
-                "in" : "header",
-                "flows" : {
-                    "implicit" : {
-                        "authorizationUrl" : "https://sandbox-api.va.gov/oauth2/authorization",
-                        "tokenUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/token",
-                        "scopes" : {
-                            "patient/AdditionalScope.read" : "unit test additional scope",
-                            "patient/Blah.read" : "read blah",
-                            "offline_access" : "offline access",
-                            "launch/patient" : "patient launch"
-                        }
-                    }
-                }
-            }
-        }
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Second US Core R4",
+    "description" : "In adherence to changes per the [21st Century Cures Act](https://www.federalregister.gov/documents/2020/05/01/2020-07419/21st-century-cures-act-interoperability-information-blocking-and-the-onc-health-it-certification#h-13), the Veteran Health API profile follows the US Core Implementation Guide. Per these regulations, we will be adding new FHIR resources to this tab as they are available.\n\nThis service is compliant with the FHIR US Core Implementation Guide. This service does not provide or replace the consultation, guidance, or care of a health care professional or other qualified provider. This service provides a supplement for informational and educational purposes only. Health care professionals and other qualified providers should continue to consult authoritative records when making decisions.",
+    "version" : "v1"
+  },
+  "externalDocs" : {
+    "description" : "US Core Implementation Guide",
+    "url" : "https://build.fhir.org/ig/HL7/US-Core-R4/index.html"
+  },
+  "servers" : [
+    {
+      "url" : "https://sandbox-api.va.gov/services/fhir/v0/r4/",
+      "description" : "Sandbox",
+      "variables" : { }
     }
+  ],
+  "security" : [
+    {
+      "OauthFlow" : [
+        "patient/AdditionalScope.read",
+        "patient/Blah.read",
+        "offline_access",
+        "launch/patient"
+      ]
+    }
+  ],
+  "paths" : {
+    "/Blah/{id}/$some-operation" : {
+      "post" : {
+        "tags" : [
+          "Blah"
+        ],
+        "summary" : "Blah Some Operation",
+        "description" : "Blah",
+        "operationId" : "blahSomeOperation",
+        "parameters" : [
+          {
+            "name" : "id",
+            "in" : "path",
+            "description" : "The logical id of the resource. Once assigned, this value never changes. For Patients this id is an Integration Control Number (ICN) assigned by the Master Patient Index (MPI).",
+            "required" : true,
+            "schema" : {
+              "type" : "string"
+            }
+          }
+        ],
+        "responses" : {
+          "200" : {
+            "description" : "Record found",
+            "content" : {
+              "application/fhir+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Parameters"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad request",
+            "content" : {
+              "application/fhir+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not found",
+            "content" : {
+              "application/fhir+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OperationOutcome"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Parameters" : {
+        "required" : [
+          "resourceType"
+        ],
+        "type" : "object",
+        "properties" : {
+          "resourceType" : {
+            "type" : "string"
+          },
+          "id" : {
+            "pattern" : "[A-Za-z0-9\\-\\.]{1,64}",
+            "type" : "string"
+          },
+          "parameter" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "OperationOutcome" : {
+        "required" : [
+          "issue",
+          "resourceType"
+        ],
+        "type" : "object",
+        "properties" : {
+          "resourceType" : {
+            "type" : "string"
+          },
+          "id" : {
+            "pattern" : "[A-Za-z0-9\\-\\.]{1,64}",
+            "type" : "string"
+          },
+          "implicitRules" : {
+            "pattern" : "\\S*",
+            "type" : "string"
+          },
+          "language" : {
+            "pattern" : "[^\\s]+(\\s[^\\s]+)*",
+            "type" : "string"
+          }
+        },
+        "description" : "https://www.hl7.org/fhir/R4/operationoutcome.html",
+        "example" : {
+          "resourceType" : "OperationOutcome",
+          "issue" : [
+            {
+              "severity" : "error",
+              "code" : "request error",
+              "details" : {
+                "text" : "This request can not be processed"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "securitySchemes" : {
+      "OauthFlow" : {
+        "type" : "oauth2",
+        "in" : "header",
+        "flows" : {
+          "implicit" : {
+            "authorizationUrl" : "https://sandbox-api.va.gov/oauth2/authorization",
+            "tokenUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/token",
+            "scopes" : {
+              "patient/AdditionalScope.read" : "unit test additional scope",
+              "patient/Blah.read" : "read blah",
+              "offline_access" : "offline access",
+              "launch/patient" : "patient launch"
+            }
+          }
+        }
+      }
+    }
+  }
 }
