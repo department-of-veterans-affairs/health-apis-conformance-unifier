@@ -106,6 +106,13 @@ public abstract class BaseUnifierService<T, U, O> {
         objectName, metadataMap, metadataTransformer.apply(metadataList), "application/fhir+json");
   }
 
+  /**
+   * Unify OpenAPI.
+   *
+   * @param objectName Name of S3 object.
+   * @param urlList Urls.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
+   */
   private void unifyOpenapi(
       final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
     List<O> openapiList = new ArrayList<>();
