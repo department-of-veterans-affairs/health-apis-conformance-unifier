@@ -1,6 +1,10 @@
 package gov.va.api.health.conformance.unifier.client;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.lang.reflect.Type;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -15,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ConformanceClient {
+  private static final ObjectMapper MAPPER = new ObjectMapper();
 
   private final RestTemplate restTemplate;
 
@@ -32,14 +37,31 @@ public class ConformanceClient {
    * @return Response.
    */
   public <T> T search(Query<T> query) {
+    return search(query, MAPPER);
+  }
+
+  /**
+   * Search.
+   *
+   * @param query Query.
+   * @param <T> Class.
+   * @param mapper Jackson mapper to use for deserialization.
+   * @return Response.
+   */
+  @SneakyThrows
+  public <T> T search(Query<T> query, ObjectMapper mapper) {
     // TODO: we may wish to use an error handler to capture certain exceptions from the rest call.
-    ResponseEntity<T> responseEntity =
-        restTemplate.exchange(
-            urlOf(query),
-            HttpMethod.GET,
-            requestEntity(),
-            ParameterizedTypeReference.forType(query.getType()));
-    return responseEntity.getBody();
+    var typeRef = ParameterizedTypeReference.forType(query.getType());
+    TypeReference<T> tr =
+        new TypeReference<>() {
+          public Type getType() {
+            return typeRef.getType();
+          }
+        };
+
+    ResponseEntity<String> responseEntity =
+        restTemplate.exchange(urlOf(query), HttpMethod.GET, requestEntity(), String.class);
+    return mapper.readValue(responseEntity.getBody(), tr);
   }
 
   private String urlOf(Query<?> query) {

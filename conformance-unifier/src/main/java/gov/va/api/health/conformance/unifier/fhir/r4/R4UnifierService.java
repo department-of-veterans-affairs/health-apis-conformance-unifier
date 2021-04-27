@@ -4,15 +4,16 @@ import gov.va.api.health.conformance.unifier.awss3.AmazonS3ClientWriterService;
 import gov.va.api.health.conformance.unifier.client.ConformanceClient;
 import gov.va.api.health.conformance.unifier.client.Query;
 import gov.va.api.health.conformance.unifier.fhir.BaseUnifierService;
+import gov.va.api.health.conformance.unifier.fhir.OpenApiTransformer;
 import gov.va.api.health.r4.api.information.WellKnown;
 import gov.va.api.health.r4.api.resources.CapabilityStatement;
+import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /** Service to facilitate unification of R4 Metadata and WellKnown. */
 @Service
-public class R4UnifierService extends BaseUnifierService<CapabilityStatement, WellKnown> {
-
+public class R4UnifierService extends BaseUnifierService<CapabilityStatement, WellKnown, OpenAPI> {
   /**
    * Construct a unifier service for R4 type resources.
    *
@@ -26,13 +27,24 @@ public class R4UnifierService extends BaseUnifierService<CapabilityStatement, We
       ConformanceClient client,
       AmazonS3ClientWriterService s3ClientWriterService,
       R4CapabilityTransformer capabilityTransformer,
+      OpenApiTransformer openApiTransformer,
       R4WellKnownTransformer wellKnownTransformer) {
-    super(client, capabilityTransformer, wellKnownTransformer, s3ClientWriterService);
+    super(
+        client,
+        capabilityTransformer,
+        wellKnownTransformer,
+        openApiTransformer,
+        s3ClientWriterService);
   }
 
   @Override
   protected Query<CapabilityStatement> queryMetadata(final String url) {
     return Query.forType(CapabilityStatement.class).url(url).build();
+  }
+
+  @Override
+  protected Query<OpenAPI> queryOpenApi(String url) {
+    return Query.forType(OpenAPI.class).url(url).build();
   }
 
   @Override

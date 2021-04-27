@@ -1,8 +1,10 @@
 package gov.va.api.health.conformance.unifier.fhir;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.api.health.conformance.unifier.awss3.AmazonS3ClientWriterService;
 import gov.va.api.health.conformance.unifier.client.ConformanceClient;
 import gov.va.api.health.conformance.unifier.client.Query;
+import io.swagger.v3.core.util.Json;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,13 +14,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class BaseUnifierService<T, U> {
+public abstract class BaseUnifierService<T, U, O> {
+  private static final ObjectMapper MAPPER_OPENAPI = Json.mapper();
 
   private final ConformanceClient client;
 
   private final Function<List<T>, T> metadataTransformer;
 
   private final Function<List<U>, U> wellKnownTransformer;
+
+  private final Function<List<O>, O> openApiTransformer;
 
   private final AmazonS3ClientWriterService s3ClientWriterService;
 
@@ -41,6 +46,8 @@ public abstract class BaseUnifierService<T, U> {
    * @return Query object.
    */
   protected abstract Query<T> queryMetadata(final String url);
+
+  protected abstract Query<O> queryOpenApi(final String url);
 
   /**
    * Query wellknown.
@@ -67,6 +74,9 @@ public abstract class BaseUnifierService<T, U> {
     final EndpointTypeEnum endpointTypeEnum = EndpointTypeEnum.fromType(endpointType);
     final String objectName = objectName(resourceTypeEnum, endpointTypeEnum);
     switch (endpointTypeEnum) {
+      case OPENAPI:
+        unifyOpenapi(objectName, urlList, metadataMap);
+        break;
       case METADATA:
         unifyMetadata(objectName, urlList, metadataMap);
         break;
@@ -94,6 +104,28 @@ public abstract class BaseUnifierService<T, U> {
         });
     s3ClientWriterService.writeToBucket(
         objectName, metadataMap, metadataTransformer.apply(metadataList), "application/fhir+json");
+  }
+
+  /**
+   * Unify OpenAPI.
+   *
+   * @param objectName Name of S3 object.
+   * @param urlList Urls.
+   * @param metadataMap Map of metadata to associate with the generated S3 object.
+   */
+  private void unifyOpenapi(
+      final String objectName, final List<String> urlList, final Map<String, String> metadataMap) {
+    List<O> openapiList = new ArrayList<>();
+    urlList.forEach(
+        url -> {
+          openapiList.add(client.search(queryOpenApi(url), MAPPER_OPENAPI));
+        });
+    s3ClientWriterService.writeToBucket(
+        objectName,
+        metadataMap,
+        openApiTransformer.apply(openapiList),
+        "application/json",
+        MAPPER_OPENAPI);
   }
 
   /**
