@@ -9,13 +9,16 @@ import java.io.File;
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
+import picocli.CommandLine.ScopeType;
 
-@Command(name = "openapi")
-public class OpenApiV3UnifierCommand implements Callable<Integer> {
+@Command(name = "merge", description = "Merge multiple Open API V3 specifications")
+public class OpenApiV3MergeCommand implements Callable<Integer> {
 
   @Option(
       names = {"-c", "--config"},
-      required = true)
+      required = true,
+      description = "Merge configuration file.",
+      scope = ScopeType.LOCAL)
   File configFile;
 
   @Override

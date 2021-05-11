@@ -1,6 +1,6 @@
 package gov.va.health.unifier;
 
-import gov.va.health.unifier.openapi.OpenApiV3UnifierCommand;
+import gov.va.health.unifier.openapi.OpenApiV3Command;
 import java.util.concurrent.Callable;
 import picocli.AutoComplete.GenerateCompletion;
 import picocli.CommandLine;
@@ -13,7 +13,7 @@ import picocli.CommandLine.Spec;
 @Command(
     name = "unify",
     mixinStandardHelpOptions = true,
-    subcommands = {HelpCommand.class, GenerateCompletion.class, OpenApiV3UnifierCommand.class})
+    subcommands = {HelpCommand.class, GenerateCompletion.class, OpenApiV3Command.class})
 public class UnifierCommand implements Callable<Integer> {
 
   @Spec CommandSpec spec;

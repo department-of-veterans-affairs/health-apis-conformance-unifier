@@ -15,15 +15,16 @@
       "description": "Sandbox"
     }
   ],
-  "security": [
-    {
-      "OauthFlow": [
-        "launch/patient",
-        "offline_access",
-        "patient/AdditionalScope.read",
-        "patient/Blah.read",
-        "patient/Foo.read"
-      ]
+  "securitySchemes": {
+    "OauthFlow": {
+      "type": "oauth2",
+      "in": "header",
+      "flows": {
+        "implicit": {
+          "authorizationUrl": "https://sandbox-api.va.gov/oauth2/authorization",
+          "tokenUrl": "https://sandbox-api.va.gov/services/fhir/v0/r4/token"
+        }
+      }
     }
-  ]
+  }
 }
