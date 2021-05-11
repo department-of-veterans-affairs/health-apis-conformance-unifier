@@ -15,8 +15,7 @@ public class OpenApiV3UnifierCommand implements Callable<Integer> {
 
   @Option(
       names = {"-c", "--config"},
-      required = true,
-      defaultValue = "merge-openapi.json")
+      required = true)
   File configFile;
 
   @Override
@@ -24,7 +23,6 @@ public class OpenApiV3UnifierCommand implements Callable<Integer> {
     println("Loading %s", configFile);
     var mapper = new ObjectMapper();
     var config = mapper.readValue(configFile, MergeConfig.class);
-    println("%s", config);
     var sources = config.in().stream().map(Contributor::asOpenApiV3Source).collect(toList());
     var merged =
         OpenApiV3Unifier.startingWith(InitialOpenApiV3.of(config.properties())).apply(sources);

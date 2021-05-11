@@ -3,8 +3,8 @@ package gov.va.health.unifier.openapi;
 import static gov.va.health.unifier.Print.println;
 import static java.util.stream.Collectors.toList;
 
-import gov.va.health.unifier.openapi.OpenApiV3Exceptions.OpenApiDuplicateKeyConflictException;
-import gov.va.health.unifier.openapi.OpenApiV3Exceptions.OpenApiPathDuplicateException;
+import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
+import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
@@ -101,8 +101,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
           .forEach(
               keyToAdd -> {
                 if (current.getPaths().containsKey(keyToAdd)) {
-                  throw new OpenApiPathDuplicateException(
-                      String.format("Path already exists: '%s'", keyToAdd));
+                  throw new DuplicatePath(String.format("Path already exists: '%s'", keyToAdd));
                 }
                 current
                     .getPaths()
@@ -183,8 +182,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
    * Attempts to merge a map's entries into a target map. If key exists, an equality check is
    * performed.
    *
-   * @throws OpenApiDuplicateKeyConflictException if a duplicate key is found and values are not
-   *     equal.
+   * @throws DuplicateKey if a duplicate key is found and values are not equal.
    */
   protected <T> Map<String, T> mergeMapFavoringOriginal(
       Map<String, T> current, Map<String, T> toMerge, String prefix) {
@@ -205,7 +203,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
             String message =
                 String.format("%s CONFLICT key '%s' with non-equals values", prefix, key);
             println(message);
-            throw new OpenApiDuplicateKeyConflictException(message);
+            throw new DuplicateKey(message);
           }
         });
     return current;

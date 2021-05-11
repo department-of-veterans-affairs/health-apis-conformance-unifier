@@ -8,7 +8,9 @@ class OpenApiV3UnifierCommandTest {
 
   @Test
   void tryMe() {
-    Assertions.assertThat(UnifierCommand.mainNoExit("openapi", "--config", "merge.json"))
+    Assertions.assertThat(
+            UnifierCommand.mainNoExit(
+                "openapi", "--config", "src/test/resources/openapi-v3-merge-config.json"))
         .isEqualTo(0);
   }
 }

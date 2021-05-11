@@ -2,24 +2,32 @@ package gov.va.health.unifier;
 
 import gov.va.health.unifier.openapi.OpenApiV3UnifierCommand;
 import java.util.concurrent.Callable;
+import picocli.AutoComplete.GenerateCompletion;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.HelpCommand;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParameterException;
+import picocli.CommandLine.Spec;
 
-@Command(name = "unify", mixinStandardHelpOptions = true)
+@Command(
+    name = "unify",
+    mixinStandardHelpOptions = true,
+    subcommands = {HelpCommand.class, GenerateCompletion.class, OpenApiV3UnifierCommand.class})
 public class UnifierCommand implements Callable<Integer> {
+
+  @Spec CommandSpec spec;
 
   public static void main(String... args) {
     System.exit(mainNoExit(args));
   }
 
   public static int mainNoExit(String... args) {
-    return new CommandLine(new UnifierCommand())
-        .addSubcommand(new OpenApiV3UnifierCommand())
-        .execute(args);
+    return new CommandLine(new UnifierCommand()).execute(args);
   }
 
   @Override
   public Integer call() throws Exception {
-    return 0;
+    throw new ParameterException(spec.commandLine(), "Missing required subcommand");
   }
 }
