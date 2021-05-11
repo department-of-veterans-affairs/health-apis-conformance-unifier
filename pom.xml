@@ -18,6 +18,7 @@
       <modules>
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
+        <module>unifier</module>
       </modules>
     </profile>
     <profile>
@@ -29,6 +30,7 @@
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
         <module>unifier-tests</module>
+        <module>unifier</module>
       </modules>
     </profile>
   </profiles>
