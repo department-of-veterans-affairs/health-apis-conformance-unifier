@@ -195,7 +195,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     toMerge.forEach(
         (key, value) -> {
           if (!current.containsKey(key)) {
-            println("%s Adding new Key {%s", prefix, key);
+            println("%s Adding new Key %s", prefix, key);
             current.put(key, value);
           } else if (value.equals(current.get(key))) {
             println("%s Skipping conflicting key '%s' with identical value", prefix, key);

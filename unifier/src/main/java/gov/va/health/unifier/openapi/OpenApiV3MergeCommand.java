@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.health.unifier.openapi.MergeConfig.Contributor;
+import io.swagger.v3.core.util.Json;
 import java.io.File;
 import java.util.concurrent.Callable;
 import picocli.CommandLine.Command;
@@ -29,6 +30,7 @@ public class OpenApiV3MergeCommand implements Callable<Integer> {
     var sources = config.in().stream().map(Contributor::asOpenApiV3Source).collect(toList());
     var merged =
         OpenApiV3Unifier.startingWith(InitialOpenApiV3.of(config.properties())).apply(sources);
+    Json.pretty().writeValue(new File(config.out()), merged);
     return 0;
   }
 }
