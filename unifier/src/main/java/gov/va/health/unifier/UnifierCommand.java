@@ -7,7 +7,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 
 @Command(
-    name = "unify",
+    name = "unifier",
     mixinStandardHelpOptions = true,
     subcommands = {HelpCommand.class, GenerateCompletion.class, OpenApiV3Command.class})
 public class UnifierCommand extends CommandWithRequiredSubcommand {

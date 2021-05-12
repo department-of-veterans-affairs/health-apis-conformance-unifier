@@ -2,9 +2,12 @@ package gov.va.health.unifier.openapi;
 
 import static gov.va.health.unifier.Print.println;
 import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
+import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
@@ -14,16 +17,17 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 @RequiredArgsConstructor(staticName = "startingWith")
 public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source>, OpenAPI> {
@@ -43,6 +47,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     OpenAPI openapi = initialInstance().get();
     openApiList.forEach(
         o -> {
+          println("Processing %s", o.name());
           combineServers(openapi, o);
           combineSecurities(openapi, o);
           combinePaths(openapi, o);
@@ -52,68 +57,73 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
   }
 
   protected void combineComponents(OpenAPI current, OpenApiV3Source toCombine) {
-    if (current.getComponents() == null) {
-      current.components(toCombine.openApi().getComponents());
-    } else {
-      Components currentComponents = current.getComponents();
-      Components components = toCombine.openApi().getComponents();
-      combineSecuritySchemes(
-          currentComponents.getSecuritySchemes(), components.getSecuritySchemes());
-      currentComponents.schemas(
-          mergeMapFavoringOriginal(
-              currentComponents.getSchemas(), components.getSchemas(), "Schema"));
-
-      // TODO following have not been analyzed
-      currentComponents.responses(
-          mergeMapFavoringOriginal(
-              currentComponents.getResponses(), components.getResponses(), "ApiResponse"));
-      currentComponents.parameters(
-          mergeMapFavoringOriginal(
-              currentComponents.getParameters(), components.getParameters(), "Parameter"));
-      currentComponents.examples(
-          mergeMapFavoringOriginal(
-              currentComponents.getExamples(), components.getExamples(), "Example"));
-      currentComponents.requestBodies(
-          mergeMapFavoringOriginal(
-              currentComponents.getRequestBodies(), components.getRequestBodies(), "RequestBody"));
-      currentComponents.headers(
-          mergeMapFavoringOriginal(
-              currentComponents.getHeaders(), components.getHeaders(), "Header"));
-      currentComponents.links(
-          mergeMapFavoringOriginal(currentComponents.getLinks(), components.getLinks(), "Link"));
-      currentComponents.callbacks(
-          mergeMapFavoringOriginal(
-              currentComponents.getCallbacks(), components.getCallbacks(), "Callback"));
-      currentComponents.extensions(
-          mergeMapFavoringOriginal(
-              currentComponents.getExtensions(), components.getExtensions(), "Extension"));
+    Components currentComponents = current.getComponents();
+    if (currentComponents == null) {
+      currentComponents = new Components();
+      current.components(currentComponents);
     }
+
+    Components components = toCombine.openApi().getComponents();
+    combineSecuritySchemes(currentComponents, toCombine);
+    combineSchemas(currentComponents, toCombine);
+
+    // TODO following have not been analyzed
+    currentComponents.responses(
+        mergeMapFavoringOriginal(
+            currentComponents.getResponses(), components.getResponses(), "ApiResponse"));
+    currentComponents.parameters(
+        mergeMapFavoringOriginal(
+            currentComponents.getParameters(), components.getParameters(), "Parameter"));
+    currentComponents.examples(
+        mergeMapFavoringOriginal(
+            currentComponents.getExamples(), components.getExamples(), "Example"));
+    currentComponents.requestBodies(
+        mergeMapFavoringOriginal(
+            currentComponents.getRequestBodies(), components.getRequestBodies(), "RequestBody"));
+    currentComponents.headers(
+        mergeMapFavoringOriginal(
+            currentComponents.getHeaders(), components.getHeaders(), "Header"));
+    currentComponents.links(
+        mergeMapFavoringOriginal(currentComponents.getLinks(), components.getLinks(), "Link"));
+    currentComponents.callbacks(
+        mergeMapFavoringOriginal(
+            currentComponents.getCallbacks(), components.getCallbacks(), "Callback"));
+    currentComponents.extensions(
+        mergeMapFavoringOriginal(
+            currentComponents.getExtensions(), components.getExtensions(), "Extension"));
+  }
+
+  private void combineSchemas(Components currentComponents, OpenApiV3Source toCombine) {
+    var schemas =
+        toCombine.openApi().getComponents().getSchemas().entrySet().stream()
+            .filter(e -> toCombine.schemaFilter().test(e.getKey()))
+            .collect(toMap(Entry::getKey, Entry::getValue));
+    var unsorted = mergeMapFavoringOriginal(currentComponents.getSchemas(), schemas, "Schema");
+    currentComponents.schemas(sortByKeyIntoCopy(unsorted, LinkedHashMap::new));
   }
 
   protected void combinePaths(OpenAPI current, OpenApiV3Source toCombine) {
-    if (current.getPaths() == null) {
-      current.paths(toCombine.openApi().getPaths());
-    } else {
-      toCombine
-          .openApi()
-          .getPaths()
-          .keySet()
-          .forEach(
-              keyToAdd -> {
-                if (current.getPaths().containsKey(keyToAdd)) {
-                  throw new DuplicatePath(String.format("Path already exists: '%s'", keyToAdd));
-                }
-                current
-                    .getPaths()
-                    .addPathItem(keyToAdd, toCombine.openApi().getPaths().get(keyToAdd));
-              });
-      // re-sort on keys
-      Paths sorted = new Paths();
-      current.getPaths().entrySet().stream()
-          .sorted(Map.Entry.comparingByKey())
-          .forEach(entry -> sorted.put(entry.getKey(), entry.getValue()));
-      current.paths(sorted);
-    }
+    Paths unsorted = current.getPaths() == null ? new Paths() : current.getPaths();
+    toCombine.openApi().getPaths().keySet().stream()
+        .filter(toCombine.pathFilter())
+        .forEach(
+            keyToAdd -> {
+              if (unsorted.containsKey(keyToAdd)) {
+                throw new DuplicatePath(String.format("Path already exists: '%s'", keyToAdd));
+              }
+              println("Adding path %s", keyToAdd);
+              unsorted.addPathItem(keyToAdd, toCombine.openApi().getPaths().get(keyToAdd));
+            });
+    current.paths(sortByKeyIntoCopy(unsorted, Paths::new));
+  }
+
+  protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
+      S unsorted, Supplier<D> destination) {
+    D sorted = destination.get();
+    unsorted.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .forEach(entry -> sorted.put(entry.getKey(), (V) entry.getValue()));
+    return sorted;
   }
 
   protected void combineSecurities(OpenAPI current, OpenApiV3Source toCombine) {
@@ -142,19 +152,26 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     }
   }
 
-  protected void combineSecuritySchemes(
-      Map<String, SecurityScheme> current, Map<String, SecurityScheme> toCombine) {
+  protected void combineSecuritySchemes(Components currentComponents, OpenApiV3Source toCombine) {
+    if (currentComponents.getSecuritySchemes() == null) {
+      currentComponents.securitySchemes(new LinkedHashMap<>());
+    }
     if (toCombine == null) {
       return;
     }
-    toCombine.forEach(
-        (key, value) -> {
-          if (!current.containsKey(key)) {
-            current.put(key, value);
-            return;
-          }
-          mergeSecuritySchemes(current.get(key), value);
-        });
+    toCombine
+        .openApi()
+        .getComponents()
+        .getSecuritySchemes()
+        .forEach(
+            (key, value) -> {
+              var currentValue = currentComponents.getSecuritySchemes().get(key);
+              if (currentValue == null) {
+                currentComponents.getSecuritySchemes().put(key, value);
+                return;
+              }
+              mergeSecuritySchemes(currentValue, value);
+            });
   }
 
   protected void combineServers(OpenAPI current, OpenApiV3Source toCombine) {
@@ -194,15 +211,20 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     }
     toMerge.forEach(
         (key, value) -> {
-          if (!current.containsKey(key)) {
+          var currentValue = current.get(key);
+          if (currentValue == null) {
             println("%s Adding new Key %s", prefix, key);
             current.put(key, value);
-          } else if (value.equals(current.get(key))) {
+          } else if (value.equals(currentValue)) {
             println("%s Skipping conflicting key '%s' with identical value", prefix, key);
           } else {
             String message =
                 String.format("%s CONFLICT key '%s' with non-equals values", prefix, key);
             println(message);
+            println("Current value");
+            println(Json.pretty(currentValue));
+            println("Attempting to add value");
+            println(Json.pretty(value));
             throw new DuplicateKey(message);
           }
         });
@@ -223,11 +245,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
   }
 
   protected boolean serverExists(List<Server> servers, Server server) {
-    var found =
-        servers.stream()
-            .filter(s -> StringUtils.equalsIgnoreCase(s.getUrl(), server.getUrl()))
-            .findFirst();
-    return found.isPresent();
+    return servers.stream().anyMatch(s -> equalsIgnoreCase(s.getUrl(), server.getUrl()));
   }
 
   protected List<Server> servers(List<Server> current, List<Server> servers) {
