@@ -26,6 +26,7 @@ public class OpenApiV3MergeCommand implements Callable<Integer> {
     println("Loading %s", configFile);
     var mapper = new ObjectMapper();
     var config = mapper.readValue(configFile, MergeConfig.class);
+    config.validate();
     var sources = config.in().stream().map(OpenApiV3Source::from).collect(toList());
     var merged =
         OpenApiV3Unifier.startingWith(InitialOpenApiV3.of(config.properties())).apply(sources);

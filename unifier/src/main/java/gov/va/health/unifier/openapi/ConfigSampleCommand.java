@@ -35,7 +35,7 @@ public class ConfigSampleCommand implements Callable<Integer> {
                         .schemaFilter(RegexFilter.builder().include("Awesome.*").build())
                         .build(),
                     Contributor.builder()
-                        .file("sources/openapi-2.json")
+                        .url("https://example.com/openapi-2.json")
                         .pathFilter(RegexFilter.builder().exclude("/Lame(/\\{id\\})?").build())
                         .schemaFilter(RegexFilter.builder().exclude("Lame.*").build())
                         .build()))
