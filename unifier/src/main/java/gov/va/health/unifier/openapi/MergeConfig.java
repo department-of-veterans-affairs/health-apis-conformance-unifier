@@ -2,21 +2,16 @@ package gov.va.health.unifier.openapi;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-import io.swagger.v3.core.util.Json;
-import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 
 @Builder
@@ -27,10 +22,13 @@ import lombok.experimental.Accessors;
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class MergeConfig {
 
+  /** Input configuration. You should two or more to be useful. */
   private List<Contributor> in;
 
+  /** File path of the merged Open API */
   private String out;
 
+  /** Properties that override any details of contributors. */
   private OpenApiProperties properties;
 
   public List<Contributor> in() {
@@ -46,9 +44,11 @@ public class MergeConfig {
   @NoArgsConstructor
   @JsonAutoDetect(fieldVisibility = Visibility.ANY)
   public static class Contributor {
+    /** Path to the Open API json file. */
     private String file;
-
+    /** Filter configuration for Open API path items. */
     private RegexFilter pathFilter;
+    /** Filter configuration for Open API schema items. */
     private RegexFilter schemaFilter;
 
     public RegexFilter pathFilter() {
@@ -57,16 +57,6 @@ public class MergeConfig {
 
     public RegexFilter schemaFilter() {
       return schemaFilter == null ? new RegexFilter() : schemaFilter;
-    }
-
-    @SneakyThrows
-    OpenApiV3Source asOpenApiV3Source() {
-      return OpenApiV3Source.builder()
-          .name(file())
-          .openApi(Json.mapper().readValue(new File(file()), OpenAPI.class))
-          .pathFilter(pathFilter().asOpenApiV3Filter())
-          .schemaFilter(schemaFilter().asOpenApiV3Filter())
-          .build();
     }
   }
 
@@ -88,13 +78,6 @@ public class MergeConfig {
      * be included. If neither include or exclude are specified, then all items are included.
      */
     private String exclude;
-
-    OpenApiV3Source.Filter asOpenApiV3Filter() {
-      return OpenApiV3Source.Filter.builder()
-          .include(include == null ? null : Pattern.compile(include).asMatchPredicate())
-          .exclude(exclude == null ? null : Pattern.compile(exclude).asMatchPredicate())
-          .build();
-    }
   }
 
   @Builder

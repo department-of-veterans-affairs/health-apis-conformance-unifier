@@ -4,7 +4,6 @@ import static gov.va.health.unifier.Print.println;
 import static java.util.stream.Collectors.toList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import gov.va.health.unifier.openapi.MergeConfig.Contributor;
 import io.swagger.v3.core.util.Json;
 import java.io.File;
 import java.util.concurrent.Callable;
@@ -27,7 +26,7 @@ public class OpenApiV3MergeCommand implements Callable<Integer> {
     println("Loading %s", configFile);
     var mapper = new ObjectMapper();
     var config = mapper.readValue(configFile, MergeConfig.class);
-    var sources = config.in().stream().map(Contributor::asOpenApiV3Source).collect(toList());
+    var sources = config.in().stream().map(OpenApiV3Source::from).collect(toList());
     var merged =
         OpenApiV3Unifier.startingWith(InitialOpenApiV3.of(config.properties())).apply(sources);
     Json.pretty().writeValue(new File(config.out()), merged);

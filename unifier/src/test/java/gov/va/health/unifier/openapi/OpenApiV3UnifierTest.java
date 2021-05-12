@@ -71,17 +71,13 @@ public class OpenApiV3UnifierTest {
                     OpenApiV3Source.builder()
                         .name("example-1")
                         .openApi(openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
-                        .schemaFilter(
-                            Filter.builder()
-                                .include(s -> s.startsWith("Foo"))
-                                .exclude(s -> s.startsWith("Blah"))
-                                .build())
+                        .schemaFilter(Filter.builder().include(s -> s.startsWith("Foo")).build())
                         .build(),
                     OpenApiV3Source.builder()
                         .name("example-2")
                         .openApi(openApiFromPath("src/test/resources/openapi-v3-example-2.json"))
                         .schemaFilter(
-                            Filter.builder().include(s -> s.startsWith("Parameters")).build())
+                            Filter.builder().exclude(s -> !s.startsWith("Parameters")).build())
                         .build()));
     OpenAPI expected = openApiFromPath("src/test/resources/openapi-v3-example-unified.json");
     expected.getComponents().getSchemas().remove("Blah");
