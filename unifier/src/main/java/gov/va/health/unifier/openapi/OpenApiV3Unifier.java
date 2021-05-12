@@ -3,6 +3,7 @@ package gov.va.health.unifier.openapi;
 import static gov.va.health.unifier.Print.println;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
+import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
@@ -27,7 +28,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 @RequiredArgsConstructor(staticName = "startingWith")
 public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source>, OpenAPI> {
@@ -245,11 +245,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
   }
 
   protected boolean serverExists(List<Server> servers, Server server) {
-    var found =
-        servers.stream()
-            .filter(s -> StringUtils.equalsIgnoreCase(s.getUrl(), server.getUrl()))
-            .findFirst();
-    return found.isPresent();
+    return servers.stream().anyMatch(s -> equalsIgnoreCase(s.getUrl(), server.getUrl()));
   }
 
   protected List<Server> servers(List<Server> current, List<Server> servers) {
