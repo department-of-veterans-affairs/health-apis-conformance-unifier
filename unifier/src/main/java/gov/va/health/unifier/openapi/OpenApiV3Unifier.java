@@ -99,7 +99,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
             .filter(e -> toCombine.schemaFilter().test(e.getKey()))
             .collect(toMap(Entry::getKey, Entry::getValue));
     var unsorted = mergeMapFavoringOriginal(currentComponents.getSchemas(), schemas, "Schema");
-    currentComponents.schemas(sortByKeyInToCopy(unsorted, LinkedHashMap::new));
+    currentComponents.schemas(sortByKeyIntoCopy(unsorted, LinkedHashMap::new));
   }
 
   protected void combinePaths(OpenAPI current, OpenApiV3Source toCombine) {
@@ -114,10 +114,10 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
               println("Adding path %s", keyToAdd);
               unsorted.addPathItem(keyToAdd, toCombine.openApi().getPaths().get(keyToAdd));
             });
-    current.paths(sortByKeyInToCopy(unsorted, Paths::new));
+    current.paths(sortByKeyIntoCopy(unsorted, Paths::new));
   }
 
-  protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyInToCopy(
+  protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
       S unsorted, Supplier<D> destination) {
     D sorted = destination.get();
     unsorted.entrySet().stream()
