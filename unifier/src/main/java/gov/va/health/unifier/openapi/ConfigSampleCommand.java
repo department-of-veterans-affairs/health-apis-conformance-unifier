@@ -2,12 +2,14 @@ package gov.va.health.unifier.openapi;
 
 import static gov.va.health.unifier.Print.println;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.va.health.unifier.openapi.MergeConfig.Contributor;
 import gov.va.health.unifier.openapi.MergeConfig.OpenApiProperties;
 import gov.va.health.unifier.openapi.MergeConfig.OpenApiProperties.ExternalDocumentationProperties;
 import gov.va.health.unifier.openapi.MergeConfig.OpenApiProperties.SecuritySchemeProperties;
 import gov.va.health.unifier.openapi.MergeConfig.OpenApiProperties.ServerProperties;
+import gov.va.health.unifier.openapi.MergeConfig.RegexFilter;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import java.util.List;
@@ -27,8 +29,16 @@ public class ConfigSampleCommand implements Callable<Integer> {
             .out("final-openapi.json")
             .in(
                 List.of(
-                    Contributor.builder().file("sources/openapi-1.json").build(),
-                    Contributor.builder().file("sources/openapi-2.json").build()))
+                    Contributor.builder()
+                        .file("sources/openapi-1.json")
+                        .pathFilter(RegexFilter.builder().include("/Awesome(/\\{id\\})?").build())
+                        .schemaFilter(RegexFilter.builder().include("Awesome.*").build())
+                        .build(),
+                    Contributor.builder()
+                        .file("sources/openapi-2.json")
+                        .pathFilter(RegexFilter.builder().exclude("/Lame(/\\{id\\})?").build())
+                        .schemaFilter(RegexFilter.builder().exclude("Lame.*").build())
+                        .build()))
             .properties(
                 OpenApiProperties.builder()
                     .title("Awesome API")
@@ -55,7 +65,11 @@ public class ConfigSampleCommand implements Callable<Integer> {
                                 .build()))
                     .build())
             .build();
-    println(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(sample));
+    println(
+        new ObjectMapper()
+            .setSerializationInclusion(Include.NON_EMPTY)
+            .writerWithDefaultPrettyPrinter()
+            .writeValueAsString(sample));
     return 0;
   }
 }
