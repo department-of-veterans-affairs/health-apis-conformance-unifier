@@ -59,6 +59,21 @@ public class OpenApiV3UnifierTest {
     expected.getPaths().remove("/Blah/{id}");
     expected.getPaths().remove("/Blah");
     expected.getPaths().remove("/Foo");
+
+    // Paths that have been included
+    assertThat(actual.getPaths().get("/Foo/{id}"))
+        .as("/Foo/{id} is included from sample 1")
+        .isNotNull();
+    assertThat(actual.getPaths().get("/Blah/{id}/$some-operation"))
+        .as("/Blah/{id}/$some-operaton is included from sample 2")
+        .isNotNull();
+    // Paths that have been excluded
+    assertThat(actual.getPaths().get("/Foo")).as("/Foo is excluded from sample 1").isNull();
+    assertThat(actual.getPaths().get("/Blah/{id}"))
+        .as("/Blah/{id} is excluded from sample 1")
+        .isNull();
+    assertThat(actual.getPaths().get("/Blah")).as("/Blah is excluded from sample 1").isNull();
+    // Everything else should be the same
     assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
   }
 
