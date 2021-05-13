@@ -1,5 +1,7 @@
 package gov.va.health.unifier.openapi;
 
+import static gov.va.health.unifier.openapi.Check.argument;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
@@ -38,14 +40,24 @@ public class MergeConfig {
     return in;
   }
 
+  public void validate() {
+    argument(out == null, "out must be specified");
+    argument(in().isEmpty(), "in must be specified");
+    in().forEach(Contributor::validate);
+  }
+
   @Builder
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
   @JsonAutoDetect(fieldVisibility = Visibility.ANY)
   public static class Contributor {
-    /** Path to the Open API json file. */
+    /** Path to the Open API json file. Only one of file or url may be specified. */
     private String file;
+
+    /** URL to the Open API json file. Only one of file or url may be specified. */
+    private String url;
+
     /** Filter configuration for Open API path items. */
     private RegexFilter pathFilter;
     /** Filter configuration for Open API schema items. */
@@ -57,6 +69,11 @@ public class MergeConfig {
 
     public RegexFilter schemaFilter() {
       return schemaFilter == null ? new RegexFilter() : schemaFilter;
+    }
+
+    public void validate() {
+      argument(file == null && url == null, "file or url must be specified");
+      argument(file != null && url != null, "file or url must be specified, not both");
     }
   }
 

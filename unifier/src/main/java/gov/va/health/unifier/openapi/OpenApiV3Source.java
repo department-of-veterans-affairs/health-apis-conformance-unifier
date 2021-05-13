@@ -4,6 +4,7 @@ import gov.va.health.unifier.openapi.MergeConfig.RegexFilter;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
 import java.io.File;
+import java.net.URL;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import lombok.Builder;
@@ -22,12 +23,21 @@ public class OpenApiV3Source {
 
   @SneakyThrows
   public static OpenApiV3Source from(@NonNull MergeConfig.Contributor config) {
-    return OpenApiV3Source.builder()
-        .name(config.file())
-        .openApi(Json.mapper().readValue(new File(config.file()), OpenAPI.class))
-        .pathFilter(Filter.from(config.pathFilter()))
-        .schemaFilter(Filter.from(config.schemaFilter()))
-        .build();
+    OpenApiV3SourceBuilder source =
+        OpenApiV3Source.builder()
+            .pathFilter(Filter.from(config.pathFilter()))
+            .schemaFilter(Filter.from(config.schemaFilter()));
+    if (config.file() != null) {
+      source
+          .name(config.file())
+          .openApi(Json.mapper().readValue(new File(config.file()), OpenAPI.class));
+    }
+    if (config.url() != null) {
+      source
+          .name(config.url())
+          .openApi(Json.mapper().readValue(new URL(config.url()), OpenAPI.class));
+    }
+    return source.build();
   }
 
   @Value
