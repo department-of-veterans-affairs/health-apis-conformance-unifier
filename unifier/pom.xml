@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>gov.va.api.health</groupId>
   <artifactId>unifier</artifactId>
-  <version>2.0.8-SNAPSHOT</version>
+  <version>2.0.8</version>
   <packaging>jar</packaging>
   <properties>
     <assertj-core.version>3.19.0</assertj-core.version>
