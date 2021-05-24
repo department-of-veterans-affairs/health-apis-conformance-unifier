@@ -105,6 +105,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     current.paths(sortByKeyIntoCopy(unsorted, Paths::new));
   }
 
+  @SuppressWarnings("rawtypes")
   private void combineSchemas(Components currentComponents, OpenApiV3Source toCombine) {
     var schemas =
         toCombine.openApi().getComponents().getSchemas().entrySet().stream()
