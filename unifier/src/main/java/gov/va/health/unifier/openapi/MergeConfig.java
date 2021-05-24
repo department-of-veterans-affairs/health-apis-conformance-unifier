@@ -27,12 +27,13 @@ public class MergeConfig {
   /** Input configuration. You should two or more to be useful. */
   private List<Contributor> in;
 
-  /** File path of the merged Open API */
+  /** File path of the merged Open API. */
   private String out;
 
   /** Properties that override any details of contributors. */
   private OpenApiProperties properties;
 
+  /** Lazy Getter for in. */
   public List<Contributor> in() {
     if (in == null) {
       in = new ArrayList<>();
@@ -40,6 +41,7 @@ public class MergeConfig {
     return in;
   }
 
+  /** Validate that in and out are both specified. */
   public void validate() {
     argument(out == null, "out must be specified");
     argument(in().isEmpty(), "in must be specified");
@@ -110,6 +112,7 @@ public class MergeConfig {
     private ServerProperties server;
     private Map<String, SecuritySchemeProperties> securityScheme;
 
+    /** Lazy getter for security scheme. */
     public Map<String, SecuritySchemeProperties> securityScheme() {
       if (securityScheme == null) {
         securityScheme = new HashMap<>();

@@ -21,8 +21,26 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "of")
 public class InitialOpenApiV3 implements Supplier<OpenAPI> {
-
   private final OpenApiProperties properties;
+
+  private Components components() {
+    if (properties.securityScheme().isEmpty()) {
+      return null;
+    }
+    Components components = new Components();
+    components.securitySchemes(securitySchemes());
+    return components;
+  }
+
+  private ExternalDocumentation externalDocumentation() {
+    if (properties.externalDocs() == null) {
+      return null;
+    }
+    ExternalDocumentation externalDocs = new ExternalDocumentation();
+    externalDocs.description(properties.externalDocs().description());
+    externalDocs.url(properties.externalDocs().url());
+    return externalDocs;
+  }
 
   @Override
   public OpenAPI get() {
@@ -34,18 +52,12 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
     return openapi;
   }
 
-  private Components components() {
-    if (properties.securityScheme().isEmpty()) {
-      return null;
-    }
-    Components components = new Components();
-    components.securitySchemes(securitySchemes());
-    return components;
-  }
-
-  private Map<String, SecurityScheme> securitySchemes() {
-    return properties.securityScheme().entrySet().stream()
-        .collect(Collectors.toMap(Entry::getKey, e -> securityScheme(e.getValue())));
+  private Info info() {
+    Info info = new Info();
+    info.title(properties.title());
+    info.description(properties.description());
+    info.version(properties.version());
+    return info;
   }
 
   private SecurityScheme securityScheme(SecuritySchemeProperties schemeProperties) {
@@ -62,12 +74,9 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
     return securityScheme;
   }
 
-  private Info info() {
-    Info info = new Info();
-    info.title(properties.title());
-    info.description(properties.description());
-    info.version(properties.version());
-    return info;
+  private Map<String, SecurityScheme> securitySchemes() {
+    return properties.securityScheme().entrySet().stream()
+        .collect(Collectors.toMap(Entry::getKey, e -> securityScheme(e.getValue())));
   }
 
   private List<Server> servers() {
@@ -81,15 +90,5 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
     List<Server> servers = new ArrayList<>(1);
     servers.add(server);
     return servers;
-  }
-
-  private ExternalDocumentation externalDocumentation() {
-    if (properties.externalDocs() == null) {
-      return null;
-    }
-    ExternalDocumentation externalDocs = new ExternalDocumentation();
-    externalDocs.description(properties.externalDocs().description());
-    externalDocs.url(properties.externalDocs().url());
-    return externalDocs;
   }
 }

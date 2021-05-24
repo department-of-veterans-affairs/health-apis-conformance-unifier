@@ -16,11 +16,16 @@ import lombok.Value;
 @Builder
 public class OpenApiV3Source {
   public static final Pattern EVERYTHING = Pattern.compile(".*");
+
   @NonNull String name;
+
   @NonNull OpenAPI openApi;
+
   @NonNull @Builder.Default Filter pathFilter = Filter.includeEverything();
+
   @NonNull @Builder.Default Filter schemaFilter = Filter.includeEverything();
 
+  /** Build an Open API source from a contributor. */
   @SneakyThrows
   public static OpenApiV3Source from(@NonNull MergeConfig.Contributor config) {
     OpenApiV3SourceBuilder source =
@@ -43,18 +48,19 @@ public class OpenApiV3Source {
   @Value
   @Builder
   public static class Filter implements Predicate<String> {
-
     /**
      * If specified, only items matching this regex will be included. Excluded filter will be
      * ignored. If neither include or exclude are specified, then all items are included.
      */
     Predicate<String> include;
+
     /**
      * If included is not specified, any item matching this regex will be excluded. All others will
      * be included. If neither include or exclude are specified, then all items are included.
      */
     Predicate<String> exclude;
 
+    /** Build a Filter from a Regex. */
     public static Filter from(@NonNull RegexFilter config) {
       return OpenApiV3Source.Filter.builder()
           .include(regexPredicateOrNull(config.include()))
@@ -62,12 +68,12 @@ public class OpenApiV3Source {
           .build();
     }
 
-    private static Predicate<String> regexPredicateOrNull(String pattern) {
-      return pattern == null ? null : Pattern.compile(pattern).asMatchPredicate();
-    }
-
     public static Filter includeEverything() {
       return Filter.builder().build();
+    }
+
+    private static Predicate<String> regexPredicateOrNull(String pattern) {
+      return pattern == null ? null : Pattern.compile(pattern).asMatchPredicate();
     }
 
     @Override

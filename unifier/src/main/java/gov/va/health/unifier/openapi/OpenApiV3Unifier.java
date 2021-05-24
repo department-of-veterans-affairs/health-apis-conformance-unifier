@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor(staticName = "startingWith")
 public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source>, OpenAPI> {
-
   @Getter private final Supplier<OpenAPI> initialInstance;
 
   private static List<String> mergeNoDuplicates(List<String> a, List<String> b) {
@@ -62,11 +61,9 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
       currentComponents = new Components();
       current.components(currentComponents);
     }
-
     Components components = toCombine.openApi().getComponents();
     combineSecuritySchemes(currentComponents, toCombine);
     combineSchemas(currentComponents, toCombine);
-
     // TODO following have not been analyzed
     currentComponents.responses(
         mergeMapFavoringOriginal(
@@ -93,15 +90,6 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
             currentComponents.getExtensions(), components.getExtensions(), "Extension"));
   }
 
-  private void combineSchemas(Components currentComponents, OpenApiV3Source toCombine) {
-    var schemas =
-        toCombine.openApi().getComponents().getSchemas().entrySet().stream()
-            .filter(e -> toCombine.schemaFilter().test(e.getKey()))
-            .collect(toMap(Entry::getKey, Entry::getValue));
-    var unsorted = mergeMapFavoringOriginal(currentComponents.getSchemas(), schemas, "Schema");
-    currentComponents.schemas(sortByKeyIntoCopy(unsorted, LinkedHashMap::new));
-  }
-
   protected void combinePaths(OpenAPI current, OpenApiV3Source toCombine) {
     Paths unsorted = current.getPaths() == null ? new Paths() : current.getPaths();
     toCombine.openApi().getPaths().keySet().stream()
@@ -117,13 +105,13 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     current.paths(sortByKeyIntoCopy(unsorted, Paths::new));
   }
 
-  protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
-      S unsorted, Supplier<D> destination) {
-    D sorted = destination.get();
-    unsorted.entrySet().stream()
-        .sorted(Map.Entry.comparingByKey())
-        .forEach(entry -> sorted.put(entry.getKey(), (V) entry.getValue()));
-    return sorted;
+  private void combineSchemas(Components currentComponents, OpenApiV3Source toCombine) {
+    var schemas =
+        toCombine.openApi().getComponents().getSchemas().entrySet().stream()
+            .filter(e -> toCombine.schemaFilter().test(e.getKey()))
+            .collect(toMap(Entry::getKey, Entry::getValue));
+    var unsorted = mergeMapFavoringOriginal(currentComponents.getSchemas(), schemas, "Schema");
+    currentComponents.schemas(sortByKeyIntoCopy(unsorted, LinkedHashMap::new));
   }
 
   protected void combineSecurities(OpenAPI current, OpenApiV3Source toCombine) {
@@ -253,5 +241,14 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
         servers.stream().filter(s -> !serverExists(current, s)).collect(toList());
     current.addAll(serversToAdd);
     return current;
+  }
+
+  protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
+      S unsorted, Supplier<D> destination) {
+    D sorted = destination.get();
+    unsorted.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
+        .forEach(entry -> sorted.put(entry.getKey(), entry.getValue()));
+    return sorted;
   }
 }

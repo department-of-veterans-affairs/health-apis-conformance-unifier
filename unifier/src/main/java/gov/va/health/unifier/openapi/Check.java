@@ -11,6 +11,7 @@ public class Check {
     throwIf(IllegalArgumentException::new, condition, message, args);
   }
 
+  /** Throw exception if condition is met. */
   @SneakyThrows
   public static void throwIf(
       Function<String, Exception> newException, boolean condition, String message, Object... args) {
