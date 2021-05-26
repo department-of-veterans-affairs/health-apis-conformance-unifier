@@ -4,7 +4,7 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>basic-java-parent</artifactId>
-    <version>7.0.26-SNAPSHOT</version>
+    <version>8.0.3-SNAPSHOT</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.health</groupId>
