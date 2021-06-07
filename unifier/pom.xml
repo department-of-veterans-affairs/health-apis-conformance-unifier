@@ -3,8 +3,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>gov.va.api.health</groupId>
-    <artifactId>basic-java-parent</artifactId>
-    <version>8.0.3</version>
+    <artifactId>lighthouse-maven-starter</artifactId>
+    <version>0.0.0</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.health</groupId>

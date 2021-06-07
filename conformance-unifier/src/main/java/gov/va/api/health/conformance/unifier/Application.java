@@ -12,6 +12,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
+/** Spring Boot Application. */
 @SpringBootApplication
 @Import({AmazonS3ClientServiceConfig.class})
 public class Application implements ApplicationRunner {

@@ -4,6 +4,7 @@ import gov.va.api.health.informational.openapi.OpenApiProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/** Current Open API properties. */
 @Configuration
 @ConfigurationProperties("openapi")
 public class CurrentOpenApiProperties extends OpenApiProperties {}
