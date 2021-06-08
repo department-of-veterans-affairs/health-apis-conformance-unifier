@@ -14,7 +14,6 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 public class OpenApiV3UnifierTest {
-
   public static final String INITIAL_OPENAPI = "src/test/resources/openapi-v3-initial.json";
 
   @Test
@@ -33,6 +32,32 @@ public class OpenApiV3UnifierTest {
                         .build()));
     assertThat(actual)
         .isEqualTo(openApiFromPath("src/test/resources/openapi-v3-example-unified.json"));
+  }
+
+  @Test
+  void duplicatePathThrowsException() {
+    assertThatExceptionOfType(DuplicatePath.class)
+        .isThrownBy(
+            () ->
+                OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
+                    .apply(
+                        List.of(
+                            OpenApiV3Source.builder()
+                                .name("example-1")
+                                .openApi(
+                                    openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
+                                .build(),
+                            OpenApiV3Source.builder()
+                                .name("duplicates")
+                                .openApi(
+                                    openApiFromPath(
+                                        "src/test/resources/openapi-v3-duplicate-path.json"))
+                                .build())));
+  }
+
+  @SneakyThrows
+  private OpenAPI openApiFromPath(String path) {
+    return Json.mapper().readValue(new File(path), OpenAPI.class);
   }
 
   @Test
@@ -59,7 +84,6 @@ public class OpenApiV3UnifierTest {
     expected.getPaths().remove("/Blah/{id}");
     expected.getPaths().remove("/Blah");
     expected.getPaths().remove("/Foo");
-
     // Paths that have been included
     assertThat(actual.getPaths().get("/Foo/{id}"))
         .as("/Foo/{id} is included from sample 1")
@@ -75,6 +99,27 @@ public class OpenApiV3UnifierTest {
     assertThat(actual.getPaths().get("/Blah")).as("/Blah is excluded from sample 1").isNull();
     // Everything else should be the same
     assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
+  }
+
+  @Test
+  void schemaConflictThrowsException() {
+    assertThatExceptionOfType(DuplicateKey.class)
+        .isThrownBy(
+            () ->
+                OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
+                    .apply(
+                        List.of(
+                            OpenApiV3Source.builder()
+                                .name("example-1")
+                                .openApi(
+                                    openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
+                                .build(),
+                            OpenApiV3Source.builder()
+                                .name("conflicting-schema")
+                                .openApi(
+                                    openApiFromPath(
+                                        "src/test/resources/openapi-v3-conflict-schema.json"))
+                                .build())));
   }
 
   @Test
@@ -99,52 +144,5 @@ public class OpenApiV3UnifierTest {
     expected.getComponents().getSchemas().remove("BlahBundle");
     expected.getComponents().getSchemas().remove("OperationOutcome");
     assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
-  }
-
-  @Test
-  void duplicatePathThrowsException() {
-    assertThatExceptionOfType(DuplicatePath.class)
-        .isThrownBy(
-            () ->
-                OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
-                    .apply(
-                        List.of(
-                            OpenApiV3Source.builder()
-                                .name("example-1")
-                                .openApi(
-                                    openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
-                                .build(),
-                            OpenApiV3Source.builder()
-                                .name("duplicates")
-                                .openApi(
-                                    openApiFromPath(
-                                        "src/test/resources/openapi-v3-duplicate-path.json"))
-                                .build())));
-  }
-
-  @Test
-  void schemaConflictThrowsException() {
-    assertThatExceptionOfType(DuplicateKey.class)
-        .isThrownBy(
-            () ->
-                OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
-                    .apply(
-                        List.of(
-                            OpenApiV3Source.builder()
-                                .name("example-1")
-                                .openApi(
-                                    openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
-                                .build(),
-                            OpenApiV3Source.builder()
-                                .name("conflicting-schema")
-                                .openApi(
-                                    openApiFromPath(
-                                        "src/test/resources/openapi-v3-conflict-schema.json"))
-                                .build())));
-  }
-
-  @SneakyThrows
-  private OpenAPI openApiFromPath(String path) {
-    return Json.mapper().readValue(new File(path), OpenAPI.class);
   }
 }

@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
+/** Base Unifier Service. */
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class BaseUnifierService<T, U, O> {
   private static final ObjectMapper MAPPER_OPENAPI = Json.mapper();
