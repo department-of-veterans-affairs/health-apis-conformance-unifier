@@ -11,6 +11,7 @@ import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
@@ -51,6 +52,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
           combineSecurities(openapi, o);
           combinePaths(openapi, o);
           combineComponents(openapi, o);
+          combineParameters(openapi, o);
         });
     return openapi;
   }
@@ -88,6 +90,26 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     currentComponents.extensions(
         mergeMapFavoringOriginal(
             currentComponents.getExtensions(), components.getExtensions(), "Extension"));
+  }
+
+  private void combineParameters(OpenAPI current, OpenApiV3Source toCombine) {
+    if (toCombine.parameterFilter().path() == null) {
+      return;
+    }
+    List<Parameter> parameters =
+        current.getPaths().get(toCombine.parameterFilter().path()).getParameters();
+    toCombine.openApi().getPaths().get(toCombine.parameterFilter().path()).getParameters().stream()
+        .filter(e -> toCombine.parameterFilter().test(e.getName()))
+        .forEach(
+            keyToAdd -> {
+              if (parameters.contains(keyToAdd)) {
+                throw new OpenApiV3Exceptions.DuplicateParameter(
+                    String.format("Parameter already exists: '%s'", keyToAdd));
+              }
+              println("Adding parameter %s", keyToAdd);
+              parameters.add(keyToAdd);
+            });
+    current.getPaths().get(toCombine.parameterFilter().path()).parameters(parameters);
   }
 
   protected void combinePaths(OpenAPI current, OpenApiV3Source toCombine) {

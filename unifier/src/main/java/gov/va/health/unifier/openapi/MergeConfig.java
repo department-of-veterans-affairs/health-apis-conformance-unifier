@@ -23,7 +23,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class MergeConfig {
-
   /** Input configuration. You should two or more to be useful. */
   private List<Contributor> in;
 
@@ -62,8 +61,16 @@ public class MergeConfig {
 
     /** Filter configuration for Open API path items. */
     private RegexFilter pathFilter;
+
     /** Filter configuration for Open API schema items. */
     private RegexFilter schemaFilter;
+
+    /** Filter configuration for Open API parameter items. */
+    private RegexFilter parameterFilter;
+
+    public RegexFilter parameterFilter() {
+      return parameterFilter == null ? new RegexFilter() : parameterFilter;
+    }
 
     public RegexFilter pathFilter() {
       return pathFilter == null ? new RegexFilter() : pathFilter;
@@ -85,7 +92,6 @@ public class MergeConfig {
   @NoArgsConstructor
   @JsonAutoDetect(fieldVisibility = Visibility.ANY)
   public static class RegexFilter {
-
     /**
      * If specified, only items matching this regex will be included. Excluded filter will be
      * ignored. If neither include or exclude are specified, then all items are included.
@@ -97,6 +103,9 @@ public class MergeConfig {
      * be included. If neither include or exclude are specified, then all items are included.
      */
     private String exclude;
+
+    /** Used for filters that involve a specific path. */
+    private String path;
   }
 
   @Builder
@@ -106,10 +115,15 @@ public class MergeConfig {
   @JsonAutoDetect(fieldVisibility = Visibility.ANY)
   public static class OpenApiProperties {
     private String title;
+
     private String description;
+
     private String version;
+
     private ExternalDocumentationProperties externalDocs;
+
     private ServerProperties server;
+
     private Map<String, SecuritySchemeProperties> securityScheme;
 
     /** Lazy getter for security scheme. */
@@ -127,6 +141,7 @@ public class MergeConfig {
     @JsonAutoDetect(fieldVisibility = Visibility.ANY)
     public static class ExternalDocumentationProperties {
       private String url;
+
       private String description;
     }
 
@@ -137,6 +152,7 @@ public class MergeConfig {
     @JsonAutoDetect(fieldVisibility = Visibility.ANY)
     public static class ServerProperties {
       private String url;
+
       private String description;
     }
 
@@ -147,8 +163,11 @@ public class MergeConfig {
     @JsonAutoDetect(fieldVisibility = Visibility.ANY)
     public static class SecuritySchemeProperties {
       private String authorizationUrl;
+
       private String tokenUrl;
+
       private Type type;
+
       private In in;
     }
   }

@@ -25,13 +25,16 @@ public class OpenApiV3Source {
 
   @NonNull @Builder.Default Filter schemaFilter = Filter.includeEverything();
 
+  @NonNull @Builder.Default Filter parameterFilter = Filter.includeEverything();
+
   /** Build an Open API source from a contributor. */
   @SneakyThrows
   public static OpenApiV3Source from(@NonNull MergeConfig.Contributor config) {
     OpenApiV3SourceBuilder source =
         OpenApiV3Source.builder()
             .pathFilter(Filter.from(config.pathFilter()))
-            .schemaFilter(Filter.from(config.schemaFilter()));
+            .schemaFilter(Filter.from(config.schemaFilter()))
+            .parameterFilter(Filter.from(config.parameterFilter()));
     if (config.file() != null) {
       source
           .name(config.file())
@@ -60,11 +63,15 @@ public class OpenApiV3Source {
      */
     Predicate<String> exclude;
 
+    /** Used for filters that involve a specific path. */
+    String path;
+
     /** Build a Filter from a Regex. */
     public static Filter from(@NonNull RegexFilter config) {
       return OpenApiV3Source.Filter.builder()
           .include(regexPredicateOrNull(config.include()))
           .exclude(regexPredicateOrNull(config.exclude()))
+          .path(config.path())
           .build();
     }
 

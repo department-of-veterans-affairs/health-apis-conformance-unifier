@@ -61,6 +61,32 @@ public class OpenApiV3UnifierTest {
   }
 
   @Test
+  void parameterFiltersAreApplied() {
+    OpenAPI actual =
+        OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
+            .apply(
+                List.of(
+                    OpenApiV3Source.builder()
+                        .name("example-1")
+                        .openApi(openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
+                        .schemaFilter(Filter.builder().include(s -> s.startsWith("Foo")).build())
+                        .parameterFilter(
+                            Filter.builder().path("Foo").exclude(p -> p.startsWith("page")).build())
+                        .build(),
+                    OpenApiV3Source.builder()
+                        .name("example-2")
+                        .openApi(openApiFromPath("src/test/resources/openapi-v3-example-2.json"))
+                        .schemaFilter(
+                            Filter.builder().exclude(s -> !s.startsWith("Parameters")).build())
+                        .build()));
+    OpenAPI expected = openApiFromPath("src/test/resources/openapi-v3-example-unified.json");
+    expected.getComponents().getSchemas().remove("Blah");
+    expected.getComponents().getSchemas().remove("BlahBundle");
+    expected.getComponents().getSchemas().remove("OperationOutcome");
+    assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
+  }
+
+  @Test
   void pathFiltersAreApplied() {
     OpenAPI actual =
         OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))

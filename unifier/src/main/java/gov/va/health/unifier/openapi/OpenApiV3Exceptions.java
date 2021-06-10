@@ -19,4 +19,10 @@ public class OpenApiV3Exceptions {
       super(message);
     }
   }
+
+  public static class DuplicateParameter extends OpenApiV3MergeException {
+    public DuplicateParameter(final String message) {
+      super(message);
+    }
+  }
 }
