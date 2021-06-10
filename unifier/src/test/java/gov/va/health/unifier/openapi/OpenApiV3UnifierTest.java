@@ -71,7 +71,7 @@ public class OpenApiV3UnifierTest {
                         .openApi(openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
                         .schemaFilter(Filter.builder().include(s -> s.startsWith("Foo")).build())
                         .parameterFilter(
-                            Filter.builder().path("Foo").exclude(p -> p.startsWith("page")).build())
+                            Filter.builder().path("/Foo").exclude(p -> p.startsWith("page")).build())
                         .build(),
                     OpenApiV3Source.builder()
                         .name("example-2")
