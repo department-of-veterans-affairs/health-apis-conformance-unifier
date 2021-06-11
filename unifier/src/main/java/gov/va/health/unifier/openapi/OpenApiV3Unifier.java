@@ -97,19 +97,20 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
       return;
     }
     List<Parameter> parameters =
-        current.getPaths().get(toCombine.parameterFilter().path()).getParameters();
-    toCombine.openApi().getPaths().get(toCombine.parameterFilter().path()).getParameters().stream()
-        .filter(e -> toCombine.parameterFilter().test(e.getName()))
-        .forEach(
-            keyToAdd -> {
-              if (parameters.contains(keyToAdd)) {
-                throw new OpenApiV3Exceptions.DuplicateParameter(
-                    String.format("Parameter already exists: '%s'", keyToAdd));
-              }
-              println("Adding parameter %s", keyToAdd);
-              parameters.add(keyToAdd);
-            });
-    current.getPaths().get(toCombine.parameterFilter().path()).parameters(parameters);
+        current
+            .getPaths()
+            .get(toCombine.parameterFilter().path())
+            .readOperations()
+            .get(0)
+            .getParameters();
+    parameters =
+        parameters.stream().filter(e -> toCombine.parameterFilter().test(e.getName())).toList();
+    current
+        .getPaths()
+        .get(toCombine.parameterFilter().path())
+        .readOperations()
+        .get(0)
+        .parameters(parameters);
   }
 
   protected void combinePaths(OpenAPI current, OpenApiV3Source toCombine) {

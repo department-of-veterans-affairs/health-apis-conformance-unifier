@@ -71,7 +71,7 @@ public class OpenApiV3UnifierTest {
                         .openApi(openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
                         .schemaFilter(Filter.builder().include(s -> s.startsWith("Foo")).build())
                         .parameterFilter(
-                            Filter.builder().path("/Foo").exclude(p -> p.startsWith("page")).build())
+                            Filter.builder().path("/Foo").exclude(p -> p.equals("page")).build())
                         .build(),
                     OpenApiV3Source.builder()
                         .name("example-2")
@@ -79,7 +79,8 @@ public class OpenApiV3UnifierTest {
                         .schemaFilter(
                             Filter.builder().exclude(s -> !s.startsWith("Parameters")).build())
                         .build()));
-    OpenAPI expected = openApiFromPath("src/test/resources/openapi-v3-example-unified.json");
+    OpenAPI expected =
+        openApiFromPath("src/test/resources/openapi-v3-example-unified-filter-parameter.json");
     expected.getComponents().getSchemas().remove("Blah");
     expected.getComponents().getSchemas().remove("BlahBundle");
     expected.getComponents().getSchemas().remove("OperationOutcome");
