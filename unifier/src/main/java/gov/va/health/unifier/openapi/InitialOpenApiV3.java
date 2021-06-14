@@ -61,12 +61,12 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
   }
 
   private SecurityScheme securityScheme(SecuritySchemeProperties schemeProperties) {
-    OAuthFlow implicitFlow = new OAuthFlow();
-    implicitFlow.authorizationUrl(schemeProperties.authorizationUrl());
-    implicitFlow.tokenUrl(schemeProperties.tokenUrl());
-    implicitFlow.scopes(new Scopes());
+    OAuthFlow flow = new OAuthFlow();
+    flow.authorizationUrl(schemeProperties.authorizationUrl());
+    flow.tokenUrl(schemeProperties.tokenUrl());
+    flow.scopes(new Scopes());
     OAuthFlows flows = new OAuthFlows();
-    flows.implicit(implicitFlow);
+    flows.authorizationCode(flow);
     SecurityScheme securityScheme = new SecurityScheme();
     securityScheme.type(schemeProperties.type());
     securityScheme.in(schemeProperties.in());

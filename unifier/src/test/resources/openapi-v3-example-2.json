@@ -118,7 +118,7 @@
                         "pattern" : "[A-Za-z0-9\\-\\.]{1,64}",
                         "type" : "string"
                     },
-                    "implicitRules" : {
+                    "authorizationCodeRules" : {
                         "pattern" : "\\S*",
                         "type" : "string"
                     },
@@ -147,7 +147,7 @@
                 "type" : "oauth2",
                 "in" : "header",
                 "flows" : {
-                    "implicit" : {
+                    "authorizationCode" : {
                         "authorizationUrl" : "https://sandbox-api.va.gov/oauth2/authorization",
                         "tokenUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/token",
                         "scopes" : {

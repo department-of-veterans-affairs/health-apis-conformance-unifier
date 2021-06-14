@@ -20,7 +20,7 @@
             "type" : "oauth2",
             "in" : "header",
             "flows" : {
-                "implicit" : {
+                "authorizationCode" : {
                     "authorizationUrl" : "https://sandbox-api.va.gov/oauth2/authorization",
                     "tokenUrl" : "https://sandbox-api.va.gov/services/fhir/v0/r4/token"
                 }
