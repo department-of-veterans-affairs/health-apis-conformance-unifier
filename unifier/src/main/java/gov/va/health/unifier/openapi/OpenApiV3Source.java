@@ -25,13 +25,16 @@ public class OpenApiV3Source {
 
   @NonNull @Builder.Default Filter schemaFilter = Filter.includeEverything();
 
+  @NonNull @Builder.Default Filter scopeFilter = Filter.includeEverything();
+
   /** Build an Open API source from a contributor. */
   @SneakyThrows
   public static OpenApiV3Source from(@NonNull MergeConfig.Contributor config) {
     OpenApiV3SourceBuilder source =
         OpenApiV3Source.builder()
             .pathFilter(Filter.from(config.pathFilter()))
-            .schemaFilter(Filter.from(config.schemaFilter()));
+            .schemaFilter(Filter.from(config.schemaFilter()))
+            .scopeFilter(Filter.from(config.scopeFilter()));
     if (config.file() != null) {
       source
           .name(config.file())

@@ -7,6 +7,7 @@ import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
+import gov.va.health.unifier.openapi.OpenApiV3Source.Filter;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -117,28 +118,39 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
 
   protected void combineSecurities(OpenAPI current, OpenApiV3Source toCombine) {
     if (current.getSecurity() == null) {
-      current.security(toCombine.openApi().getSecurity());
-    } else if (toCombine.openApi().getSecurity() != null) {
-      current
-          .getSecurity()
-          .forEach(
-              currentSecurity ->
-                  currentSecurity
-                      .keySet()
-                      .forEach(
-                          currentKey -> {
-                            Optional<SecurityRequirement> found =
-                                findSecurity(toCombine.openApi().getSecurity(), currentKey);
-                            // merge lists without duplicates
-                            found.ifPresent(
-                                securityRequirement ->
-                                    currentSecurity.addList(
-                                        currentKey,
-                                        mergeNoDuplicates(
-                                            currentSecurity.get(currentKey),
-                                            securityRequirement.get(currentKey))));
-                          }));
+      current.security(new ArrayList<>(1));
     }
+    if (toCombine.openApi().getSecurity() == null) {
+      return;
+    }
+
+    toCombine
+        .openApi()
+        .getSecurity()
+        .forEach(toCombineValue -> combineSecuritiesItem(current, toCombine, toCombineValue));
+  }
+
+  private void combineSecuritiesItem(
+      OpenAPI current, OpenApiV3Source toCombine, SecurityRequirement toCombineValue) {
+    toCombineValue.forEach(
+        (name, scopes) -> combineSecuritiesItemScopes(current, toCombine, name, scopes));
+  }
+
+  private void combineSecuritiesItemScopes(
+      OpenAPI current, OpenApiV3Source toCombine, String name, List<String> scopes) {
+    Optional<SecurityRequirement> maybeCurrentSecurityRequirement =
+        findSecurity(current.getSecurity(), name);
+    SecurityRequirement currentSecurityRequirement;
+    if (maybeCurrentSecurityRequirement.isEmpty()) {
+      currentSecurityRequirement = new SecurityRequirement();
+      current.getSecurity().add(currentSecurityRequirement);
+    } else {
+      currentSecurityRequirement = maybeCurrentSecurityRequirement.get();
+    }
+    List<String> currentScopes = currentSecurityRequirement.getOrDefault(name, new ArrayList<>());
+    List<String> combineFilteredScopes =
+        scopes.stream().filter(toCombine.scopeFilter()).collect(toList());
+    currentSecurityRequirement.put(name, mergeNoDuplicates(currentScopes, combineFilteredScopes));
   }
 
   protected void combineSecuritySchemes(Components currentComponents, OpenApiV3Source toCombine) {
@@ -153,13 +165,18 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
         .getComponents()
         .getSecuritySchemes()
         .forEach(
-            (key, value) -> {
-              var currentValue = currentComponents.getSecuritySchemes().get(key);
+            (schemeName, securityScheme) -> {
+              var currentValue = currentComponents.getSecuritySchemes().get(schemeName);
               if (currentValue == null) {
-                currentComponents.getSecuritySchemes().put(key, value);
+                currentComponents.getSecuritySchemes().put(schemeName, securityScheme);
+                var scopes = findFlowScopes(securityScheme);
+                if (scopes != null) {
+                  var filteredScopes = filteredCopy(scopes, toCombine.scopeFilter());
+                  securityScheme.getFlows().getAuthorizationCode().scopes(filteredScopes);
+                }
                 return;
               }
-              mergeSecuritySchemes(currentValue, value);
+              mergeSecuritySchemes(currentValue, toCombine, securityScheme);
             });
   }
 
@@ -172,12 +189,23 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     current.servers(servers(current.getServers(), toCombine.openApi().getServers()));
   }
 
-  protected Scopes findFlowScope(SecurityScheme securityScheme) {
-    if (securityScheme.getFlows() != null
-        && securityScheme.getFlows().getAuthorizationCode() != null) {
-      return securityScheme.getFlows().getAuthorizationCode().getScopes();
+  private Scopes filteredCopy(Scopes scopes, Filter filter) {
+    if (scopes == null) {
+      return null;
     }
-    return null;
+    Scopes filteredScopes = new Scopes();
+    scopes.entrySet().stream()
+        .filter(e -> filter.test(e.getKey()))
+        .forEach(e -> filteredScopes.addString(e.getKey(), e.getValue()));
+    return filteredScopes;
+  }
+
+  protected Scopes findFlowScopes(SecurityScheme securityScheme) {
+    if (securityScheme.getFlows() == null
+        || securityScheme.getFlows().getAuthorizationCode() == null) {
+      return null;
+    }
+    return securityScheme.getFlows().getAuthorizationCode().getScopes();
   }
 
   protected Optional<SecurityRequirement> findSecurity(
@@ -221,16 +249,17 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     return current;
   }
 
-  protected void mergeSecuritySchemes(SecurityScheme current, SecurityScheme toMerge) {
-    if (toMerge == null) {
+  protected void mergeSecuritySchemes(
+      SecurityScheme current, OpenApiV3Source toCombine, SecurityScheme toCombineValue) {
+    if (toCombineValue == null) {
       return;
     }
     if (current == null) {
       return;
     }
     // TODO we're only merging the scopes for now.
-    Scopes currentScopes = findFlowScope(current);
-    Scopes toMergeScopes = findFlowScope(toMerge);
+    Scopes currentScopes = findFlowScopes(current);
+    Scopes toMergeScopes = filteredCopy(findFlowScopes(toCombineValue), toCombine.scopeFilter());
     mergeMapFavoringOriginal(currentScopes, toMergeScopes, "AuthorizationCode");
   }
 

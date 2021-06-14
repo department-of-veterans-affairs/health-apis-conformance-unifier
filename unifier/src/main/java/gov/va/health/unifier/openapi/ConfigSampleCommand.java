@@ -38,6 +38,7 @@ public class ConfigSampleCommand implements Callable<Integer> {
                         .url("https://example.com/openapi-2.json")
                         .pathFilter(RegexFilter.builder().exclude("/Lame(/\\{id\\})?").build())
                         .schemaFilter(RegexFilter.builder().exclude("Lame.*").build())
+                        .scopeFilter(RegexFilter.builder().exclude("Lame.read").build())
                         .build()))
             .properties(
                 OpenApiProperties.builder()
