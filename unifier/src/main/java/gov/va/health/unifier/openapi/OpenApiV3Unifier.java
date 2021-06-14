@@ -172,9 +172,10 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     current.servers(servers(current.getServers(), toCombine.openApi().getServers()));
   }
 
-  protected Scopes findImplicitFlowScope(SecurityScheme securityScheme) {
-    if (securityScheme.getFlows() != null && securityScheme.getFlows().getImplicit() != null) {
-      return securityScheme.getFlows().getImplicit().getScopes();
+  protected Scopes findFlowScope(SecurityScheme securityScheme) {
+    if (securityScheme.getFlows() != null
+        && securityScheme.getFlows().getAuthorizationCode() != null) {
+      return securityScheme.getFlows().getAuthorizationCode().getScopes();
     }
     return null;
   }
@@ -228,9 +229,9 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
       return;
     }
     // TODO we're only merging the scopes for now.
-    Scopes currentScopes = findImplicitFlowScope(current);
-    Scopes toMergeScopes = findImplicitFlowScope(toMerge);
-    mergeMapFavoringOriginal(currentScopes, toMergeScopes, "ImplicitScope");
+    Scopes currentScopes = findFlowScope(current);
+    Scopes toMergeScopes = findFlowScope(toMerge);
+    mergeMapFavoringOriginal(currentScopes, toMergeScopes, "AuthorizationCode");
   }
 
   protected boolean serverExists(List<Server> servers, Server server) {
