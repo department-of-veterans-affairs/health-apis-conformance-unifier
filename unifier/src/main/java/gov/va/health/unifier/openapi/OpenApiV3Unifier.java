@@ -195,12 +195,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     }
     Scopes filteredScopes = new Scopes();
     scopes.entrySet().stream()
-        .filter(
-            e -> {
-              var key = e.getKey();
-              var ok = filter.test(key);
-              return filter.test(e.getKey());
-            })
+        .filter(e -> filter.test(e.getKey()))
         .forEach(e -> filteredScopes.addString(e.getKey(), e.getValue()));
     return filteredScopes;
   }
