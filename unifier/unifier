@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION=$(grep '<version>' pom.xml | head -2 | tail -1 | sed 's|.*<version>\(.*\)</version>.*|\1|')
-java -jar target/unifier-$VERSION.jar $@
+WORKING_DIR=$(readlink -f $(dirname $0))
+
+VERSION=$(grep -E '<version>' ${WORKING_DIR}/../unifier/pom.xml | head -2 | tail -1 | sed 's|.*<version>\(.*\)</version>.*|\1|')
+java -jar ${WORKING_DIR}/target/unifier-$VERSION.jar $@
