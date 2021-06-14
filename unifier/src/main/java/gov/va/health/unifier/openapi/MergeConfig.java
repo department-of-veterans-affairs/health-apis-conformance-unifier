@@ -64,6 +64,8 @@ public class MergeConfig {
     private RegexFilter pathFilter;
     /** Filter configuration for Open API schema items. */
     private RegexFilter schemaFilter;
+    /** Filter configuration for Open API security and security scheme scopes. */
+    private RegexFilter scopeFilter;
 
     public RegexFilter pathFilter() {
       return pathFilter == null ? new RegexFilter() : pathFilter;
@@ -71,6 +73,10 @@ public class MergeConfig {
 
     public RegexFilter schemaFilter() {
       return schemaFilter == null ? new RegexFilter() : schemaFilter;
+    }
+
+    public RegexFilter scopeFilter() {
+      return scopeFilter == null ? new RegexFilter() : scopeFilter;
     }
 
     public void validate() {

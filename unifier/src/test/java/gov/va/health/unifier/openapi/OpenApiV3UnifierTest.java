@@ -8,6 +8,7 @@ import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
 import gov.va.health.unifier.openapi.OpenApiV3Source.Filter;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.Scopes;
 import java.io.File;
 import java.util.List;
 import lombok.SneakyThrows;
@@ -143,6 +144,46 @@ public class OpenApiV3UnifierTest {
     expected.getComponents().getSchemas().remove("Blah");
     expected.getComponents().getSchemas().remove("BlahBundle");
     expected.getComponents().getSchemas().remove("OperationOutcome");
+    assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
+  }
+
+  @Test
+  void scopeFiltersAreApplied() {
+    OpenAPI actual =
+        OpenApiV3Unifier.startingWith(() -> openApiFromPath(INITIAL_OPENAPI))
+            .apply(
+                List.of(
+                    OpenApiV3Source.builder()
+                        .name("example-1")
+                        .openApi(openApiFromPath("src/test/resources/openapi-v3-example-1.json"))
+                        .scopeFilter(
+                            Filter.builder()
+                                .exclude(
+                                    s -> s.startsWith("patient/Foo") || s.equals("offline_access"))
+                                .build())
+                        .build(),
+                    OpenApiV3Source.builder()
+                        .name("example-2")
+                        .openApi(openApiFromPath("src/test/resources/openapi-v3-example-2.json"))
+                        .scopeFilter(
+                            Filter.builder()
+                                .include(s -> s.startsWith("patient/AdditionalScope"))
+                                .build())
+                        .build()));
+    OpenAPI expected = openApiFromPath("src/test/resources/openapi-v3-example-unified.json");
+    Scopes scopes =
+        expected
+            .getComponents()
+            .getSecuritySchemes()
+            .get("OauthFlow")
+            .getFlows()
+            .getAuthorizationCode()
+            .getScopes();
+    scopes.remove("patient/Foo.read");
+    scopes.remove("offline_access");
+    List<String> securityRequirementScopes = expected.getSecurity().get(0).get("OauthFlow");
+    securityRequirementScopes.remove("patient/Foo.read");
+    securityRequirementScopes.remove("offline_access");
     assertThat(Json.pretty(actual)).isEqualTo(Json.pretty(expected));
   }
 }
