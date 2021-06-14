@@ -192,6 +192,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
   private Scopes filteredCopy(Scopes scopes, Filter filter) {
     if (scopes == null) {
       return null;
+
     }
     Scopes filteredScopes = new Scopes();
     scopes.entrySet().stream()
