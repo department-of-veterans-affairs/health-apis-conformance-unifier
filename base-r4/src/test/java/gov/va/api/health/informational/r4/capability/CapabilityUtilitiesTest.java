@@ -7,21 +7,20 @@ import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.nio.file.Paths;
 import java.util.Optional;
 import lombok.SneakyThrows;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
     classes = {CapabilityUtilitiesTest.TestConfiguration.class, MetadataTestConfig.class},
     initializers = ConfigFileApplicationContextInitializer.class)
 public class CapabilityUtilitiesTest {
-
   @Autowired CapabilityStatementProperties capabilityStatementProperties;
 
   @Autowired CapabilityResourcesProperties capabilityResourcesProperties;
@@ -33,7 +32,6 @@ public class CapabilityUtilitiesTest {
   @Test
   @SneakyThrows
   public void capabilityUtilitiesTest() {
-
     final CapabilityStatement expectedCapability =
         mapper.readValue(
             Paths.get("src", "test", "resources", "capability-statement.json").toFile(),
@@ -50,7 +48,6 @@ public class CapabilityUtilitiesTest {
   @SneakyThrows
   @DirtiesContext
   public void capabilityUtilitiesWithOptionalsTest() {
-
     capabilityStatementProperties
         .getSecurity()
         .setManagementEndpoint(Optional.of("https://example.com/oauth2/manage"));

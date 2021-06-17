@@ -23,7 +23,6 @@ import org.springframework.util.Assert;
 @Builder
 @Slf4j
 public class WellKnownProperties implements InitializingBean {
-
   /**
    * Required, array of strings representing SMART capabilities (e.g., single-sign-on or
    * launch-standalone) that the server supports.

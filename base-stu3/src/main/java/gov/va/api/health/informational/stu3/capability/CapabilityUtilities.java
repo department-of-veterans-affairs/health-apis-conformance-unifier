@@ -16,7 +16,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public final class CapabilityUtilities {
-
   /**
    * CapabilityStatement Software description.
    *

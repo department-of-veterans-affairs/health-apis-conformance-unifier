@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public final class WellKnownUtilities {
-
   /**
    * Initialize a WellKnown with content provided.
    *

@@ -15,7 +15,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public final class ConformanceUtilities {
-
   /**
    * Conformance Software description.
    *

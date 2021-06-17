@@ -1,11 +1,10 @@
 package gov.va.api.health.informational.r4.capability;
 
 import gov.va.api.health.r4.api.resources.CapabilityStatement;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Exercise afterPropertiesSet of CapabilitiesStatementProperties to increase code coverage. */
 public class CapabilitiesStatementPropertiesTest {
-
   /**
    * Minimum viable configuration for CapabilityStatementProperties to instantiate.
    *

@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <artifactId>health-apis-informational-endpoints</artifactId>
-    <groupId>gov.va.api.health.informational</groupId>
-    <version>2.0.4-SNAPSHOT</version>
-  </parent>
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>gov.va.api.health</groupId>
+    <artifactId>conformance-unifier-parent</artifactId>
+    <version>3.0.5-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+  <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-stu3</artifactId>
   <properties>
-    <stu3.version>4.0.18</stu3.version>
-    <service-auto-config.version>7.0.24</service-auto-config.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
+    <service-auto-config.version>8.0.21</service-auto-config.version>
+    <stu3.version>4.0.18</stu3.version>
   </properties>
   <dependencies>
     <dependency>

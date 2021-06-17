@@ -8,21 +8,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.Builder;
-import lombok.Singular;
 import lombok.Value;
 
 @Value
 @Builder
 public class SupportedResource {
-
   String type;
 
   String profile;
 
   String documentation;
 
-  @Singular("searchBy")
-  Set<SearchParamsEnumInterface> search;
+  @Builder.Default Set<SearchParamsEnumInterface> search = Set.of();
 
   /**
    * Convenience for building a lot of SupportedResources for a CapabilityStatementStatement. Used

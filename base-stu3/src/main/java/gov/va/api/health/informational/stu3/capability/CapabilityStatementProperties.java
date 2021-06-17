@@ -19,7 +19,6 @@ import org.springframework.util.Assert;
 @Data
 @Slf4j
 public class CapabilityStatementProperties implements InitializingBean {
-
   /** Required. */
   private String id;
 
@@ -102,7 +101,6 @@ public class CapabilityStatementProperties implements InitializingBean {
    */
   @Data
   public static class ContactProperties implements InitializingBean {
-
     /** Required. */
     private String name;
 
@@ -121,7 +119,6 @@ public class CapabilityStatementProperties implements InitializingBean {
   /** Rest security properties. TODO: This could be made more configurable. */
   @Data
   public static class SecurityProperties implements InitializingBean {
-
     /** Required. */
     private String tokenEndpoint;
 

@@ -1,7 +1,6 @@
 package gov.va.api.health.informational.openapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
@@ -9,15 +8,15 @@ import io.swagger.v3.oas.models.security.SecurityScheme.Type;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.Optional;
 import lombok.SneakyThrows;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(
     classes = {OpenApiUtilitiesTest.TestConfiguration.class},
     initializers = ConfigFileApplicationContextInitializer.class)
@@ -48,7 +47,7 @@ public class OpenApiUtilitiesTest {
     assertThat(server.get().getDescription()).isEqualTo("Sandbox");
     assertThat(openapi.getComponents().getSecuritySchemes().size()).isEqualTo(1);
     var oauthflow = openapi.getComponents().getSecuritySchemes().get("OauthFlow");
-    assertNotNull(oauthflow);
+    assertThat(oauthflow).isNotNull();
     assertThat(oauthflow.getType()).isEqualTo(Type.OAUTH2);
     assertThat(oauthflow.getIn()).isEqualTo(In.HEADER);
     assertThat(oauthflow.getFlows().getImplicit().getAuthorizationUrl())

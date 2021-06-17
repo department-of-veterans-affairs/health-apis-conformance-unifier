@@ -8,19 +8,18 @@ import gov.va.api.health.informational.r4.capability.CapabilityStatementProperti
 import gov.va.api.health.r4.api.information.WellKnown;
 import java.io.IOException;
 import lombok.SneakyThrows;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {WellKnownControllerTest.TestConfiguration.class})
 @TestPropertySource("/application.properties")
 public class WellKnownControllerTest {
-
   @Autowired CapabilityStatementProperties capabilityStatementProperties;
   @Autowired WellKnownProperties wellKnownProperties;
 

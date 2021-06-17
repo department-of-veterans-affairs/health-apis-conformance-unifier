@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
     produces = {"application/json", "application/fhir+json", "application/json+fhir"})
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class WellKnownController implements InitializingBean {
-
   private final WellKnownProperties wellKnownProperties;
 
   private final CapabilityStatementProperties capabilityStatementProperties;

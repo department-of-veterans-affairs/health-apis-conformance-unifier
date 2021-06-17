@@ -16,7 +16,6 @@ import org.springframework.util.Assert;
 @Data
 @Slf4j
 public class OpenApiProperties implements InitializingBean {
-
   private String title;
 
   private String description;
@@ -39,7 +38,6 @@ public class OpenApiProperties implements InitializingBean {
   @Data
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class ExternalDocs implements InitializingBean {
-
     private String description;
     private String url;
 
@@ -50,7 +48,6 @@ public class OpenApiProperties implements InitializingBean {
   @Data
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class Server implements InitializingBean {
-
     private String url;
     private String description;
 
@@ -66,7 +63,6 @@ public class OpenApiProperties implements InitializingBean {
   @Data
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class Components implements InitializingBean {
-
     private Map<String, SecurityScheme> securityScheme;
 
     @Override
@@ -76,7 +72,6 @@ public class OpenApiProperties implements InitializingBean {
   @Data
   @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
   public static class SecurityScheme implements InitializingBean {
-
     private String authorizationUrl;
     private String tokenUrl;
     private io.swagger.v3.oas.models.security.SecurityScheme.Type type;

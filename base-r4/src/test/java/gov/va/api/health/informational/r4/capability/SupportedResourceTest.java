@@ -2,24 +2,23 @@ package gov.va.api.health.informational.r4.capability;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.common.collect.ImmutableSet;
 import gov.va.api.health.r4.api.resources.CapabilityStatement;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.experimental.Accessors;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Test we can use a custom enumerations. */
 public class SupportedResourceTest {
-
   /** Test custom enum. */
   @Test
   public void customEnumTest() {
     SupportedResource supportedResource =
         SupportedResource.builder()
             .type("Search with Custom Enum")
-            .searchBy(SearchParamsCustomEnum.DOCTOR)
-            .searchBy(SearchParamsCustomEnum.PATIENT)
+            .search(ImmutableSet.of(SearchParamsCustomEnum.DOCTOR, SearchParamsCustomEnum.PATIENT))
             .profile("https://fhir.com/r4/test.html")
             .documentation(
                 "Implemented per specification. This is configurable. See http://hl7.org/fhir/R4/http.html")

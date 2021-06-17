@@ -1,10 +1,9 @@
 package gov.va.api.health.informational.dstu2.conformance;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /** Exercise afterPropertiesSet of ConformanceStatementProperties to increase code coverage. */
 public class ConformanceStatementPropertiesTest {
-
   /**
    * Minimum viable configuration for ConformanceStatementProperties to instantiate.
    *

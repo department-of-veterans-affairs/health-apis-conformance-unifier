@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
     produces = {"application/json", "application/json+fhir", "application/fhir+json"})
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class MetadataController implements InitializingBean {
-
   private final CapabilityStatementProperties capabilityStatementProperties;
 
   private final CapabilityResourcesProperties resourcesProperties;

@@ -4,7 +4,7 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>8.0.20</version>
+    <version>8.0.21</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
   <version>3.0.5-SNAPSHOT</version>
@@ -18,8 +18,12 @@
     <profile>
       <id>localtest</id>
       <modules>
+        <module>base-dstu2</module>
+        <module>base-r4</module>
+        <module>base-stu3</module>
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
+        <module>openapi</module>
         <module>unifier</module>
       </modules>
     </profile>
@@ -29,8 +33,12 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
+        <module>base-dstu2</module>
+        <module>base-r4</module>
+        <module>base-stu3</module>
         <module>conformance-docker-awss3</module>
         <module>conformance-unifier</module>
+        <module>openapi</module>
         <module>unifier-tests</module>
         <module>unifier</module>
       </modules>
