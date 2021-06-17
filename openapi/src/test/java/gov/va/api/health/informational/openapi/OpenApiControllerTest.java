@@ -9,7 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
-// @RunWith(SpringRunner.class)
 @ExtendWith(SpringExtension.class)
 public class OpenApiControllerTest {
   OpenApiController controller = new OpenApiController(loadYaml());
