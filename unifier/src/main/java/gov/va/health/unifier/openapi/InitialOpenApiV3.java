@@ -11,7 +11,6 @@ import io.swagger.v3.oas.models.security.OAuthFlows;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,15 +79,11 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
   }
 
   private List<Server> servers() {
-    if (properties.server() == null) {
+    if (properties.servers() == null || properties.servers().isEmpty()) {
       return null;
     }
-    Server server = new Server();
-    server.url(properties.server().url());
-    server.description(properties.server().description());
-    /* We need a mutable list for the servers so other can be added later */
-    List<Server> servers = new ArrayList<>(1);
-    servers.add(server);
-    return servers;
+    return properties.servers().stream()
+        .map(s -> new Server().url(s.url()).description(s.description()))
+        .collect(Collectors.toList());
   }
 }

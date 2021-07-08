@@ -109,7 +109,7 @@ public class MergeConfig {
     private String description;
     private String version;
     private ExternalDocumentationProperties externalDocs;
-    private ServerProperties server;
+    private List<ServerProperties> servers;
     private Map<String, SecuritySchemeProperties> securityScheme;
 
     /** Lazy getter for security scheme. */

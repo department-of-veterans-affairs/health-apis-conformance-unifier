@@ -1,9 +1,7 @@
 package gov.va.health.unifier.openapi;
 
 import static gov.va.health.unifier.Print.println;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
-import static org.apache.commons.lang3.StringUtils.equalsIgnoreCase;
 
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
@@ -14,7 +12,6 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.security.Scopes;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -47,7 +44,6 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     openApiList.forEach(
         o -> {
           println("Processing %s", o.name());
-          combineServers(openapi, o);
           combineSecurities(openapi, o);
           combinePaths(openapi, o);
           combineComponents(openapi, o);
@@ -163,15 +159,6 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
             });
   }
 
-  protected void combineServers(OpenAPI current, OpenApiV3Source toCombine) {
-    if (current.getServers() == null) {
-      current.servers(toCombine.openApi().getServers());
-    } else if (toCombine.openApi().getServers() == null) {
-      return;
-    }
-    current.servers(servers(current.getServers(), toCombine.openApi().getServers()));
-  }
-
   protected Scopes findImplicitFlowScope(SecurityScheme securityScheme) {
     if (securityScheme.getFlows() != null && securityScheme.getFlows().getImplicit() != null) {
       return securityScheme.getFlows().getImplicit().getScopes();
@@ -231,17 +218,6 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     Scopes currentScopes = findImplicitFlowScope(current);
     Scopes toMergeScopes = findImplicitFlowScope(toMerge);
     mergeMapFavoringOriginal(currentScopes, toMergeScopes, "ImplicitScope");
-  }
-
-  protected boolean serverExists(List<Server> servers, Server server) {
-    return servers.stream().anyMatch(s -> equalsIgnoreCase(s.getUrl(), server.getUrl()));
-  }
-
-  protected List<Server> servers(List<Server> current, List<Server> servers) {
-    List<Server> serversToAdd =
-        servers.stream().filter(s -> !serverExists(current, s)).collect(toList());
-    current.addAll(serversToAdd);
-    return current;
   }
 
   protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
