@@ -79,9 +79,6 @@ public class InitialOpenApiV3 implements Supplier<OpenAPI> {
   }
 
   private List<Server> servers() {
-    if (properties.servers() == null) {
-      return List.of();
-    }
     return properties.servers().stream()
         .map(s -> new Server().url(s.url()).description(s.description()))
         .collect(Collectors.toList());

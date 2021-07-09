@@ -126,6 +126,14 @@ public class MergeConfig {
       return securityScheme;
     }
 
+    /** Lazy Initializer. */
+    public List<ServerProperties> servers() {
+      if (servers == null) {
+        servers = List.of();
+      }
+      return servers;
+    }
+
     @Builder
     @Data
     @AllArgsConstructor
