@@ -4,14 +4,14 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>3.0.6-SNAPSHOT</version>
+    <version>3.0.6</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-stu3</artifactId>
   <properties>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
-    <service-auto-config.version>8.0.21</service-auto-config.version>
+    <service-auto-config.version>8.0.22</service-auto-config.version>
     <stu3.version>4.0.18</stu3.version>
   </properties>
   <dependencies>
