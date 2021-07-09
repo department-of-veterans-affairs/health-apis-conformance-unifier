@@ -115,7 +115,7 @@ public class MergeConfig {
     private String description;
     private String version;
     private ExternalDocumentationProperties externalDocs;
-    private ServerProperties server;
+    private List<ServerProperties> servers;
     private Map<String, SecuritySchemeProperties> securityScheme;
 
     /** Lazy getter for security scheme. */
@@ -124,6 +124,14 @@ public class MergeConfig {
         securityScheme = new HashMap<>();
       }
       return securityScheme;
+    }
+
+    /** Lazy Initializer. */
+    public List<ServerProperties> servers() {
+      if (servers == null) {
+        servers = List.of();
+      }
+      return servers;
     }
 
     @Builder

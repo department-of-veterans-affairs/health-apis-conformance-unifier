@@ -50,11 +50,16 @@ public class ConfigSampleCommand implements Callable<Integer> {
                             .description("Awesome Specification")
                             .url("https://example.com/awesome.html")
                             .build())
-                    .server(
-                        ServerProperties.builder()
-                            .description("Production")
-                            .url("https://example.com/awesome/api")
-                            .build())
+                    .servers(
+                        List.of(
+                            ServerProperties.builder()
+                                .description("Production")
+                                .url("https://example.com/awesome/api")
+                                .build(),
+                            ServerProperties.builder()
+                                .description("Sandbox")
+                                .url("https://sandbox-example.com/awesome/api")
+                                .build()))
                     .securityScheme(
                         Map.of(
                             "OAuthFlow",
