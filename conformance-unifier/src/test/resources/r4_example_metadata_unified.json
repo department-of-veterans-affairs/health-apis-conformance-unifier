@@ -3,7 +3,7 @@
   "resourceType" : "CapabilityStatement",
   "version" : "@jenkins-build-version@",
   "name" : "API Management Platform | Health | FHIR R4",
-  "status" : "draft",
+  "status" : "active",
   "date" : "@jenkins-build-date@",
   "publisher" : "Department of Veterans Affairs",
   "contact" : [

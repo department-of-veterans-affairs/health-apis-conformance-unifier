@@ -12,7 +12,7 @@
   "version" : "@project.version@",
   "name" : "API Management Platform | Health - Argonaut Provider Directory",
   "title" : null,
-  "status" : "draft",
+  "status" : "active",
   "experimental" : null,
   "date" : "@capability.publication-date@",
   "publisher" : "Department of Veterans Affairs",

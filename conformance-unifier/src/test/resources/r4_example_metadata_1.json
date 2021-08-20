@@ -3,7 +3,7 @@
   "resourceType" : "CapabilityStatement",
   "version" : "1.0.6",
   "name" : "API Management Platform | Health - Claims",
-  "status" : "draft",
+  "status" : "active",
   "date" : "@capability.publication-date@",
   "publisher" : "Department of Veterans Affairs",
   "contact" : [

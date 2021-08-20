@@ -3,7 +3,7 @@
   "resourceType" : "CapabilityStatement",
   "version" : "1.4.0",
   "name" : "API Management Platform | Health - Argonaut Provider Directory",
-  "status" : "draft",
+  "status" : "active",
   "date" : "2019-03-19T12:26:29Z",
   "publisher" : "Department of Veterans Affairs",
   "contact" : [
