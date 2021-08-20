@@ -14,7 +14,7 @@ public class CapabilitiesStatementPropertiesTest {
     CapabilityStatementProperties config = new CapabilityStatementProperties();
     // Set required properties.
     config.setId("ID");
-    config.setStatus(CapabilityStatement.Status.draft);
+    config.setStatus(CapabilityStatement.Status.active);
     config.setPublicationDate("date");
     config.setFhirVersion("1.0.2");
     config.setSoftwareName("test-service");
