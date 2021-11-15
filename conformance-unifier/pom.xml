@@ -4,14 +4,14 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>3.0.8-SNAPSHOT</version>
+    <version>3.0.8</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>conformance-unifier</artifactId>
   <packaging>jar</packaging>
   <properties>
     <fhir-resources.version>5.0.20</fhir-resources.version>
-    <aws-interfaces.version>2.0.0</aws-interfaces.version>
+    <aws-interfaces.version>2.0.1</aws-interfaces.version>
     <s3mock-junit4.version>2.1.11</s3mock-junit4.version>
     <docker-maven-plugin.version>0.24.0</docker-maven-plugin.version>
     <docker.organization>vasdvp</docker.organization>

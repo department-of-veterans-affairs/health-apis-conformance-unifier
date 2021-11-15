@@ -4,7 +4,7 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>3.0.8-SNAPSHOT</version>
+    <version>3.0.8</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
@@ -12,7 +12,7 @@
   <properties>
     <dstu2.version>4.0.18</dstu2.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
-    <service-auto-config.version>8.0.25</service-auto-config.version>
+    <service-auto-config.version>8.0.28</service-auto-config.version>
   </properties>
   <dependencies>
     <dependency>
