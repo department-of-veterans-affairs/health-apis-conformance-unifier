@@ -154,7 +154,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     if (currentComponents.getSecuritySchemes() == null) {
       currentComponents.securitySchemes(new LinkedHashMap<>());
     }
-    if (toCombine == null) {
+    if (toCombine == null || toCombine.openApi().getComponents().getSecuritySchemes() == null) {
       return;
     }
     toCombine
