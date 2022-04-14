@@ -4,13 +4,13 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>3.0.13-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>openapi</artifactId>
   <properties>
-    <service-auto-config.version>8.0.28</service-auto-config.version>
+    <service-auto-config.version>10.0.0</service-auto-config.version>
     <swagger-core.version>2.1.7</swagger-core.version>
   </properties>
   <dependencies>
