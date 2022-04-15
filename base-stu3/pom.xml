@@ -12,13 +12,13 @@
   <properties>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
     <service-auto-config.version>10.0.0</service-auto-config.version>
-    <stu3.version>11.0.0</stu3.version>
+    <fhir-resources.version>11.0.0</fhir-resources.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
       <artifactId>argonaut-stu3</artifactId>
-      <version>${stu3.version}</version>
+      <version>${fhir-resources.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
