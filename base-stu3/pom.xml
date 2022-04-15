@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>stu3</artifactId>
+      <artifactId>argonaut-stu3</artifactId>
       <version>${stu3.version}</version>
     </dependency>
     <dependency>

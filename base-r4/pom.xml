@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>r4</artifactId>
+      <artifactId>us-core-r4</artifactId>
       <version>${r4.version}</version>
     </dependency>
     <dependency>
