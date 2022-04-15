@@ -4,21 +4,21 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>3.0.13-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-stu3</artifactId>
   <properties>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
-    <service-auto-config.version>8.0.28</service-auto-config.version>
-    <stu3.version>4.0.18</stu3.version>
+    <service-auto-config.version>10.0.0</service-auto-config.version>
+    <fhir-resources.version>11.0.0</fhir-resources.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>stu3</artifactId>
-      <version>${stu3.version}</version>
+      <artifactId>argonaut-stu3</artifactId>
+      <version>${fhir-resources.version}</version>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
