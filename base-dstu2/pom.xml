@@ -17,7 +17,7 @@
   <dependencies>
     <dependency>
       <groupId>gov.va.api.health</groupId>
-      <artifactId>dstu2</artifactId>
+      <artifactId>argonaut-dstu2</artifactId>
       <version>${dstu2.version}</version>
     </dependency>
     <dependency>
@@ -70,7 +70,7 @@
                   <include name="*.java"/>
                   <replacetoken>r4.capability</replacetoken>
                 </replace>
-                <replace dir="${generated-sources-base}/base-dstu2" value="dstu2">
+                <replace dir="${generated-sources-base}/base-dstu2" value="argonaut-dstu2">
                   <include name="*.java"/>
                   <replacetoken>r4</replacetoken>
                 </replace>
