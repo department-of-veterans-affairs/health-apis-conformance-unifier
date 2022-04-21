@@ -13,6 +13,8 @@
   <packaging>jar</packaging>
   <properties>
     <assertj-core.version>3.19.0</assertj-core.version>
+    <!-- two versions of jackson because of security release -->
+    <jackson.version>2.12.6</jackson.version>
     <jackson-databind.version>2.12.6.1</jackson-databind.version>
     <!--TODO: raise test coverage-->
     <jacoco.coverage>0.0</jacoco.coverage>
@@ -41,12 +43,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>${jackson-databind.version}</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>${jackson-databind.version}</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
