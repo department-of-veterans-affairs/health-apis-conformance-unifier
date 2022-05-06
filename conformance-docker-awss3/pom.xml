@@ -10,6 +10,7 @@
   <artifactId>conformance-docker-awss3</artifactId>
   <packaging>pom</packaging>
   <properties>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <docker-maven-plugin.version>0.30.0</docker-maven-plugin.version>
     <docker.organization>conformanceS3Mock</docker.organization>
     <docker.tag>latest</docker.tag>
