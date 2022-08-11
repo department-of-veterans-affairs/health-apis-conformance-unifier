@@ -4,14 +4,14 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>4.0.3-SNAPSHOT</version>
+    <version>4.0.3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-r4</artifactId>
   <properties>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
-    <fhir-resources.version>11.0.7</fhir-resources.version>
+    <fhir-resources.version>11.0.20</fhir-resources.version>
     <guava.version>31.1-jre</guava.version>
     <service-auto-config.version>10.0.3</service-auto-config.version>
   </properties>

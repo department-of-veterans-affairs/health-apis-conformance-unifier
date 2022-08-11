@@ -4,10 +4,10 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>health-apis-parent</artifactId>
-    <version>11.0.0</version>
+    <version>11.0.7</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
-  <version>4.0.3-SNAPSHOT</version>
+  <version>4.0.3</version>
   <packaging>pom</packaging>
   <properties>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
