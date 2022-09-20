@@ -1,6 +1,7 @@
 package gov.va.api.health.conformance.unifier.fhir.stu3;
 
 import gov.va.api.health.conformance.unifier.fhir.BaseWellKnownTransformer;
+import gov.va.api.health.fhir.api.Safe;
 import gov.va.api.health.informational.stu3.capability.CapabilityStatementProperties;
 import gov.va.api.health.informational.stu3.wellknown.WellKnownUtilities;
 import gov.va.api.health.stu3.api.information.WellKnown;
@@ -18,17 +19,17 @@ public class Stu3WellKnownTransformer extends BaseWellKnownTransformer<WellKnown
 
   @Override
   protected void addCapabilities(WellKnown wellKnown, List<String> capabilityList) {
-    capabilityList.addAll(wellKnown.capabilities());
+    capabilityList.addAll(Safe.list(wellKnown.capabilities()));
   }
 
   @Override
   protected void addResponse(WellKnown wellKnown, List<String> responseList) {
-    responseList.addAll(wellKnown.responseTypeSupported());
+    responseList.addAll(Safe.list(wellKnown.responseTypeSupported()));
   }
 
   @Override
   protected void addScopes(WellKnown wellKnown, List<String> scopeList) {
-    scopeList.addAll(wellKnown.scopesSupported());
+    scopeList.addAll(Safe.list(wellKnown.scopesSupported()));
   }
 
   @Override
