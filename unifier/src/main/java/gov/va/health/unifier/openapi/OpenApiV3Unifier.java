@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toMap;
 
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicateKey;
 import gov.va.health.unifier.openapi.OpenApiV3Exceptions.DuplicatePath;
-import gov.va.health.unifier.openapi.OpenApiV3Source.Filter;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -24,7 +23,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -146,7 +144,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     }
     List<String> currentScopes = currentSecurityRequirement.getOrDefault(name, new ArrayList<>());
     List<String> combineFilteredScopes =
-        scopes.stream().filter(toCombine.scopeFilter()).collect(Collectors.toList());
+        scopes.stream().filter(toCombine.scopeFilter()).toList();
     currentSecurityRequirement.put(name, mergeNoDuplicates(currentScopes, combineFilteredScopes));
   }
 
@@ -177,12 +175,13 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
             });
   }
 
-  private Scopes filteredCopy(Scopes scopes, Filter filter) {
+  private Scopes filteredCopy(Scopes scopes, OpenApiV3Source.Filter filter) {
     if (scopes == null) {
       return null;
     }
     Scopes filteredScopes = new Scopes();
     scopes.entrySet().stream()
+        .sorted(Map.Entry.comparingByKey())
         .filter(e -> filter.test(e.getKey()))
         .forEach(e -> filteredScopes.addString(e.getKey(), e.getValue()));
     return filteredScopes;
