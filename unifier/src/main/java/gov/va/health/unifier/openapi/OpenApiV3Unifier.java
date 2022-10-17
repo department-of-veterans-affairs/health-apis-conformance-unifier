@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import lombok.Getter;
@@ -163,7 +164,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
               var currentValue = currentComponents.getSecuritySchemes().get(schemeName);
               if (currentValue == null) {
                 currentComponents.getSecuritySchemes().put(schemeName, securityScheme);
-                var scopes = findFlowScopes(securityScheme);
+                var scopes = flowScopes(securityScheme);
                 if (scopes != null) {
                   var filteredScopes = filteredCopy(scopes, toCombine.scopeFilter());
                   securityScheme.getFlows().getAuthorizationCode().scopes(filteredScopes);
@@ -186,12 +187,11 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     return filteredScopes;
   }
 
-  protected Scopes findFlowScopes(SecurityScheme securityScheme) {
-    if (securityScheme.getFlows() == null
-        || securityScheme.getFlows().getAuthorizationCode() == null) {
-      return null;
-    }
-    return securityScheme.getFlows().getAuthorizationCode().getScopes();
+  protected Scopes flowScopes(SecurityScheme securityScheme) {
+    return Optional.ofNullable(securityScheme.getFlows())
+        .map(f -> f.getAuthorizationCode())
+        .map(ac -> ac.getScopes())
+        .orElse(null);
   }
 
   protected Optional<SecurityRequirement> findSecurity(
@@ -244,9 +244,12 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
       return;
     }
     // TODO we're only merging the scopes for now.
-    Scopes currentScopes = findFlowScopes(current);
-    Scopes toMergeScopes = filteredCopy(findFlowScopes(toCombineValue), toCombine.scopeFilter());
-    mergeMapFavoringOriginal(currentScopes, toMergeScopes, "AuthorizationCode");
+    var currentScopes = flowScopes(current);
+    var currentScopesSorted = new TreeMap<>(currentScopes);
+    var toCombineScopes = filteredCopy(flowScopes(toCombineValue), toCombine.scopeFilter());
+    mergeMapFavoringOriginal(currentScopesSorted, toCombineScopes, "AuthorizationCode");
+    currentScopes.clear();
+    currentScopes.putAll(currentScopesSorted);
   }
 
   protected <V, S extends Map<String, V>, D extends LinkedHashMap<String, V>> D sortByKeyIntoCopy(
