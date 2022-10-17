@@ -119,7 +119,6 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     if (toCombine.openApi().getSecurity() == null) {
       return;
     }
-
     toCombine
         .openApi()
         .getSecurity()
@@ -187,16 +186,16 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
     return filteredScopes;
   }
 
+  protected Optional<SecurityRequirement> findSecurity(
+      List<SecurityRequirement> securities, String name) {
+    return securities.stream().filter(s -> s.get(name) != null).findFirst();
+  }
+
   protected Scopes flowScopes(SecurityScheme securityScheme) {
     return Optional.ofNullable(securityScheme.getFlows())
         .map(f -> f.getAuthorizationCode())
         .map(ac -> ac.getScopes())
         .orElse(null);
-  }
-
-  protected Optional<SecurityRequirement> findSecurity(
-      List<SecurityRequirement> securities, String name) {
-    return securities.stream().filter(s -> s.get(name) != null).findFirst();
   }
 
   /**
