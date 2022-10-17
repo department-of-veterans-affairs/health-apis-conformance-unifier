@@ -3,14 +3,12 @@ package gov.va.api.health.conformance.unifier.fhir;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Transformer to merge multiple WellKnown into a single representative WellKnown. Implementing
  * transformer provides the types T:Capability.
  */
 public abstract class BaseWellKnownTransformer<T> implements Function<List<T>, T> {
-
   /**
    * Implementing transformer to add all capabilities from the wellknown instance to the provided
    * list.
@@ -47,11 +45,9 @@ public abstract class BaseWellKnownTransformer<T> implements Function<List<T>, T
       addResponse(w, combinedResponseList);
       addScopes(w, combinedScopesList);
     }
-    // Make sure the lists are unique (contain no duplicates).
-    setCapabilities(
-        wellKnown, combinedCapabilitiesList.stream().distinct().collect(Collectors.toList()));
-    setResponse(wellKnown, combinedResponseList.stream().distinct().collect(Collectors.toList()));
-    setScopes(wellKnown, combinedScopesList.stream().distinct().collect(Collectors.toList()));
+    setCapabilities(wellKnown, combinedCapabilitiesList.stream().distinct().sorted().toList());
+    setResponse(wellKnown, combinedResponseList.stream().distinct().sorted().toList());
+    setScopes(wellKnown, combinedScopesList.stream().distinct().sorted().toList());
     return wellKnown;
   }
 
