@@ -143,8 +143,7 @@ public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source
       currentSecurityRequirement = maybeCurrentSecurityRequirement.get();
     }
     List<String> currentScopes = currentSecurityRequirement.getOrDefault(name, new ArrayList<>());
-    List<String> combineFilteredScopes =
-        scopes.stream().filter(toCombine.scopeFilter()).toList();
+    List<String> combineFilteredScopes = scopes.stream().filter(toCombine.scopeFilter()).toList();
     currentSecurityRequirement.put(name, mergeNoDuplicates(currentScopes, combineFilteredScopes));
   }
 
