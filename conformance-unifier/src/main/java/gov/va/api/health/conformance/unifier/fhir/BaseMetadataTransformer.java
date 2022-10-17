@@ -2,6 +2,7 @@ package gov.va.api.health.conformance.unifier.fhir;
 
 import gov.va.api.health.conformance.unifier.exception.DuplicateCapabilityResourceException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import lombok.AccessLevel;
@@ -14,9 +15,8 @@ import org.springframework.stereotype.Service;
  * transformer provides the types T:Capability, R:Rest, and C:Resource.
  */
 @Service
-@RequiredArgsConstructor(onConstructor = @__({@Autowired}), access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor(onConstructor_ = @Autowired, access = AccessLevel.PROTECTED)
 public abstract class BaseMetadataTransformer<T, R, C> implements Function<List<T>, T> {
-
   @Override
   public T apply(List<T> capabilityList) {
     T capability = initialInstance();
@@ -39,6 +39,8 @@ public abstract class BaseMetadataTransformer<T, R, C> implements Function<List<
                             });
                   });
         });
+    Collections.sort(
+        combinedList, (left, right) -> resourceType(left).compareTo(resourceType(right)));
     // Assume only one rest entry (the first and only in the list) to which we add all resources.
     setResources(rest(capability).get(0), combinedList);
     return capability;
