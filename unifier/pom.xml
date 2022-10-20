@@ -15,8 +15,8 @@
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <assertj-core.version>3.19.0</assertj-core.version>
     <!-- two versions of jackson because of security release -->
-    <jackson.version>2.12.6</jackson.version>
-    <jackson-databind.version>2.12.6.1</jackson-databind.version>
+    <jackson.version>2.13.4</jackson.version>
+    <jackson-databind.version>2.13.4.1</jackson-databind.version>
     <!--TODO: raise test coverage-->
     <jacoco.coverage>0.0</jacoco.coverage>
     <junit-jupiter.version>5.7.1</junit-jupiter.version>
