@@ -12,8 +12,8 @@
   <properties>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
-    <service-auto-config.version>10.0.3</service-auto-config.version>
-    <fhir-resources.version>11.0.20</fhir-resources.version>
+    <service-auto-config.version>11.0.14</service-auto-config.version>
+    <fhir-resources.version>13.0.0</fhir-resources.version>
   </properties>
   <dependencies>
     <dependency>
