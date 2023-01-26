@@ -9,7 +9,7 @@
   </parent>
   <groupId>gov.va.api.health</groupId>
   <artifactId>unifier</artifactId>
-  <version>5.0.0-SNAPSHOT</version>
+  <version>5.0.0</version>
   <packaging>jar</packaging>
   <properties>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
