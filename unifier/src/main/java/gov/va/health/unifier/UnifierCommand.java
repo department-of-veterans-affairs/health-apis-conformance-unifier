@@ -6,6 +6,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.HelpCommand;
 
+/** Top level command for unifier script. */
 @Command(
     name = "unifier",
     mixinStandardHelpOptions = true,

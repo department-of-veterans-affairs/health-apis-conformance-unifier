@@ -11,6 +11,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.ScopeType;
 
+/** Merge multiple Open API V3 specifications. */
 @Command(name = "merge", description = "Merge multiple Open API V3 specifications")
 public class OpenApiV3MergeCommand implements Callable<Integer> {
 

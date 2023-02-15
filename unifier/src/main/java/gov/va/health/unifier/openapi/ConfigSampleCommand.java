@@ -18,6 +18,7 @@ import java.util.concurrent.Callable;
 import lombok.SneakyThrows;
 import picocli.CommandLine.Command;
 
+/** Print a merge configuration sample. */
 @Command(name = "config-sample", description = "Print a merge configuration sample.")
 public class ConfigSampleCommand implements Callable<Integer> {
 

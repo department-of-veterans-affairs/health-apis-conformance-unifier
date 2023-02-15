@@ -27,6 +27,7 @@ import java.util.function.Supplier;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/** Merges multiple openapi specs into one. */
 @RequiredArgsConstructor(staticName = "startingWith")
 public class OpenApiV3Unifier implements Function<List<? extends OpenApiV3Source>, OpenAPI> {
   @Getter private final Supplier<OpenAPI> initialInstance;

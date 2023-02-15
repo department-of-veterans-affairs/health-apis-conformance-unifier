@@ -4,24 +4,24 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>lighthouse-maven-starter</artifactId>
-    <version>2.0.0</version>
+    <version>3.0.0</version>
     <relativePath/>
   </parent>
   <groupId>gov.va.api.health</groupId>
   <artifactId>unifier</artifactId>
-  <version>5.0.1-SNAPSHOT</version>
+  <version>6.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <properties>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <assertj-core.version>3.24.2</assertj-core.version>
     <!-- two versions of jackson because of security release -->
-    <jackson.version>2.14.1</jackson.version>
-    <jackson-databind.version>2.14.1</jackson-databind.version>
+    <jackson.version>2.14.2</jackson.version>
+    <jackson-databind.version>2.14.2</jackson-databind.version>
     <!--TODO: raise test coverage-->
     <jacoco.coverage>0.0</jacoco.coverage>
     <junit-jupiter.version>5.9.2</junit-jupiter.version>
-    <lombok.version>1.18.24</lombok.version>
-    <picocli.version>4.7.0</picocli.version>
+    <lombok.version>1.18.26</lombok.version>
+    <picocli.version>4.7.1</picocli.version>
     <swagger-core.version>2.2.8</swagger-core.version>
     <jarranger.version>2.0.6</jarranger.version>
   </properties>

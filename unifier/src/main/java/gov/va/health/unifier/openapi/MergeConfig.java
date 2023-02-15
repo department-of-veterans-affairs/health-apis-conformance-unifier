@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -16,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+/** Defines a configuration for merging OAS docs. */
 @Builder
 @Data
 @Accessors(fluent = true)
@@ -36,9 +35,9 @@ public class MergeConfig {
   /** Lazy Getter for in. */
   public List<Contributor> in() {
     if (in == null) {
-      in = new ArrayList<>();
+      in = List.of();
     }
-    return in;
+    return List.copyOf(in);
   }
 
   /** Validate that in and out are both specified. */
@@ -48,6 +47,7 @@ public class MergeConfig {
     in().forEach(Contributor::validate);
   }
 
+  /** Defines how to merge a specific OAS file to the final OAS spec. */
   @Builder
   @Data
   @AllArgsConstructor
@@ -85,6 +85,7 @@ public class MergeConfig {
     }
   }
 
+  /** Provides regex filtering for certain OAS fields. */
   @Builder
   @Data
   @AllArgsConstructor
@@ -105,6 +106,7 @@ public class MergeConfig {
     private String exclude;
   }
 
+  /** Defines top-level fields to populate the Swagger OAS. */
   @Builder
   @Data
   @AllArgsConstructor
@@ -121,9 +123,9 @@ public class MergeConfig {
     /** Lazy getter for security scheme. */
     public Map<String, SecuritySchemeProperties> securityScheme() {
       if (securityScheme == null) {
-        securityScheme = new HashMap<>();
+        securityScheme = Map.of();
       }
-      return securityScheme;
+      return Map.copyOf(securityScheme);
     }
 
     /** Lazy Initializer. */
@@ -131,9 +133,10 @@ public class MergeConfig {
       if (servers == null) {
         servers = List.of();
       }
-      return servers;
+      return List.copyOf(servers);
     }
 
+    /** Defines fields to populate the Swagger OAS external documentation. */
     @Builder
     @Data
     @AllArgsConstructor
@@ -144,6 +147,7 @@ public class MergeConfig {
       private String description;
     }
 
+    /** Defines fields to populate the Swagger OAS server. */
     @Builder
     @Data
     @AllArgsConstructor
@@ -154,6 +158,7 @@ public class MergeConfig {
       private String description;
     }
 
+    /** Defines fields to populate the Swagger OAS security scheme. */
     @Builder
     @Data
     @AllArgsConstructor
