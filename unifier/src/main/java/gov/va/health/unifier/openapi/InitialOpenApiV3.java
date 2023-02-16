@@ -18,7 +18,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
-/** Creates basic openApi spec. */
 @RequiredArgsConstructor(staticName = "of")
 public class InitialOpenApiV3 implements Supplier<OpenAPI> {
   private final OpenApiProperties properties;

@@ -4,7 +4,6 @@ import java.util.function.Function;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
-/** Methods for checking certain conditions are correct. */
 @UtilityClass
 public class Check {
 

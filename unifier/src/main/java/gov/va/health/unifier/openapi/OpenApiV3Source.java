@@ -12,7 +12,6 @@ import lombok.NonNull;
 import lombok.SneakyThrows;
 import lombok.Value;
 
-/** Defines source of OAS spec to be used for merging. */
 @Value
 @Builder
 public class OpenApiV3Source {
@@ -49,7 +48,6 @@ public class OpenApiV3Source {
     return source.build();
   }
 
-  /** Provides filtering for certain OAS fields. */
   @Value
   @Builder
   public static class Filter implements Predicate<String> {
