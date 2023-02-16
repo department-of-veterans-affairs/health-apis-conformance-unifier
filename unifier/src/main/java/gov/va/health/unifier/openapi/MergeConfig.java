@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import io.swagger.v3.oas.models.security.SecurityScheme.In;
 import io.swagger.v3.oas.models.security.SecurityScheme.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -36,9 +34,9 @@ public class MergeConfig {
   /** Lazy Getter for in. */
   public List<Contributor> in() {
     if (in == null) {
-      in = new ArrayList<>();
+      in = List.of();
     }
-    return in;
+    return List.copyOf(in);
   }
 
   /** Validate that in and out are both specified. */
@@ -121,9 +119,9 @@ public class MergeConfig {
     /** Lazy getter for security scheme. */
     public Map<String, SecuritySchemeProperties> securityScheme() {
       if (securityScheme == null) {
-        securityScheme = new HashMap<>();
+        securityScheme = Map.of();
       }
-      return securityScheme;
+      return Map.copyOf(securityScheme);
     }
 
     /** Lazy Initializer. */
@@ -131,7 +129,7 @@ public class MergeConfig {
       if (servers == null) {
         servers = List.of();
       }
-      return servers;
+      return List.copyOf(servers);
     }
 
     @Builder

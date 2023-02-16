@@ -4,16 +4,16 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>5.0.1-SNAPSHOT</version>
+    <version>6.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-stu3</artifactId>
   <properties>
-    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
+    <fhir-resources.version>15.0.0</fhir-resources.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
-    <service-auto-config.version>12.0.2</service-auto-config.version>
-    <fhir-resources.version>14.0.1</fhir-resources.version>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
+    <service-auto-config.version>13.0.0</service-auto-config.version>
   </properties>
   <dependencies>
     <dependency>
