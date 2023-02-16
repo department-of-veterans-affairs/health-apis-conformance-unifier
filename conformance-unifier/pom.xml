@@ -10,14 +10,14 @@
   <artifactId>conformance-unifier</artifactId>
   <packaging>jar</packaging>
   <properties>
-    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
-    <fhir-resources.version>15.0.0</fhir-resources.version>
     <aws-interfaces.version>2.0.2</aws-interfaces.version>
-    <s3mock-junit4.version>2.11.0</s3mock-junit4.version>
     <docker-maven-plugin.version>0.41.0</docker-maven-plugin.version>
+    <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
     <docker.organization>vasdvp</docker.organization>
     <docker.tag>latest</docker.tag>
-    <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
+    <fhir-resources.version>15.0.0</fhir-resources.version>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
+    <s3mock-junit4.version>2.11.0</s3mock-junit4.version>
     <swagger-core.version>2.2.8</swagger-core.version>
   </properties>
   <profiles>

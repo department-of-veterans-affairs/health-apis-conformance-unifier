@@ -10,8 +10,8 @@
   <version>6.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
-    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <docker-maven-plugin.version>0.41.0</docker-maven-plugin.version>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <!--TODO: raise test coverage-->
     <jacoco.coverage>0.0</jacoco.coverage>
   </properties>

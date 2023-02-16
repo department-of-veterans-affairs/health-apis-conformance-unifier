@@ -9,9 +9,9 @@
   </parent>
   <artifactId>unifier-tests</artifactId>
   <properties>
-    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <docker.organization>vasdvp</docker.organization>
     <docker.tag>latest</docker.tag>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
   </properties>
   <profiles>
     <profile>

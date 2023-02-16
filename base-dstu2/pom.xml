@@ -10,9 +10,9 @@
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-dstu2</artifactId>
   <properties>
-    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <fhir-resources.version>15.0.0</fhir-resources.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
+    <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <service-auto-config.version>13.0.0</service-auto-config.version>
   </properties>
   <dependencies>
