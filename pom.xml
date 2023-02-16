@@ -7,7 +7,7 @@
     <version>13.0.3</version>
   </parent>
   <artifactId>conformance-unifier-parent</artifactId>
-  <version>6.0.0</version>
+  <version>6.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <docker-maven-plugin.version>0.41.0</docker-maven-plugin.version>
