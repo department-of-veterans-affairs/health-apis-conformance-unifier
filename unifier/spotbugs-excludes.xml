@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
-    <!-- Exclusions can be defined here and should include a comment on why the finding can be ignored -->
-    <!-- Lombok generated hashCode and equals is checking for null, then executing lazy initializer getter. -->
-    <Match>
-        <Or>
-        <Class name="gov.va.health.unifier.openapi.MergeConfig"/>
-            <Class name="gov.va.health.unifier.openapi.MergeConfig$Contributor"/>
-            <Class name="gov.va.health.unifier.openapi.MergeConfig$OpenApiProperties"/>
-        </Or>
-        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
-    </Match>
-    <!-- To support local testing, we allow the vistalink.properties file to be overwritten by user input -->
-    <Match>
-        <Or>
-        <Class name="gov.va.health.unifier.openapi.OpenApiV3MergeCommand"/>
-            <Class name="gov.va.health.unifier.openapi.OpenApiV3Source"/>
-        </Or>
-        <Bug pattern="PATH_TRAVERSAL_IN"/>
-    </Match>
-
+  <Match>
+    <Or>
+      <Class name="gov.va.health.unifier.openapi.OpenApiV3MergeCommand"/>
+      <Class name="gov.va.health.unifier.openapi.OpenApiV3Source"/>
+    </Or>
+    <Bug pattern="PATH_TRAVERSAL_IN"/>
+  </Match>
 </FindBugsFilter>
