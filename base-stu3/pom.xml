@@ -10,7 +10,7 @@
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-stu3</artifactId>
   <properties>
-    <fhir-resources.version>15.0.0</fhir-resources.version>
+    <fhir-resources.version>15.0.3</fhir-resources.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <service-auto-config.version>13.0.3</service-auto-config.version>
