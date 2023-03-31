@@ -34,7 +34,13 @@ public class R4WellKnownTransformer extends BaseWellKnownTransformer<WellKnown> 
 
   @Override
   protected WellKnown initialInstance() {
-    return WellKnownUtilities.initializeWellKnownBuilder(capabilityStatementProperties, null);
+    WellKnown wellKnown =
+        WellKnownUtilities.initializeWellKnownBuilder(capabilityStatementProperties, null);
+    wellKnown.authorizationEndpoint2(wellKnown.authorizationEndpoint());
+    wellKnown.tokenEndpoint2(wellKnown.tokenEndpoint());
+    wellKnown.managementEndpoint2(wellKnown.managementEndpoint());
+    wellKnown.revocationEndpoint2(wellKnown.revocationEndpoint());
+    return wellKnown;
   }
 
   @Override
@@ -45,10 +51,12 @@ public class R4WellKnownTransformer extends BaseWellKnownTransformer<WellKnown> 
   @Override
   protected void setResponse(WellKnown wellKnown, List<String> responseList) {
     wellKnown.responseTypeSupported(responseList);
+    wellKnown.responseTypesSupported(responseList);
   }
 
   @Override
   protected void setScopes(WellKnown wellKnown, List<String> scopeList) {
     wellKnown.scopesSupported(scopeList);
+    wellKnown.scopesSupported2(scopeList);
   }
 }
