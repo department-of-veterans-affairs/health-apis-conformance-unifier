@@ -22,6 +22,19 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public final class CapabilityUtilities {
   /**
+   * CapabilityStatement Implementation description.
+   *
+   * @return CapabilityStatement Implementation.
+   */
+  private static CapabilityStatement.Implementation capabilityImplementation(
+      CapabilityStatementProperties capabilityStatementProperties) {
+    return CapabilityStatement.Implementation.builder()
+        .url(capabilityStatementProperties.getImplementationUrl())
+        .description(capabilityStatementProperties.getImplementationDescription())
+        .build();
+  }
+
+  /**
    * CapabilityStatement Software description.
    *
    * @return CapabilityStatement Software.
@@ -123,6 +136,14 @@ public final class CapabilityUtilities {
         && !capabilityStatementProperties.getDescription().isBlank()) {
       capabilityStatementBuilder.description(capabilityStatementProperties.getDescription());
     }
+    // Implementation is optional.
+    if ((capabilityStatementProperties.getImplementationUrl() != null
+            && !capabilityStatementProperties.getImplementationUrl().isBlank())
+        || (capabilityStatementProperties.getImplementationDescription() != null
+            && !capabilityStatementProperties.getImplementationDescription().isBlank())) {
+      capabilityStatementBuilder.implementation(
+          capabilityImplementation(capabilityStatementProperties));
+    }
     return capabilityStatementBuilder.build();
   }
 
@@ -219,7 +240,7 @@ public final class CapabilityUtilities {
         .coding(
             singletonList(
                 Coding.builder()
-                    .system("https://www.hl7.org/fhir/valueset-restful-security-service.html")
+                    .system("http://hl7.org/fhir/ValueSet/restful-security-service")
                     .code("SMART-on-FHIR")
                     .display("SMART-on-FHIR")
                     .build()))

@@ -50,7 +50,11 @@
     "version" : null,
     "releaseDate" : null
   },
-  "implementation" : null,
+  "implementation" : {
+    "description" : "Capability service meant for testing only.",
+    "url" : "https://fake.com",
+    "custodian" : null
+  },
   "fhirVersion" : "4.0.0",
   "format" : [
     "application/json+fhir",
@@ -186,7 +190,7 @@
               {
                 "id" : null,
                 "extension" : null,
-                "system" : "https://www.hl7.org/fhir/valueset-restful-security-service.html",
+                "system" : "http://hl7.org/fhir/ValueSet/restful-security-service",
                 "version" : null,
                 "code" : "SMART-on-FHIR",
                 "display" : "SMART-on-FHIR",
