@@ -63,8 +63,7 @@ public final class CapabilityUtilities {
       CapabilityStatementProperties capabilityStatementProperties) {
     ContactDetail.ContactDetailBuilder contactDetailBuilder =
         ContactDetail.builder().name(capabilityStatementProperties.getContact().getName());
-    if ((capabilityStatementProperties.getContact().getEmail() != null)
-        && !capabilityStatementProperties.getContact().getEmail().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getContact().getEmail())) {
       contactDetailBuilder.telecom(
           singletonList(
               ContactPoint.builder()
@@ -119,18 +118,15 @@ public final class CapabilityUtilities {
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(capabilityStatementProperties, resourcesProperties));
     // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getVersion())) {
       capabilityStatementBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getName())) {
       capabilityStatementBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getPublisher())) {
       capabilityStatementBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -138,8 +134,7 @@ public final class CapabilityUtilities {
       capabilityStatementBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getDescription())) {
       capabilityStatementBuilder.description(capabilityStatementProperties.getDescription());
     }
     return capabilityStatementBuilder.build();
@@ -163,18 +158,15 @@ public final class CapabilityUtilities {
             .kind(capabilityStatementProperties.getKind())
             .software(terminologyCapabilitiesSoftware(capabilityStatementProperties));
     // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getVersion())) {
       terminologyCapabilitiesBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getName())) {
       terminologyCapabilitiesBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getPublisher())) {
       terminologyCapabilitiesBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -182,8 +174,7 @@ public final class CapabilityUtilities {
       terminologyCapabilitiesBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getDescription())) {
       terminologyCapabilitiesBuilder.description(capabilityStatementProperties.getDescription());
     }
     return terminologyCapabilitiesBuilder.build();
