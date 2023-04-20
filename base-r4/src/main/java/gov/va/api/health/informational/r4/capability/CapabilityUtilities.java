@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
 public final class CapabilityUtilities {
@@ -28,6 +29,10 @@ public final class CapabilityUtilities {
    */
   private static CapabilityStatement.Implementation capabilityImplementation(
       CapabilityStatementProperties capabilityStatementProperties) {
+    if (StringUtils.isBlank(capabilityStatementProperties.getImplementationUrl())
+        && StringUtils.isBlank(capabilityStatementProperties.getImplementationDescription())) {
+      return null;
+    }
     return CapabilityStatement.Implementation.builder()
         .url(capabilityStatementProperties.getImplementationUrl())
         .description(capabilityStatementProperties.getImplementationDescription())
@@ -109,6 +114,7 @@ public final class CapabilityUtilities {
             .date(capabilityStatementProperties.getPublicationDate())
             .kind(capabilityStatementProperties.getKind())
             .software(capabilitySoftware(capabilityStatementProperties))
+            .implementation(capabilityImplementation(capabilityStatementProperties))
             .fhirVersion(capabilityStatementProperties.getFhirVersion())
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(capabilityStatementProperties, resourcesProperties));
@@ -135,14 +141,6 @@ public final class CapabilityUtilities {
     if ((capabilityStatementProperties.getDescription() != null)
         && !capabilityStatementProperties.getDescription().isBlank()) {
       capabilityStatementBuilder.description(capabilityStatementProperties.getDescription());
-    }
-    // Implementation is optional.
-    if ((capabilityStatementProperties.getImplementationUrl() != null
-            && !capabilityStatementProperties.getImplementationUrl().isBlank())
-        || (capabilityStatementProperties.getImplementationDescription() != null
-            && !capabilityStatementProperties.getImplementationDescription().isBlank())) {
-      capabilityStatementBuilder.implementation(
-          capabilityImplementation(capabilityStatementProperties));
     }
     return capabilityStatementBuilder.build();
   }
