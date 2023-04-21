@@ -40,7 +40,6 @@
   "purpose" : null,
   "copyright" : null,
   "kind" : "instance",
-  "instantiates" : null,
   "imports" : null,
   "software" : {
     "id" : null,
@@ -55,6 +54,9 @@
     "url" : "https://fake.com",
     "custodian" : null
   },
+  "instantiates" : [
+    "http://hl7.org/fhir/us/core/CapabilityStatement/us-core-server"
+  ],
   "fhirVersion" : "4.0.0",
   "format" : [
     "application/json+fhir",

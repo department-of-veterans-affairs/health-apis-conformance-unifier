@@ -26,6 +26,9 @@
     "description" : "Capability service meant for testing only.",
     "url" : "https://fake.com"
   },
+  "instantiates" : [
+    "http://hl7.org/fhir/us/core/CapabilityStatement/us-core-server"
+  ],
   "fhirVersion" : "4.0.0",
   "format" : [
     "application/json+fhir",

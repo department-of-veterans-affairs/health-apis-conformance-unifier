@@ -114,6 +114,7 @@ public final class CapabilityUtilities {
             .kind(capabilityStatementProperties.getKind())
             .software(capabilitySoftware(capabilityStatementProperties))
             .implementation(capabilityImplementation(capabilityStatementProperties))
+            .instantiates(List.of("http://hl7.org/fhir/us/core/CapabilityStatement/us-core-server"))
             .fhirVersion(capabilityStatementProperties.getFhirVersion())
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(capabilityStatementProperties, resourcesProperties));
