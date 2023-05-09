@@ -18,27 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
 public final class CapabilityUtilities {
-  /**
-   * CapabilityStatement Implementation description.
-   *
-   * @return CapabilityStatement Implementation.
-   */
-  private static CapabilityStatement.Implementation capabilityImplementation(
-      CapabilityStatementProperties capabilityStatementProperties) {
-    if (StringUtils.isBlank(capabilityStatementProperties.getImplementationUrl())
-        && StringUtils.isBlank(capabilityStatementProperties.getImplementationDescription())) {
-      return null;
-    }
-    return CapabilityStatement.Implementation.builder()
-        .url(capabilityStatementProperties.getImplementationUrl())
-        .description(capabilityStatementProperties.getImplementationDescription())
-        .build();
-  }
-
   /**
    * CapabilityStatement Software description.
    *
@@ -63,7 +45,8 @@ public final class CapabilityUtilities {
       CapabilityStatementProperties capabilityStatementProperties) {
     ContactDetail.ContactDetailBuilder contactDetailBuilder =
         ContactDetail.builder().name(capabilityStatementProperties.getContact().getName());
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getContact().getEmail())) {
+    if ((capabilityStatementProperties.getContact().getEmail() != null)
+        && !capabilityStatementProperties.getContact().getEmail().isBlank()) {
       contactDetailBuilder.telecom(
           singletonList(
               ContactPoint.builder()
@@ -113,21 +96,22 @@ public final class CapabilityUtilities {
             .date(capabilityStatementProperties.getPublicationDate())
             .kind(capabilityStatementProperties.getKind())
             .software(capabilitySoftware(capabilityStatementProperties))
-            .implementation(capabilityImplementation(capabilityStatementProperties))
-            .instantiates(List.of("http://hl7.org/fhir/us/core/CapabilityStatement/us-core-server"))
             .fhirVersion(capabilityStatementProperties.getFhirVersion())
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(capabilityStatementProperties, resourcesProperties));
     // Version is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getVersion())) {
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
       capabilityStatementBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getName())) {
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
       capabilityStatementBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getPublisher())) {
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
       capabilityStatementBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -135,7 +119,8 @@ public final class CapabilityUtilities {
       capabilityStatementBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getDescription())) {
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
       capabilityStatementBuilder.description(capabilityStatementProperties.getDescription());
     }
     return capabilityStatementBuilder.build();
@@ -159,15 +144,18 @@ public final class CapabilityUtilities {
             .kind(capabilityStatementProperties.getKind())
             .software(terminologyCapabilitiesSoftware(capabilityStatementProperties));
     // Version is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getVersion())) {
+    if ((capabilityStatementProperties.getVersion() != null)
+        && !capabilityStatementProperties.getVersion().isBlank()) {
       terminologyCapabilitiesBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getName())) {
+    if ((capabilityStatementProperties.getName() != null)
+        && !capabilityStatementProperties.getName().isBlank()) {
       terminologyCapabilitiesBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getPublisher())) {
+    if ((capabilityStatementProperties.getPublisher() != null)
+        && !capabilityStatementProperties.getPublisher().isBlank()) {
       terminologyCapabilitiesBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -175,7 +163,8 @@ public final class CapabilityUtilities {
       terminologyCapabilitiesBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
-    if (StringUtils.isNotBlank(capabilityStatementProperties.getDescription())) {
+    if ((capabilityStatementProperties.getDescription() != null)
+        && !capabilityStatementProperties.getDescription().isBlank()) {
       terminologyCapabilitiesBuilder.description(capabilityStatementProperties.getDescription());
     }
     return terminologyCapabilitiesBuilder.build();
@@ -230,7 +219,7 @@ public final class CapabilityUtilities {
         .coding(
             singletonList(
                 Coding.builder()
-                    .system("http://hl7.org/fhir/ValueSet/restful-security-service")
+                    .system("https://www.hl7.org/fhir/valueset-restful-security-service.html")
                     .code("SMART-on-FHIR")
                     .display("SMART-on-FHIR")
                     .build()))

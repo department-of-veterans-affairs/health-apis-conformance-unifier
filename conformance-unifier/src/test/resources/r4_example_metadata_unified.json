@@ -2,7 +2,7 @@
   "id" : "health-api-fhir-r4-capability",
   "resourceType" : "CapabilityStatement",
   "version" : "@jenkins-build-version@",
-  "name" : "api-management-platform-health-fhir-r4",
+  "name" : "API Management Platform | Health | FHIR R4",
   "status" : "active",
   "date" : "@jenkins-build-date@",
   "publisher" : "Department of Veterans Affairs",
@@ -21,10 +21,6 @@
   "kind" : "instance",
   "software" : {
     "name" : "health-api-fhir-r4"
-  },
-  "implementation" : {
-    "description" : "Read Claims information.",
-    "url" : "https://fake.com"
   },
   "fhirVersion" : "4.0.0",
   "format" : [
@@ -64,7 +60,7 @@
           {
             "coding" : [
               {
-                "system" : "http://hl7.org/fhir/ValueSet/restful-security-service",
+                "system" : "https://www.hl7.org/fhir/valueset-restful-security-service.html",
                 "code" : "SMART-on-FHIR",
                 "display" : "SMART-on-FHIR"
               }

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
 public final class ConformanceUtilities {
@@ -41,7 +40,8 @@ public final class ConformanceUtilities {
       ConformanceStatementProperties conformanceStatementProperties) {
     Conformance.Contact.ContactBuilder contactDetailBuilder =
         Conformance.Contact.builder().name(conformanceStatementProperties.getContact().getName());
-    if (StringUtils.isNotBlank(conformanceStatementProperties.getContact().getEmail())) {
+    if ((conformanceStatementProperties.getContact().getEmail() != null)
+        && !conformanceStatementProperties.getContact().getEmail().isBlank()) {
       contactDetailBuilder.telecom(
           singletonList(
               ContactPoint.builder()
@@ -96,15 +96,18 @@ public final class ConformanceUtilities {
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(conformanceStatementProperties, resourcesProperties));
     // Version is optional.
-    if (StringUtils.isNotBlank(conformanceStatementProperties.getVersion())) {
+    if ((conformanceStatementProperties.getVersion() != null)
+        && !conformanceStatementProperties.getVersion().isBlank()) {
       conformanceBuilder.version(conformanceStatementProperties.getVersion());
     }
     // Name is optional.
-    if (StringUtils.isNotBlank(conformanceStatementProperties.getName())) {
+    if ((conformanceStatementProperties.getName() != null)
+        && !conformanceStatementProperties.getName().isBlank()) {
       conformanceBuilder.name(conformanceStatementProperties.getName());
     }
     // Publisher is optional.
-    if (StringUtils.isNotBlank(conformanceStatementProperties.getPublisher())) {
+    if ((conformanceStatementProperties.getPublisher() != null)
+        && !conformanceStatementProperties.getPublisher().isBlank()) {
       conformanceBuilder.publisher(conformanceStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -112,7 +115,8 @@ public final class ConformanceUtilities {
       conformanceBuilder.contact(contact(conformanceStatementProperties));
     }
     // Description is optional.
-    if (StringUtils.isNotBlank(conformanceStatementProperties.getDescription())) {
+    if ((conformanceStatementProperties.getDescription() != null)
+        && !conformanceStatementProperties.getDescription().isBlank()) {
       conformanceBuilder.description(conformanceStatementProperties.getDescription());
     }
     return conformanceBuilder.build();

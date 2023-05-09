@@ -60,6 +60,7 @@ public class CapabilityUtilitiesTest {
             Paths.get("src", "test", "resources", "capability-statement_with_optionals.json")
                 .toFile(),
             CapabilityStatement.class);
+
     final CapabilityStatement capability =
         CapabilityUtilities.initializeCapabilityStatementBuilder(
             "CapabilityStatement", capabilityStatementProperties, capabilityResourcesProperties);
