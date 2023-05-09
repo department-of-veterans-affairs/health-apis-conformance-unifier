@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 @UtilityClass
 public final class CapabilityUtilities {
@@ -40,8 +41,7 @@ public final class CapabilityUtilities {
       CapabilityStatementProperties capabilityStatementProperties) {
     ContactDetail.ContactDetailBuilder contactDetailBuilder =
         ContactDetail.builder().name(capabilityStatementProperties.getContact().getName());
-    if ((capabilityStatementProperties.getContact().getEmail() != null)
-        && !capabilityStatementProperties.getContact().getEmail().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getContact().getEmail())) {
       contactDetailBuilder.telecom(
           singletonList(
               ContactPoint.builder()
@@ -97,18 +97,15 @@ public final class CapabilityUtilities {
             .format(asList("application/json+fhir", "application/json", "application/fhir+json"))
             .rest(rest(capabilityStatementProperties, resourcesProperties));
     // Version is optional.
-    if ((capabilityStatementProperties.getVersion() != null)
-        && !capabilityStatementProperties.getVersion().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getVersion())) {
       capabilityBuilder.version(capabilityStatementProperties.getVersion());
     }
     // Name is optional.
-    if ((capabilityStatementProperties.getName() != null)
-        && !capabilityStatementProperties.getName().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getName())) {
       capabilityBuilder.name(capabilityStatementProperties.getName());
     }
     // Publisher is optional.
-    if ((capabilityStatementProperties.getPublisher() != null)
-        && !capabilityStatementProperties.getPublisher().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getPublisher())) {
       capabilityBuilder.publisher(capabilityStatementProperties.getPublisher());
     }
     // Contact is optional.
@@ -116,8 +113,7 @@ public final class CapabilityUtilities {
       capabilityBuilder.contact(contact(capabilityStatementProperties));
     }
     // Description is optional.
-    if ((capabilityStatementProperties.getDescription() != null)
-        && !capabilityStatementProperties.getDescription().isBlank()) {
+    if (StringUtils.isNotBlank(capabilityStatementProperties.getDescription())) {
       capabilityBuilder.description(capabilityStatementProperties.getDescription());
     }
     return capabilityBuilder.build();
