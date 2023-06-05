@@ -19,8 +19,6 @@ public class CapabilitiesStatementPropertiesTest {
     config.setKind(CapabilityStatement.Kind.instance);
     config.setFhirVersion("4.0.0");
     config.setSoftwareName("test-service");
-    config.setImplementationUrl("https://fake.com");
-    config.setImplementationDescription("Capability service meant for testing only.");
     CapabilityStatementProperties.SecurityProperties securityProperties =
         new CapabilityStatementProperties.SecurityProperties();
     securityProperties.setAuthorizeEndpoint("https://example.com/oauth2/authorization");
