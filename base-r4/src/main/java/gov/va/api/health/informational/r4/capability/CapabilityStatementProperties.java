@@ -53,6 +53,14 @@ public class CapabilityStatementProperties implements InitializingBean {
    */
   private String softwareName;
 
+  /** Optional. If kind == instance, implementation is required. Base URL for the installation. */
+  private String implementationUrl;
+
+  /**
+   * Optional. If kind == instance, implementation is required. Describes this specific instance.
+   */
+  private String implementationDescription;
+
   /**
    * Optional. Contact details for the publisher. TODO: For FHIR specification this should be a list
    * but currently sufficient.
