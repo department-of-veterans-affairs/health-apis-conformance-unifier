@@ -12,7 +12,7 @@
   <properties>
     <fhir-resources.version>15.0.28</fhir-resources.version>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
-    <guava.version>31.1-jre</guava.version>
+    <guava.version>32.0.0-jre</guava.version>
     <service-auto-config.version>13.0.7</service-auto-config.version>
   </properties>
   <dependencies>
