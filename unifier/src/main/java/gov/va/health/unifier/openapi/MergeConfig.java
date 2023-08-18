@@ -60,8 +60,10 @@ public class MergeConfig {
 
     /** Filter configuration for Open API path items. */
     private RegexFilter pathFilter;
+
     /** Filter configuration for Open API schema items. */
     private RegexFilter schemaFilter;
+
     /** Filter configuration for Open API security and security scheme scopes. */
     private RegexFilter scopeFilter;
 
