@@ -4,13 +4,13 @@
   <parent>
     <groupId>gov.va.api.health</groupId>
     <artifactId>conformance-unifier-parent</artifactId>
-    <version>7.0.0-SNAPSHOT</version>
+    <version>7.0.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>gov.va.api.health.informational</groupId>
   <artifactId>base-dstu2</artifactId>
   <properties>
-    <fhir-resources.version>18.0.0</fhir-resources.version>
+    <fhir-resources.version>18.0.1</fhir-resources.version>
     <generated-sources-base>${project.build.directory}/generated-sources</generated-sources-base>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <service-auto-config.version>16.0.1</service-auto-config.version>
