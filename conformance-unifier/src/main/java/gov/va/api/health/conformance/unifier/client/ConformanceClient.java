@@ -3,9 +3,9 @@ package gov.va.api.health.conformance.unifier.client;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.reflect.Type;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +17,14 @@ import org.springframework.web.client.RestTemplate;
 
 /** Conformance Client. */
 @Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class ConformanceClient {
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
   private final RestTemplate restTemplate;
+
+  public ConformanceClient(@Autowired RestTemplateBuilder restTemplateBuilder) {
+    restTemplate = restTemplateBuilder.build();
+  }
 
   private HttpEntity<Void> requestEntity() {
     HttpHeaders headers = new HttpHeaders();
