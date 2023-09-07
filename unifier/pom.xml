@@ -15,15 +15,15 @@
     <assertj-core.version>3.24.2</assertj-core.version>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
     <!-- two versions of jackson because of security release -->
-    <jackson-databind.version>2.14.2</jackson-databind.version>
-    <jackson.version>2.14.2</jackson.version>
+    <jackson-databind.version>2.15.2</jackson-databind.version>
+    <jackson.version>2.15.2</jackson.version>
     <!--TODO: raise test coverage-->
     <jacoco.coverage>0.0</jacoco.coverage>
     <jarranger.version>2.0.6</jarranger.version>
-    <junit-jupiter.version>5.9.2</junit-jupiter.version>
-    <lombok.version>1.18.26</lombok.version>
-    <picocli.version>4.7.1</picocli.version>
-    <swagger-core.version>2.2.8</swagger-core.version>
+    <junit-jupiter.version>5.10.0</junit-jupiter.version>
+    <lombok.version>1.18.28</lombok.version>
+    <picocli.version>4.7.5</picocli.version>
+    <swagger-core.version>2.2.15</swagger-core.version>
   </properties>
   <dependencies>
     <dependency>
