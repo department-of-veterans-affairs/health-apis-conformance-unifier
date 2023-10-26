@@ -42,18 +42,18 @@ For example:
     # 2. Local Docker Build and Run Examples:
     mvn -Plocaltest,docker -pl conformance-unifier io.fabric8:docker-maven-plugin:build
 
-    docker run --network="host" vasdvp/health-apis-conformance-unifier dstu2 metadata https://api.va.gov/services/fhir/v0/dstu2/metadata
+    docker run --network="host" ghcr.io/department-of-veterans-affairs/health-apis-conformance-unifier dstu2 metadata https://api.va.gov/services/fhir/v0/dstu2/metadata
 
-    docker run --network="host" vasdvp/health-apis-conformance-unifier dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
+    docker run --network="host" ghcr.io/department-of-veterans-affairs/health-apis-conformance-unifier dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
 
     # To specify a specific profile add the switch `--spring.profiles.active=qa` to the docker command.
-    docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
+    docker run --network="host" ghcr.io/department-of-veterans-affairs/health-apis-conformance-unifier --spring.profiles.active=qa r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
 
     # To specify a specific profile and property to the docker command.
-    docker run --network="host" vasdvp/health-apis-conformance-unifier --spring.profiles.active=qa --bucket.name=qaresultbucket r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
+    docker run --network="host" ghcr.io/department-of-veterans-affairs/health-apis-conformance-unifier --spring.profiles.active=qa --bucket.name=qaresultbucket r4 smart-configuration https://api.va.gov/services/fhir/v0/r4/.well-known/smart-configuration
 
     # The `--metadata` switch can be added one or more times to the parameter list containing a list of comma delimited `key=value` to associate with the generated S3 object.
-    docker run --network="host" vasdvp/health-apis-conformance-unifier --metadata=uc-app-version=1.0.0,claims-app-version=2.0.0 dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
+    docker run --network="host" ghcr.io/department-of-veterans-affairs/health-apis-conformance-unifier --metadata=uc-app-version=1.0.0,claims-app-version=2.0.0 dstu2 smart-configuration https://api.va.gov/services/fhir/v0/dstu2/.well-known/smart-configuration
     ```
 
 4. You can use regular `aws` commands to see the resulting objects in the mock s3.  For example,
