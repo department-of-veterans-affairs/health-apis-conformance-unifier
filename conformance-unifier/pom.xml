@@ -13,7 +13,7 @@
     <aws-interfaces.version>2.0.3</aws-interfaces.version>
     <docker-maven-plugin.version>0.41.0</docker-maven-plugin.version>
     <docker.imageName>health-apis-${project.artifactId}</docker.imageName>
-    <docker.organization>vasdvp</docker.organization>
+    <docker.organization>ghcr.io/department-of-veterans-affairs</docker.organization>
     <docker.tag>latest</docker.tag>
     <fhir-resources.version>18.0.1</fhir-resources.version>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
@@ -94,6 +94,16 @@
                       <descriptor>assembly.xml</descriptor>
                     </assembly>
                     <dockerFile>${basedir}/src/main/docker/Dockerfile</dockerFile>
+                    <buildOptions>
+                      <!--suppress MavenModelInspection -->
+                      <labels><![CDATA[
+                        {
+                          "org.opencontainers.image.version":"${project.version}",
+                          "org.opencontainers.image.title":"${project.artifactId}",
+                          "org.opencontainers.image.created":"${maven.build.timestamp}",
+                          "org.opencontainers.image.source":"https://github.com/department-of-veterans-affairs/health-apis-conformance-unifier"
+                        }]]></labels>
+                    </buildOptions>
                     <tags>
                       <tag>${project.version}</tag>
                       <tag>${docker.tag}</tag>

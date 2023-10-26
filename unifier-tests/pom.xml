@@ -9,7 +9,7 @@
   </parent>
   <artifactId>unifier-tests</artifactId>
   <properties>
-    <docker.organization>vasdvp</docker.organization>
+    <docker.organization>ghcr.io/department-of-veterans-affairs</docker.organization>
     <docker.tag>latest</docker.tag>
     <github.repository-name>health-apis-conformance-unifier</github.repository-name>
   </properties>
@@ -31,6 +31,16 @@
                       <build>
                         <contextDir>${project.basedir}</contextDir>
                         <dockerFile>Dockerfile</dockerFile>
+                        <buildOptions>
+                          <!--suppress MavenModelInspection -->
+                          <labels><![CDATA[
+                        {
+                          "org.opencontainers.image.version":"${project.version}",
+                          "org.opencontainers.image.title":"${project.artifactId}",
+                          "org.opencontainers.image.created":"${maven.build.timestamp}",
+                          "org.opencontainers.image.source":"https://github.com/department-of-veterans-affairs/health-apis-conformance-unifier"
+                        }]]></labels>
+                        </buildOptions>
                         <tags>
                           <tag>${project.version}</tag>
                           <tag>${docker.tag}</tag>
